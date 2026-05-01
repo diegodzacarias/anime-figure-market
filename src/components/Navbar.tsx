@@ -27,6 +27,9 @@ const Navbar = () => {
           <span className="text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer">
             Novedades
           </span>
+          <Link to="/apis" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            APIS
+          </Link>
         </div>
 
         <div className="flex items-center gap-3">

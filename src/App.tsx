@@ -6,22 +6,25 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import AnimeDetail from "./pages/AnimeDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import ApisPage from "./pages/ApisPage.tsx";
+
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/anime/:animeId" element={<AnimeDetail />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter basename="/anime-figure-market">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/anime/:animeId" element={<AnimeDetail />} />
+              <Route path="/apis" element={<ApisPage />} /> {}
+              <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
 );
 
 export default App;
