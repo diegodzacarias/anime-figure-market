@@ -26,6 +26,7 @@ const ApisPage = () => {
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
+
         setForm((prev) => ({
             ...prev,
             [name]: value,
@@ -53,7 +54,9 @@ const ApisPage = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         const payload = buildPayload();
+
         console.log("Payload:", payload);
         alert("Payload generado. Revisa consola.");
     };
@@ -62,12 +65,8 @@ const ApisPage = () => {
         <div className="container py-10">
             <h1 className="text-3xl font-bold">APIs</h1>
 
-            <form
-                onSubmit={handleSubmit}
-                className="mt-6 grid gap-5 border p-6 rounded-lg"
-            >
+            <form onSubmit={handleSubmit} className="mt-6 grid gap-5 border p-6 rounded-lg">
                 <div className="grid gap-4 md:grid-cols-2">
-                    {/* Franchise */}
                     <div>
                         <label>Franchise</label>
                         <select
@@ -82,7 +81,6 @@ const ApisPage = () => {
                         </select>
                     </div>
 
-                    {/* Brand */}
                     <div>
                         <label>Brand</label>
                         <select
@@ -105,10 +103,23 @@ const ApisPage = () => {
                     <Input name="lineName" placeholder="Line Name" value={form.lineName} onChange={handleChange} />
                     <Input name="material" placeholder="Material" value={form.material} onChange={handleChange} />
 
-                    <Input name="editionSize" type="number" placeholder="Edition Size" value={form.editionSize} onChange={handleChange} />
-                    <Input name="basePrice" type="number" step="0.01" placeholder="Base Price" value={form.basePrice} onChange={handleChange} />
+                    <Input
+                        name="editionSize"
+                        type="number"
+                        placeholder="Edition Size"
+                        value={form.editionSize}
+                        onChange={handleChange}
+                    />
 
-                    {/* Currency */}
+                    <Input
+                        name="basePrice"
+                        type="number"
+                        step="0.01"
+                        placeholder="Base Price"
+                        value={form.basePrice}
+                        onChange={handleChange}
+                    />
+
                     <div>
                         <label>Currency</label>
                         <select
@@ -122,7 +133,6 @@ const ApisPage = () => {
                         </select>
                     </div>
 
-                    {/* Licensed */}
                     <div>
                         <label>Licensed</label>
                         <select
@@ -136,7 +146,6 @@ const ApisPage = () => {
                         </select>
                     </div>
 
-                    {/* Status */}
                     <div>
                         <label>Status</label>
                         <select
@@ -151,7 +160,6 @@ const ApisPage = () => {
                         </select>
                     </div>
 
-                    {/* FECHAS CON CALENDARIO NATIVO */}
                     <div>
                         <label>Base Preorder Date</label>
                         <input
@@ -186,7 +194,6 @@ const ApisPage = () => {
                     </div>
                 </div>
 
-                {/* Notes */}
                 <textarea
                     name="notes"
                     placeholder="Notes"
