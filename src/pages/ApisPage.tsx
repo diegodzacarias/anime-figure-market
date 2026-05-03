@@ -61,6 +61,14 @@ const ApisPage = () => {
         alert("Payload generado. Revisa consola.");
     };
 
+    const selectClass =
+        "w-full border border-input bg-background text-foreground p-2 rounded";
+
+    const optionClass = "bg-background text-foreground";
+
+    const dateInputClass =
+        "w-full border border-input bg-background text-foreground p-2 rounded";
+
     return (
         <div className="container py-10">
             <h1 className="text-3xl font-bold">APIs</h1>
@@ -73,11 +81,11 @@ const ApisPage = () => {
                             name="franchiseId"
                             value={form.franchiseId}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={selectClass}
                         >
-                            <option value="1">Naruto</option>
-                            <option value="2">One Piece</option>
-                            <option value="3">Berserk</option>
+                            <option className={optionClass} value="1">Naruto</option>
+                            <option className={optionClass} value="2">One Piece</option>
+                            <option className={optionClass} value="3">Berserk</option>
                         </select>
                     </div>
 
@@ -87,13 +95,13 @@ const ApisPage = () => {
                             name="brandId"
                             value={form.brandId}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={selectClass}
                         >
-                            <option value="1">Good Smile Company</option>
-                            <option value="2">Kotobukiya</option>
-                            <option value="3">MegaHouse</option>
-                            <option value="4">Prime 1</option>
-                            <option value="5">FREEing</option>
+                            <option className={optionClass} value="1">Good Smile Company</option>
+                            <option className={optionClass} value="2">Kotobukiya</option>
+                            <option className={optionClass} value="3">MegaHouse</option>
+                            <option className={optionClass} value="4">Prime 1</option>
+                            <option className={optionClass} value="5">FREEing</option>
                         </select>
                     </div>
 
@@ -126,10 +134,10 @@ const ApisPage = () => {
                             name="baseCurrencyCode"
                             value={form.baseCurrencyCode}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={selectClass}
                         >
-                            <option value="USD">USD</option>
-                            <option value="JPY">JPY</option>
+                            <option className={optionClass} value="USD">USD</option>
+                            <option className={optionClass} value="JPY">JPY</option>
                         </select>
                     </div>
 
@@ -139,10 +147,10 @@ const ApisPage = () => {
                             name="isLicensed"
                             value={form.isLicensed}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={selectClass}
                         >
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
+                            <option className={optionClass} value="true">Yes</option>
+                            <option className={optionClass} value="false">No</option>
                         </select>
                     </div>
 
@@ -152,11 +160,11 @@ const ApisPage = () => {
                             name="status"
                             value={form.status}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={selectClass}
                         >
-                            <option value="PREORDER">PREORDER</option>
-                            <option value="RELEASED">RELEASED</option>
-                            <option value="SOLD_OUT">SOLD_OUT</option>
+                            <option className={optionClass} value="PREORDER">PREORDER</option>
+                            <option className={optionClass} value="RELEASED">RELEASED</option>
+                            <option className={optionClass} value="SOLD_OUT">SOLD_OUT</option>
                         </select>
                     </div>
 
@@ -167,7 +175,7 @@ const ApisPage = () => {
                             name="basePreorderDate"
                             value={form.basePreorderDate}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={dateInputClass}
                         />
                     </div>
 
@@ -178,7 +186,7 @@ const ApisPage = () => {
                             name="baseEstimatedReleaseDate"
                             value={form.baseEstimatedReleaseDate}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={dateInputClass}
                         />
                     </div>
 
@@ -189,7 +197,7 @@ const ApisPage = () => {
                             name="actualReleaseDate"
                             value={form.actualReleaseDate}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded"
+                            className={dateInputClass}
                         />
                     </div>
                 </div>
@@ -199,7 +207,7 @@ const ApisPage = () => {
                     placeholder="Notes"
                     value={form.notes}
                     onChange={handleChange}
-                    className="border p-3 rounded"
+                    className="border border-input bg-background text-foreground p-3 rounded"
                 />
 
                 <Button type="submit">Generate Payload</Button>
