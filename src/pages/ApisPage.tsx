@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
+const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
+const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+
+type Source = {
+    id: number;
+    name: string;
+    baseUrl: string;
+    active: boolean;
+};
 
 const ApisPage = () => {
+    const [sources, setSources] = useState<Source[]>([]);
+
     const [form, setForm] = useState({
         franchiseId: "3",
         brandId: "1",
@@ -26,6 +37,26 @@ const ApisPage = () => {
         status: "RELEASED",
         notes: "",
     });
+
+    useEffect(() => {
+        const fetchSources = async () => {
+            try {
+                const response = await fetch(SOURCES_ENDPOINT);
+
+                if (!response.ok) {
+                    console.error("Error fetching sources");
+                    return;
+                }
+
+                const data = await response.json();
+                setSources(data);
+            } catch (error) {
+                console.error("Request error fetching sources:", error);
+            }
+        };
+
+        fetchSources();
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -104,6 +135,28 @@ const ApisPage = () => {
             </div>
 
             <h1 className="text-3xl font-bold">APIs</h1>
+
+            <div className="mt-6 border p-4 rounded-lg">
+                <h2 className="text-xl font-semibold mb-3">Sources</h2>
+
+                {sources.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">No sources found.</p>
+                ) : (
+                    <div className="flex flex-wrap gap-3">
+                        {sources.map((source) => (
+                            <a
+                                key={source.id}
+                                href={source.baseUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-3 py-1 border rounded-full hover:bg-muted transition"
+                            >
+                                {source.name}
+                            </a>
+                        ))}
+                    </div>
+                )}
+            </div>
 
             <form onSubmit={handleSubmit} className="mt-6 grid gap-5 border p-6 rounded-lg">
                 <div className="grid gap-4 md:grid-cols-2">
