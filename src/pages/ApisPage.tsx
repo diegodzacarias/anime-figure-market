@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -71,8 +72,15 @@ const ApisPage = () => {
 
     return (
         <div className="container py-10">
-            <h1 className="text-3xl font-bold">APIs</h1>
 
+            {/* 🔙 Botón volver */}
+            <div className="mb-4">
+                <Link to="/">
+                    <Button variant="outline">← Volver al inicio</Button>
+                </Link>
+            </div>
+
+            <h1 className="text-3xl font-bold">APIs</h1>
             <form onSubmit={handleSubmit} className="mt-6 grid gap-5 border p-6 rounded-lg">
                 <div className="grid gap-4 md:grid-cols-2">
                     <div>
