@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { User, ShoppingCart, Menu, X } from "lucide-react";
+import { ChevronDown, User, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const [showWorkMenu, setShowWorkMenu] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
@@ -27,9 +28,49 @@ const Navbar = () => {
           <span className="text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer">
             Novedades
           </span>
-          <Link to="/apis" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-            APIS
-          </Link>
+          <div className="relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => setShowWorkMenu((current) => !current)}
+            >
+              Work
+              <ChevronDown className="h-3.5 w-3.5" />
+            </button>
+
+            {showWorkMenu && (
+              <div className="absolute left-0 top-full mt-3 min-w-40 rounded-lg border border-border bg-card p-2 shadow-card">
+                <Link
+                  to="/work/figure"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setShowWorkMenu(false)}
+                >
+                  Figure
+                </Link>
+                <Link
+                  to="/work/figure-alias"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setShowWorkMenu(false)}
+                >
+                  Figure Alias
+                </Link>
+                <Link
+                  to="/work/figure-source-listing"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setShowWorkMenu(false)}
+                >
+                  Figure Source Listing
+                </Link>
+                <Link
+                  to="/work/franchises"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setShowWorkMenu(false)}
+                >
+                  Franchises
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
