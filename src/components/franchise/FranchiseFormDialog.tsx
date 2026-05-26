@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 
 export type Franchise = {
   id?: number;
@@ -75,6 +76,8 @@ const FranchiseFormDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
+        <LoadingOverlay active={saving} label="Saving franchise..." />
+
         <DialogHeader>
           <DialogTitle>{franchise ? "Update Franchise" : "New Franchise"}</DialogTitle>
           <DialogDescription>

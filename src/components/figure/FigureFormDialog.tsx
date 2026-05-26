@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
+import { ReferenceDataOption } from "@/types/referenceData";
 
 export type Figure = {
   id?: number;
@@ -42,6 +44,8 @@ type FigureFormDialogProps = {
   figure: Figure | null;
   franchises: FranchiseOption[];
   brands: BrandOption[];
+  currencyCodes: ReferenceDataOption[];
+  figureStatuses: ReferenceDataOption[];
   open: boolean;
   saving: boolean;
   loadingOptions: boolean;
@@ -58,6 +62,8 @@ const FigureFormDialog = ({
   figure,
   franchises,
   brands,
+  currencyCodes,
+  figureStatuses,
   open,
   saving,
   loadingOptions,
@@ -141,6 +147,8 @@ const FigureFormDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+        <LoadingOverlay active={saving} label="Saving figure..." />
+
         <DialogHeader>
           <DialogTitle>{figure ? "Update Figure" : "New Figure"}</DialogTitle>
           <DialogDescription>
@@ -257,11 +265,31 @@ const FigureFormDialog = ({
                 className={selectClass}
                 required
               >
-                <option className={optionClass} value="PREORDER">PREORDER</option>
-                <option className={optionClass} value="RELEASED">RELEASED</option>
-                <option className={optionClass} value="SOLD_OUT">SOLD_OUT</option>
+                {figureStatuses.map((status) => (
+                  <option className={optionClass} key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
               </select>
               <p className={helperClass}>Disponibilidad actual: preventa, lanzada o agotada.</p>
+            </div>
+
+            <div>
+              <label className={labelClass}>Base Currency {requiredMark}</label>
+              <select
+                name="baseCurrencyCode"
+                value={form.baseCurrencyCode}
+                onChange={handleChange}
+                className={selectClass}
+                required
+              >
+                {currencyCodes.map((currency) => (
+                  <option className={optionClass} key={currency.value} value={currency.value}>
+                    {currency.label}{currency.symbol ? ` (${currency.symbol})` : ""}
+                  </option>
+                ))}
+              </select>
+              <p className={helperClass}>Moneda base requerida por el backend.</p>
             </div>
           </div>
 

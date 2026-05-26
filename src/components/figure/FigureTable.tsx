@@ -13,16 +13,30 @@ import type { Figure } from "./FigureFormDialog";
 type FigureTableProps = {
   figures: Figure[];
   loading: boolean;
+  franchiseNames: Record<number, string>;
+  brandNames: Record<number, string>;
   onEdit: (figure: Figure) => void;
   onDelete: (figure: Figure) => void;
 };
 
-const getFranchiseName = (figure: Figure) =>
-  figure.franchise?.name || figure.franchiseId?.toString() || "-";
+const getFranchiseName = (figure: Figure, franchiseNames: Record<number, string>) => {
+  const franchiseId = figure.franchiseId || figure.franchise?.id;
+  return figure.franchise?.name || (franchiseId ? franchiseNames[franchiseId] : "") || "-";
+};
 
-const getBrandName = (figure: Figure) => figure.brand?.name || figure.brandId?.toString() || "-";
+const getBrandName = (figure: Figure, brandNames: Record<number, string>) => {
+  const brandId = figure.brandId || figure.brand?.id;
+  return figure.brand?.name || (brandId ? brandNames[brandId] : "") || "-";
+};
 
-const FigureTable = ({ figures, loading, onEdit, onDelete }: FigureTableProps) => {
+const FigureTable = ({
+  figures,
+  loading,
+  franchiseNames,
+  brandNames,
+  onEdit,
+  onDelete,
+}: FigureTableProps) => {
   return (
     <div className="overflow-hidden rounded-lg border bg-card">
       <Table>
@@ -56,8 +70,8 @@ const FigureTable = ({ figures, loading, onEdit, onDelete }: FigureTableProps) =
                 <TableCell className="font-medium">{figure.id}</TableCell>
                 <TableCell>{figure.name || "-"}</TableCell>
                 <TableCell>{figure.slug || "-"}</TableCell>
-                <TableCell>{getFranchiseName(figure)}</TableCell>
-                <TableCell>{getBrandName(figure)}</TableCell>
+                <TableCell>{getFranchiseName(figure, franchiseNames)}</TableCell>
+                <TableCell>{getBrandName(figure, brandNames)}</TableCell>
                 <TableCell>{figure.status || "-"}</TableCell>
                 <TableCell>
                   <div className="flex justify-end gap-2">

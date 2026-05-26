@@ -13,11 +13,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 import type { FigureOption, SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import FigureSourceListingFormDialog, {
   FigureSourceListing,
 } from "@/components/figureSourceListing/FigureSourceListingFormDialog";
 import FigureSourceListingTable from "@/components/figureSourceListing/FigureSourceListingTable";
+import { useReferenceData } from "@/hooks/useReferenceData";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -25,6 +27,18 @@ const API_BASE_URL =
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/figure-source-listings`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+
+const fallbackCurrencyCodes = [
+  { value: "USD", label: "Usd", symbol: "$" },
+  { value: "JPY", label: "Jpy", symbol: "¥" },
+];
+
+const fallbackListingStatuses = [
+  { value: "ACTIVE", label: "Active" },
+  { value: "SOLD_OUT", label: "Sold Out" },
+  { value: "ARCHIVED", label: "Archived" },
+  { value: "UNKNOWN", label: "Unknown" },
+];
 
 const FigureSourceListingPage = () => {
   const [listings, setListings] = useState<FigureSourceListing[]>([]);
@@ -38,47 +52,53 @@ const FigureSourceListingPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<FigureSourceListing | null>(null);
   const [listingToDelete, setListingToDelete] = useState<FigureSourceListing | null>(null);
+  const { referenceData, loadingReferenceData } = useReferenceData();
+  const mutating = saving || deleting;
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async (showLoading = true) => {
+    if (showLoading) {
       setLoading(true);
       setLoadingOptions(true);
+    }
 
-      try {
-        const [listingsResponse, figuresResponse, sourcesResponse] = await Promise.all([
-          fetch(FIGURE_SOURCE_LISTINGS_ENDPOINT),
-          fetch(FIGURES_ENDPOINT),
-          fetch(SOURCES_ENDPOINT),
-        ]);
+    try {
+      const [listingsResponse, figuresResponse, sourcesResponse] = await Promise.all([
+        fetch(FIGURE_SOURCE_LISTINGS_ENDPOINT),
+        fetch(FIGURES_ENDPOINT),
+        fetch(SOURCES_ENDPOINT),
+      ]);
 
-        if (listingsResponse.ok) {
-          const data = await listingsResponse.json();
-          setListings(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching figure source listings");
-        }
+      if (listingsResponse.ok) {
+        const data = await listingsResponse.json();
+        setListings(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching figure source listings");
+      }
 
-        if (figuresResponse.ok) {
-          const data = await figuresResponse.json();
-          setFigures(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching figures");
-        }
+      if (figuresResponse.ok) {
+        const data = await figuresResponse.json();
+        setFigures(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching figures");
+      }
 
-        if (sourcesResponse.ok) {
-          const data = await sourcesResponse.json();
-          setSources(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching sources");
-        }
-      } catch (error) {
-        console.error("Request error fetching figure source listings:", error);
-      } finally {
+      if (sourcesResponse.ok) {
+        const data = await sourcesResponse.json();
+        setSources(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching sources");
+      }
+    } catch (error) {
+      console.error("Request error fetching figure source listings:", error);
+    } finally {
+      if (showLoading) {
         setLoading(false);
         setLoadingOptions(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -136,13 +156,7 @@ const FigureSourceListingPage = () => {
         return;
       }
 
-      const savedListing = await response.json();
-
-      setListings((current) =>
-        isEditing
-          ? current.map((listing) => (listing.id === savedListing.id ? savedListing : listing))
-          : [savedListing, ...current]
-      );
+      await fetchData(false);
 
       setDialogOpen(false);
       setSelectedListing(null);
@@ -171,7 +185,7 @@ const FigureSourceListingPage = () => {
         return;
       }
 
-      setListings((current) => current.filter((listing) => listing.id !== listingToDelete.id));
+      await fetchData(false);
       setListingToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
@@ -216,14 +230,14 @@ const FigureSourceListingPage = () => {
           </p>
         </div>
 
-        <div className="mt-4">
+        <LoadingOverlay active={mutating} message="Updating source listings..." className="mt-4">
           <FigureSourceListingTable
             listings={filteredListings}
             loading={loading}
             onEdit={openEditDialog}
             onDelete={setListingToDelete}
           />
-        </div>
+        </LoadingOverlay>
       </main>
 
       <FigureSourceListingFormDialog
@@ -232,7 +246,13 @@ const FigureSourceListingPage = () => {
         sources={sources}
         open={dialogOpen}
         saving={saving}
-        loadingOptions={loadingOptions}
+        loadingOptions={loadingOptions || loadingReferenceData}
+        currencyCodes={referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes}
+        listingStatuses={
+          referenceData.figureSourceListingStatuses.length > 0
+            ? referenceData.figureSourceListingStatuses
+            : fallbackListingStatuses
+        }
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
       />

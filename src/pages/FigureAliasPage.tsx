@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 import FigureAliasFormDialog, {
   FigureAlias,
   FigureOption,
   SourceOption,
 } from "@/components/figureAlias/FigureAliasFormDialog";
 import FigureAliasTable from "@/components/figureAlias/FigureAliasTable";
+import { useReferenceData } from "@/hooks/useReferenceData";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -26,6 +28,13 @@ const API_BASE_URL =
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_ALIASES_ENDPOINT = `${API_BASE_URL}/figure-aliases`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+
+const fallbackLoadMethods = [
+  { value: "MANUAL", label: "Manual" },
+  { value: "SCRAPED", label: "Scraped" },
+  { value: "GENERATED", label: "Generated" },
+  { value: "IMPORTED", label: "Imported" },
+];
 
 const FigureAliasPage = () => {
   const [aliases, setAliases] = useState<FigureAlias[]>([]);
@@ -39,47 +48,53 @@ const FigureAliasPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAlias, setSelectedAlias] = useState<FigureAlias | null>(null);
   const [aliasToDelete, setAliasToDelete] = useState<FigureAlias | null>(null);
+  const { referenceData, loadingReferenceData } = useReferenceData();
+  const mutating = saving || deleting;
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async (showLoading = true) => {
+    if (showLoading) {
       setLoading(true);
       setLoadingOptions(true);
+    }
 
-      try {
-        const [aliasesResponse, figuresResponse, sourcesResponse] = await Promise.all([
-          fetch(FIGURE_ALIASES_ENDPOINT),
-          fetch(FIGURES_ENDPOINT),
-          fetch(SOURCES_ENDPOINT),
-        ]);
+    try {
+      const [aliasesResponse, figuresResponse, sourcesResponse] = await Promise.all([
+        fetch(FIGURE_ALIASES_ENDPOINT),
+        fetch(FIGURES_ENDPOINT),
+        fetch(SOURCES_ENDPOINT),
+      ]);
 
-        if (aliasesResponse.ok) {
-          const data = await aliasesResponse.json();
-          setAliases(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching figure aliases");
-        }
+      if (aliasesResponse.ok) {
+        const data = await aliasesResponse.json();
+        setAliases(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching figure aliases");
+      }
 
-        if (figuresResponse.ok) {
-          const data = await figuresResponse.json();
-          setFigures(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching figures");
-        }
+      if (figuresResponse.ok) {
+        const data = await figuresResponse.json();
+        setFigures(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching figures");
+      }
 
-        if (sourcesResponse.ok) {
-          const data = await sourcesResponse.json();
-          setSources(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching sources");
-        }
-      } catch (error) {
-        console.error("Request error fetching figure aliases:", error);
-      } finally {
+      if (sourcesResponse.ok) {
+        const data = await sourcesResponse.json();
+        setSources(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching sources");
+      }
+    } catch (error) {
+      console.error("Request error fetching figure aliases:", error);
+    } finally {
+      if (showLoading) {
         setLoading(false);
         setLoadingOptions(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -143,13 +158,7 @@ const FigureAliasPage = () => {
         return;
       }
 
-      const savedAlias = await response.json();
-
-      setAliases((current) =>
-        isEditing
-          ? current.map((alias) => (alias.id === savedAlias.id ? savedAlias : alias))
-          : [savedAlias, ...current]
-      );
+      await fetchData(false);
 
       setDialogOpen(false);
       setSelectedAlias(null);
@@ -178,7 +187,7 @@ const FigureAliasPage = () => {
         return;
       }
 
-      setAliases((current) => current.filter((alias) => alias.id !== aliasToDelete.id));
+      await fetchData(false);
       setAliasToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
@@ -223,7 +232,7 @@ const FigureAliasPage = () => {
           </p>
         </div>
 
-        <div className="mt-4">
+        <LoadingOverlay active={mutating} message="Updating aliases..." className="mt-4">
           <FigureAliasTable
             aliases={filteredAliases}
             loading={loading}
@@ -232,7 +241,7 @@ const FigureAliasPage = () => {
             onEdit={openEditDialog}
             onDelete={setAliasToDelete}
           />
-        </div>
+        </LoadingOverlay>
       </main>
 
       <FigureAliasFormDialog
@@ -241,7 +250,8 @@ const FigureAliasPage = () => {
         sources={sources}
         open={dialogOpen}
         saving={saving}
-        loadingOptions={loadingOptions}
+        loadingOptions={loadingOptions || loadingReferenceData}
+        loadMethods={referenceData.loadMethods.length > 0 ? referenceData.loadMethods : fallbackLoadMethods}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
       />

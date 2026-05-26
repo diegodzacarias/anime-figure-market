@@ -14,99 +14,111 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
-import FranchiseFormDialog, { Franchise } from "@/components/franchise/FranchiseFormDialog";
-import FranchiseTable from "@/components/franchise/FranchiseTable";
+import SourceFormDialog, { Source } from "@/components/source/SourceFormDialog";
+import SourceTable from "@/components/source/SourceTable";
+import { useReferenceData } from "@/hooks/useReferenceData";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
-const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
+const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
 
-const FranchisePage = () => {
-  const [franchises, setFranchises] = useState<Franchise[]>([]);
+const fallbackSourceTypes = [
+  { value: "OFFICIAL", label: "Official" },
+  { value: "RETAILER", label: "Retailer" },
+  { value: "MARKETPLACE", label: "Marketplace" },
+];
+
+const fallbackSourcePriorities = [
+  { value: "OFFICIAL", label: "Official", level: 100 },
+  { value: "HIGH", label: "High", level: 80 },
+  { value: "MEDIUM", label: "Medium", level: 50 },
+  { value: "LOW", label: "Low", level: 30 },
+  { value: "UNRELIABLE", label: "Unreliable", level: 10 },
+];
+
+const SourcePage = () => {
+  const [sources, setSources] = useState<Source[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedFranchise, setSelectedFranchise] = useState<Franchise | null>(null);
-  const [franchiseToDelete, setFranchiseToDelete] = useState<Franchise | null>(null);
+  const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+  const [sourceToDelete, setSourceToDelete] = useState<Source | null>(null);
   const mutating = saving || deleting;
+  const { referenceData } = useReferenceData();
 
-  const fetchFranchises = async (showLoading = true) => {
+  const fetchSources = async (showLoading = true) => {
     if (showLoading) setLoading(true);
 
     try {
-      const response = await fetch(FRANCHISES_ENDPOINT);
+      const response = await fetch(SOURCES_ENDPOINT);
 
       if (!response.ok) {
-        console.error("Error fetching franchises");
+        console.error("Error fetching sources");
         return;
       }
 
       const data = await response.json();
-      setFranchises(Array.isArray(data) ? data : []);
+      setSources(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error("Request error fetching franchises:", error);
+      console.error("Request error fetching sources:", error);
     } finally {
       if (showLoading) setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchFranchises();
+    fetchSources();
   }, []);
 
-  const filteredFranchises = useMemo(() => {
+  const filteredSources = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    if (!query) return franchises;
+    if (!query) return sources;
 
-    return franchises.filter((franchise) =>
-      [franchise.id?.toString(), franchise.name, franchise.slug, franchise.imageUrl]
+    return sources.filter((source) =>
+      [source.id?.toString(), source.name, source.baseUrl, source.type, source.priority?.toString()]
         .filter(Boolean)
         .some((value) => value?.toLowerCase().includes(query))
     );
-  }, [franchises, search]);
+  }, [search, sources]);
 
   const openCreateDialog = () => {
-    setSelectedFranchise(null);
+    setSelectedSource(null);
     setDialogOpen(true);
   };
 
-  const openEditDialog = (franchise: Franchise) => {
-    setSelectedFranchise(franchise);
+  const openEditDialog = (source: Source) => {
+    setSelectedSource(source);
     setDialogOpen(true);
   };
 
-  const handleSubmit = async (payload: Franchise) => {
+  const handleSubmit = async (payload: Record<string, string | number | boolean>) => {
     setSaving(true);
 
-    const isEditing = Boolean(selectedFranchise?.id);
-    const endpoint = isEditing
-      ? `${FRANCHISES_ENDPOINT}/${selectedFranchise?.id}`
-      : FRANCHISES_ENDPOINT;
+    const isEditing = Boolean(selectedSource?.id);
+    const endpoint = isEditing ? `${SOURCES_ENDPOINT}/${selectedSource?.id}` : SOURCES_ENDPOINT;
 
     try {
       const response = await fetch(endpoint, {
         method: isEditing ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Backend error:", errorText);
-        alert("Error saving franchise. Check console.");
+        alert("Error saving source. Check console.");
         return;
       }
 
-      await fetchFranchises(false);
+      await fetchSources(false);
 
       setDialogOpen(false);
-      setSelectedFranchise(null);
+      setSelectedSource(null);
     } catch (error) {
       console.error("Request error:", error);
       alert("Error connecting to backend. Check console.");
@@ -116,24 +128,24 @@ const FranchisePage = () => {
   };
 
   const handleDelete = async () => {
-    if (!franchiseToDelete?.id) return;
+    if (!sourceToDelete?.id) return;
 
     setDeleting(true);
 
     try {
-      const response = await fetch(`${FRANCHISES_ENDPOINT}/${franchiseToDelete.id}`, {
+      const response = await fetch(`${SOURCES_ENDPOINT}/${sourceToDelete.id}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Backend error:", errorText);
-        alert("Error deleting franchise. Check console.");
+        alert("Error deleting source. Check console.");
         return;
       }
 
-      await fetchFranchises(false);
-      setFranchiseToDelete(null);
+      await fetchSources(false);
+      setSourceToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
       alert("Error connecting to backend. Check console.");
@@ -149,15 +161,15 @@ const FranchisePage = () => {
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Franchises</h1>
+            <h1 className="text-3xl font-bold text-foreground">Sources</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Manage franchise records used by figures and marketplace views.
+              Manage source records used by aliases and source listings.
             </p>
           </div>
 
           <Button type="button" className="gap-2 md:self-center" onClick={openCreateDialog}>
             <Plus className="h-4 w-4" />
-            New Franchise
+            New Source
           </Button>
         </div>
 
@@ -167,28 +179,34 @@ const FranchisePage = () => {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by id, name, slug or image URL"
+              placeholder="Search sources"
               className="pl-9"
             />
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredFranchises.length} of {franchises.length} records
+            {filteredSources.length} of {sources.length} records
           </p>
         </div>
 
-        <LoadingOverlay active={mutating} message="Updating franchises..." className="mt-4">
-          <FranchiseTable
-            franchises={filteredFranchises}
+        <LoadingOverlay active={mutating} message="Updating sources..." className="mt-4">
+          <SourceTable
+            sources={filteredSources}
             loading={loading}
             onEdit={openEditDialog}
-            onDelete={setFranchiseToDelete}
+            onDelete={setSourceToDelete}
           />
         </LoadingOverlay>
       </main>
 
-      <FranchiseFormDialog
-        franchise={selectedFranchise}
+      <SourceFormDialog
+        source={selectedSource}
+        sourceTypes={referenceData.sourceTypes.length > 0 ? referenceData.sourceTypes : fallbackSourceTypes}
+        sourcePriorities={
+          referenceData.sourcePriorities.length > 0
+            ? referenceData.sourcePriorities
+            : fallbackSourcePriorities
+        }
         open={dialogOpen}
         saving={saving}
         onOpenChange={setDialogOpen}
@@ -196,17 +214,17 @@ const FranchisePage = () => {
       />
 
       <AlertDialog
-        open={Boolean(franchiseToDelete)}
+        open={Boolean(sourceToDelete)}
         onOpenChange={(open) => {
-          if (!open) setFranchiseToDelete(null);
+          if (!open) setSourceToDelete(null);
         }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete franchise?</AlertDialogTitle>
+            <AlertDialogTitle>Delete source?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action will delete "{franchiseToDelete?.name || "this franchise"}" from the
-              database. This cannot be undone.
+              This action will delete "{sourceToDelete?.name || "this source"}" from the database.
+              This cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -225,4 +243,4 @@ const FranchisePage = () => {
   );
 };
 
-export default FranchisePage;
+export default SourcePage;

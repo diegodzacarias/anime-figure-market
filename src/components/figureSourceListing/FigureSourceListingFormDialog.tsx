@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
+import FigureCombobox from "@/components/figure/FigureCombobox";
 import type { FigureOption, SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
+import { ReferenceDataOption } from "@/types/referenceData";
 
 export type FigureSourceListing = {
   id?: number;
@@ -38,14 +41,14 @@ type FigureSourceListingFormDialogProps = {
   listing: FigureSourceListing | null;
   figures: FigureOption[];
   sources: SourceOption[];
+  currencyCodes: ReferenceDataOption[];
+  listingStatuses: ReferenceDataOption[];
   open: boolean;
   saving: boolean;
   loadingOptions: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (payload: Record<string, string | number | boolean>) => Promise<void>;
 };
-
-const listingStatuses = ["ACTIVE", "SOLD_OUT", "ARCHIVED", "UNKNOWN"] as const;
 
 const getCurrentDateTimeValue = () => {
   const now = new Date();
@@ -59,6 +62,8 @@ const FigureSourceListingFormDialog = ({
   listing,
   figures,
   sources,
+  currencyCodes,
+  listingStatuses,
   open,
   saving,
   loadingOptions,
@@ -148,6 +153,8 @@ const FigureSourceListingFormDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+        <LoadingOverlay active={saving} label="Saving source listing..." />
+
         <DialogHeader>
           <DialogTitle>{listing ? "Update Figure Source Listing" : "New Figure Source Listing"}</DialogTitle>
           <DialogDescription>
@@ -155,27 +162,41 @@ const FigureSourceListingFormDialog = ({
           </DialogDescription>
         </DialogHeader>
 
+        <div className="rounded-lg border bg-muted/30 p-4">
+          <h3 className="text-sm font-medium text-foreground">Source quick links</h3>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {sources.filter((source) => source.baseUrl).length === 0 ? (
+              <p className="text-sm text-muted-foreground">No source URLs available.</p>
+            ) : (
+              sources
+                .filter((source) => source.baseUrl)
+                .map((source) => (
+                  <a
+                    key={source.id}
+                    href={source.baseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+                  >
+                    {source.name}
+                  </a>
+                ))
+            )}
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="grid gap-5">
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <label className={labelClass}>Figure {requiredMark}</label>
-              <select
-                name="figureId"
+              <FigureCombobox
+                figures={figures}
                 value={form.figureId}
-                onChange={handleChange}
-                className={selectClass}
                 disabled={loadingOptions || figures.length === 0}
-                required
-              >
-                <option className={optionClass} value="">
-                  {loadingOptions ? "Loading figures..." : "Select a figure"}
-                </option>
-                {figures.map((figure) => (
-                  <option className={optionClass} key={figure.id} value={figure.id}>
-                    {figure.name}
-                  </option>
-                ))}
-              </select>
+                loading={loadingOptions}
+                onChange={(value) => setForm((prev) => ({ ...prev, figureId: value }))}
+              />
+              <input name="figureId" value={form.figureId} required className="sr-only" onChange={() => undefined} />
               <p className={helperClass}>Figura relacionada con este listing.</p>
             </div>
 
@@ -228,8 +249,11 @@ const FigureSourceListingFormDialog = ({
             <div>
               <label className={labelClass}>Currency {requiredMark}</label>
               <select name="currencyCode" value={form.currencyCode} onChange={handleChange} className={selectClass} required>
-                <option className={optionClass} value="USD">USD</option>
-                <option className={optionClass} value="JPY">JPY</option>
+                {currencyCodes.map((currency) => (
+                  <option className={optionClass} key={currency.value} value={currency.value}>
+                    {currency.label}{currency.symbol ? ` (${currency.symbol})` : ""}
+                  </option>
+                ))}
               </select>
               <p className={helperClass}>Moneda del precio del listing.</p>
             </div>
@@ -251,8 +275,8 @@ const FigureSourceListingFormDialog = ({
               <select name="listingStatus" value={form.listingStatus} onChange={handleChange} className={selectClass}>
                 <option className={optionClass} value="">Not set</option>
                 {listingStatuses.map((status) => (
-                  <option className={optionClass} key={status} value={status}>
-                    {status}
+                  <option className={optionClass} key={status.value} value={status.value}>
+                    {status.label}
                   </option>
                 ))}
               </select>

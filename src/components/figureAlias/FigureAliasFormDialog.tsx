@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
+import FigureCombobox from "@/components/figure/FigureCombobox";
+import { ReferenceDataOption } from "@/types/referenceData";
 
 export type FigureAlias = {
   id?: number;
@@ -28,12 +31,14 @@ export type FigureOption = {
 export type SourceOption = {
   id: number;
   name: string;
+  baseUrl?: string;
 };
 
 type FigureAliasFormDialogProps = {
   figureAlias: FigureAlias | null;
   figures: FigureOption[];
   sources: SourceOption[];
+  loadMethods: ReferenceDataOption[];
   open: boolean;
   saving: boolean;
   loadingOptions: boolean;
@@ -41,12 +46,11 @@ type FigureAliasFormDialogProps = {
   onSubmit: (payload: Record<string, string | number>) => Promise<void>;
 };
 
-const loadMethods = ["MANUAL", "SCRAPED", "GENERATED", "IMPORTED"] as const;
-
 const FigureAliasFormDialog = ({
   figureAlias,
   figures,
   sources,
+  loadMethods,
   open,
   saving,
   loadingOptions,
@@ -103,6 +107,8 @@ const FigureAliasFormDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
+        <LoadingOverlay active={saving} label="Saving figure alias..." />
+
         <DialogHeader>
           <DialogTitle>{figureAlias ? "Update Figure Alias" : "New Figure Alias"}</DialogTitle>
           <DialogDescription>
@@ -114,23 +120,14 @@ const FigureAliasFormDialog = ({
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <label className={labelClass}>Figure {requiredMark}</label>
-              <select
-                name="figureId"
+              <FigureCombobox
+                figures={figures}
                 value={form.figureId}
-                onChange={handleChange}
-                className={selectClass}
                 disabled={loadingOptions || figures.length === 0}
-                required
-              >
-                <option className={optionClass} value="">
-                  {loadingOptions ? "Loading figures..." : "Select a figure"}
-                </option>
-                {figures.map((figure) => (
-                  <option className={optionClass} key={figure.id} value={figure.id}>
-                    {figure.name}
-                  </option>
-                ))}
-              </select>
+                loading={loadingOptions}
+                onChange={(value) => setForm((prev) => ({ ...prev, figureId: value }))}
+              />
+              <input name="figureId" value={form.figureId} required className="sr-only" onChange={() => undefined} />
               <p className={helperClass}>Figura a la que pertenece este alias.</p>
             </div>
 
@@ -178,8 +175,8 @@ const FigureAliasFormDialog = ({
                 required
               >
                 {loadMethods.map((method) => (
-                  <option className={optionClass} key={method} value={method}>
-                    {method}
+                  <option className={optionClass} key={method.value} value={method.value}>
+                    {method.label}
                   </option>
                 ))}
               </select>

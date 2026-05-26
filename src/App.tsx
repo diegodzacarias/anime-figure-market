@@ -11,6 +11,8 @@ import FigurePage from "./pages/FigurePage.tsx";
 import FigureAliasPage from "./pages/FigureAliasPage.tsx";
 import FigureSourceListingPage from "./pages/FigureSourceListingPage.tsx";
 import FranchisePage from "./pages/FranchisePage.tsx";
+import SourcePage from "./pages/SourcePage.tsx";
+import CandidateReviewPage from "./pages/CandidateReviewPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,8 @@ const App = () => (
                     <Route path="/work/figure-source-listing" element={<FigureSourceListingPage />} />
                     <Route path="/work/figure-listing" element={<FigureSourceListingPage />} />
                     <Route path="/work/franchises" element={<FranchisePage />} />
+                    <Route path="/work/sources" element={<SourcePage />} />
+                    <Route path="/figure-admin/candidate-review" element={<CandidateReviewPage />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>

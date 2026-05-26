@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showWorkMenu, setShowWorkMenu] = useState(false);
+  const [showFigureAdminMenu, setShowFigureAdminMenu] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
@@ -67,6 +68,35 @@ const Navbar = () => {
                   onClick={() => setShowWorkMenu(false)}
                 >
                   Franchises
+                </Link>
+                <Link
+                  to="/work/sources"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setShowWorkMenu(false)}
+                >
+                  Sources
+                </Link>
+              </div>
+            )}
+          </div>
+          <div className="relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => setShowFigureAdminMenu((current) => !current)}
+            >
+              FigureAdmin
+              <ChevronDown className="h-3.5 w-3.5" />
+            </button>
+
+            {showFigureAdminMenu && (
+              <div className="absolute left-0 top-full mt-3 min-w-48 rounded-lg border border-border bg-card p-2 shadow-card">
+                <Link
+                  to="/figure-admin/candidate-review"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setShowFigureAdminMenu(false)}
+                >
+                  Candidate Review
                 </Link>
               </div>
             )}

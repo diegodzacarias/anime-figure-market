@@ -13,14 +13,18 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 import FigureFormDialog, { Figure, FranchiseOption } from "@/components/figure/FigureFormDialog";
 import FigureTable from "@/components/figure/FigureTable";
+import type { SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
+import { useReferenceData } from "@/hooks/useReferenceData";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
+const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
 
 const brands = [
   { id: 1, name: "Good Smile Company" },
@@ -30,9 +34,21 @@ const brands = [
   { id: 5, name: "FREEing" },
 ];
 
+const fallbackCurrencyCodes = [
+  { value: "USD", label: "Usd", symbol: "$" },
+  { value: "JPY", label: "Jpy", symbol: "¥" },
+];
+
+const fallbackFigureStatuses = [
+  { value: "PREORDER", label: "Preorder" },
+  { value: "RELEASED", label: "Released" },
+  { value: "SOLD_OUT", label: "Sold Out" },
+];
+
 const FigurePage = () => {
   const [figures, setFigures] = useState<Figure[]>([]);
   const [franchises, setFranchises] = useState<FranchiseOption[]>([]);
+  const [sources, setSources] = useState<SourceOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -41,41 +57,65 @@ const FigurePage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFigure, setSelectedFigure] = useState<Figure | null>(null);
   const [figureToDelete, setFigureToDelete] = useState<Figure | null>(null);
+  const mutating = saving || deleting;
+  const { referenceData } = useReferenceData();
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async (showLoading = true) => {
+    if (showLoading) {
       setLoading(true);
       setLoadingOptions(true);
+    }
 
-      try {
-        const [figuresResponse, franchisesResponse] = await Promise.all([
-          fetch(FIGURES_ENDPOINT),
-          fetch(FRANCHISES_ENDPOINT),
-        ]);
+    try {
+      const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
+        fetch(FIGURES_ENDPOINT),
+        fetch(FRANCHISES_ENDPOINT),
+        fetch(SOURCES_ENDPOINT),
+      ]);
 
-        if (figuresResponse.ok) {
-          const data = await figuresResponse.json();
-          setFigures(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching figures");
-        }
+      if (figuresResponse.ok) {
+        const data = await figuresResponse.json();
+        setFigures(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching figures");
+      }
 
-        if (franchisesResponse.ok) {
-          const data = await franchisesResponse.json();
-          setFranchises(Array.isArray(data) ? data : []);
-        } else {
-          console.error("Error fetching franchises");
-        }
-      } catch (error) {
-        console.error("Request error fetching figures:", error);
-      } finally {
+      if (franchisesResponse.ok) {
+        const data = await franchisesResponse.json();
+        setFranchises(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching franchises");
+      }
+
+      if (sourcesResponse.ok) {
+        const data = await sourcesResponse.json();
+        setSources(Array.isArray(data) ? data : []);
+      } else {
+        console.error("Error fetching sources");
+      }
+    } catch (error) {
+      console.error("Request error fetching figures:", error);
+    } finally {
+      if (showLoading) {
         setLoading(false);
         setLoadingOptions(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
+
+  const franchiseNames = useMemo(
+    () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
+    [franchises]
+  );
+
+  const brandNames = useMemo(
+    () => Object.fromEntries(brands.map((brand) => [brand.id, brand.name])),
+    []
+  );
 
   const filteredFigures = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -126,13 +166,7 @@ const FigurePage = () => {
         return;
       }
 
-      const savedFigure = await response.json();
-
-      setFigures((current) =>
-        isEditing
-          ? current.map((figure) => (figure.id === savedFigure.id ? savedFigure : figure))
-          : [savedFigure, ...current]
-      );
+      await fetchData(false);
 
       setDialogOpen(false);
       setSelectedFigure(null);
@@ -161,7 +195,7 @@ const FigurePage = () => {
         return;
       }
 
-      setFigures((current) => current.filter((figure) => figure.id !== figureToDelete.id));
+      await fetchData(false);
       setFigureToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
@@ -190,6 +224,29 @@ const FigurePage = () => {
           </Button>
         </div>
 
+        <div className="mt-6 rounded-lg border bg-muted/30 p-4">
+          <h2 className="text-sm font-medium text-foreground">Source quick links</h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {sources.filter((source) => source.baseUrl).length === 0 ? (
+              <p className="text-sm text-muted-foreground">No source URLs available.</p>
+            ) : (
+              sources
+                .filter((source) => source.baseUrl)
+                .map((source) => (
+                  <a
+                    key={source.id}
+                    href={source.baseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+                  >
+                    {source.name}
+                  </a>
+                ))
+            )}
+          </div>
+        </div>
+
         <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full md:max-w-sm">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -206,14 +263,16 @@ const FigurePage = () => {
           </p>
         </div>
 
-        <div className="mt-4">
+        <LoadingOverlay active={mutating} message="Updating figures..." className="mt-4">
           <FigureTable
             figures={filteredFigures}
             loading={loading}
+            franchiseNames={franchiseNames}
+            brandNames={brandNames}
             onEdit={openEditDialog}
             onDelete={setFigureToDelete}
           />
-        </div>
+        </LoadingOverlay>
       </main>
 
       <FigureFormDialog
@@ -223,6 +282,8 @@ const FigurePage = () => {
         open={dialogOpen}
         saving={saving}
         loadingOptions={loadingOptions}
+        currencyCodes={referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes}
+        figureStatuses={referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
       />
