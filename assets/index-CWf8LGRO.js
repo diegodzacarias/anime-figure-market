@@ -19699,7 +19699,7 @@ const FigureFormDialog = ({
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Fabricante o marca que produce la figura." })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
             "Name ",
             requiredMark
@@ -19707,12 +19707,12 @@ const FigureFormDialog = ({
           /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "name", maxLength: 255, value: form.name, onChange: handleChange, required: true }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Nombre completo del producto." })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
             "Slug ",
             requiredMark
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Input,
               {
@@ -19724,7 +19724,8 @@ const FigureFormDialog = ({
                   setSlugMessage("");
                 },
                 disabled: !slugEditable,
-                required: true
+                required: true,
+                className: "sm:flex-1"
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -19741,7 +19742,7 @@ const FigureFormDialog = ({
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: slugMessage || "Generate it from the name, or unlock it if manual editing is needed." })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Scene" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "scene", maxLength: 255, value: form.scene, onChange: handleChange }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Pose, escena o transformacion representada." })
