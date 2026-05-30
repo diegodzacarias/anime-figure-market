@@ -19536,8 +19536,14 @@ const FigureFormDialog = ({
   saving,
   loadingOptions,
   onOpenChange,
+  onGenerateSlug,
+  onValidateSlug,
   onSubmit
 }) => {
+  const [slugEditable, setSlugEditable] = reactExports.useState(false);
+  const [generatingSlug, setGeneratingSlug] = reactExports.useState(false);
+  const [validatingSlug, setValidatingSlug] = reactExports.useState(false);
+  const [slugMessage, setSlugMessage] = reactExports.useState("");
   const [form, setForm] = reactExports.useState({
     franchiseId: "",
     brandId: "",
@@ -19573,6 +19579,8 @@ const FigureFormDialog = ({
       status: (figure == null ? void 0 : figure.status) || "RELEASED",
       notes: (figure == null ? void 0 : figure.notes) || ""
     });
+    setSlugEditable(false);
+    setSlugMessage("");
   }, [figure, open]);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19583,6 +19591,23 @@ const FigureFormDialog = ({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSlugMessage("");
+    if (!form.slug.trim()) {
+      setSlugMessage("Generate a slug before saving, or unlock the field and enter one.");
+      return;
+    }
+    setValidatingSlug(true);
+    try {
+      const slugAvailable = await onValidateSlug(form.slug.trim(), figure == null ? void 0 : figure.id);
+      if (!slugAvailable) {
+        setSlugMessage("This slug is already in use. Edit it or generate another one.");
+        return;
+      }
+    } catch {
+      return;
+    } finally {
+      setValidatingSlug(false);
+    }
     const payload = {
       franchiseId: Number(form.franchiseId),
       brandId: Number(form.brandId),
@@ -19600,6 +19625,23 @@ const FigureFormDialog = ({
     if (form.editionSize) payload.editionSize = Number(form.editionSize);
     if (form.notes.trim()) payload.notes = form.notes.trim();
     await onSubmit(payload);
+  };
+  const handleGenerateSlug = async () => {
+    const name = form.name.trim();
+    if (!name) {
+      setSlugMessage("Write a name before generating the slug.");
+      return;
+    }
+    setSlugMessage("");
+    setGeneratingSlug(true);
+    try {
+      const slug = await onGenerateSlug(name);
+      setForm((prev) => ({ ...prev, slug }));
+      setSlugEditable(false);
+      setSlugMessage("Slug generated and available.");
+    } finally {
+      setGeneratingSlug(false);
+    }
   };
   const selectClass = "w-full border border-input bg-background text-foreground p-2 rounded";
   const optionClass = "bg-background text-foreground";
@@ -19670,8 +19712,34 @@ const FigureFormDialog = ({
             "Slug ",
             requiredMark
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "slug", maxLength: 300, value: form.slug, onChange: handleChange, required: true }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Identificador para URL, en minusculas y con guiones." })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Input,
+              {
+                name: "slug",
+                maxLength: 300,
+                value: form.slug,
+                onChange: (event) => {
+                  handleChange(event);
+                  setSlugMessage("");
+                },
+                disabled: !slugEditable,
+                required: true
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                type: "button",
+                variant: "outline",
+                disabled: generatingSlug || !form.name.trim(),
+                onClick: handleGenerateSlug,
+                children: generatingSlug ? "Generating..." : "Generate"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "ghost", onClick: () => setSlugEditable((current) => !current), children: slugEditable ? "Lock" : "Edit" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: slugMessage || "Generate it from the name, or unlock it if manual editing is needed." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Scene" }),
@@ -19796,7 +19864,7 @@ const FigureFormDialog = ({
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", onClick: () => onOpenChange(false), children: "Cancel" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving, children: saving ? "Saving..." : figure ? "Update" : "Create" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving || validatingSlug, children: saving ? "Saving..." : validatingSlug ? "Validating slug..." : figure ? "Update" : "Create" })
       ] })
     ] })
   ] }) });
@@ -19978,6 +20046,8 @@ function toClientApiError(error, fallbackMessage) {
 }
 const API_BASE_URL$5 = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT$3 = `${API_BASE_URL$5}/v1/figures`;
+const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/suggestion`;
+const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/availability`;
 const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$5}/v1/franchises`;
 const SOURCES_ENDPOINT$4 = `${API_BASE_URL$5}/v1/sources`;
 const brands = [
@@ -20093,6 +20163,30 @@ const FigurePage = () => {
   const openEditDialog = (figure) => {
     setSelectedFigure(figure);
     setDialogOpen(true);
+  };
+  const generateSlug = async (name) => {
+    const response = await fetch(
+      `${FIGURE_SLUG_SUGGESTION_ENDPOINT}?title=${encodeURIComponent(name)}`
+    );
+    if (!response.ok) {
+      setApiError(await readApiErrorResponse(response, "Error generating slug."));
+      throw new Error("Error generating slug");
+    }
+    const data = await response.json();
+    return data.slug || "";
+  };
+  const validateSlug = async (slug, figureId) => {
+    const params = new URLSearchParams({ slug });
+    if (figureId) {
+      params.set("excludeFigureId", figureId.toString());
+    }
+    const response = await fetch(`${FIGURE_SLUG_AVAILABILITY_ENDPOINT}?${params.toString()}`);
+    if (!response.ok) {
+      setApiError(await readApiErrorResponse(response, "Error validating slug."));
+      throw new Error("Error validating slug");
+    }
+    const data = await response.json();
+    return Boolean(data.available);
   };
   const handleSubmit = async (payload) => {
     setSaving(true);
@@ -20225,6 +20319,8 @@ const FigurePage = () => {
         currencyCodes: referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes$2,
         figureStatuses: referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses,
         onOpenChange: setDialogOpen,
+        onGenerateSlug: generateSlug,
+        onValidateSlug: validateSlug,
         onSubmit: handleSubmit
       }
     ),
