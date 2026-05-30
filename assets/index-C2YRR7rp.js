@@ -17693,7 +17693,7 @@ function withPagination(endpoint, page, size2) {
 }
 const BASE_URL = "https://figure-market-core.onrender.com/api";
 async function getFranchises() {
-  const res = await fetch(withPageSize(`${BASE_URL}/franchises`));
+  const res = await fetch(withPageSize(`${BASE_URL}/v1/franchises`));
   if (!res.ok) {
     throw new Error("Error fetching franchises");
   }
@@ -19338,6 +19338,44 @@ const AlertDialogCancel = reactExports.forwardRef(({ className, ...props }, ref)
   }
 ));
 AlertDialogCancel.displayName = Cancel.displayName;
+const ApiErrorToast = ({ error, onClose }) => {
+  if (!error) return null;
+  const details = error.details ? Object.entries(error.details) : [];
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed right-4 top-20 z-[100] w-[calc(100vw-2rem)] max-w-lg rounded-lg border border-destructive/30 bg-background/90 p-4 text-foreground shadow-lg backdrop-blur md:right-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-destructive", children: error.status ? `${error.status} ${error.error || "Error"}` : error.error || "Error" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm", children: error.message })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "ghost", size: "icon", className: "h-8 w-8 shrink-0", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "h-4 w-4" }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 space-y-1 text-xs text-muted-foreground", children: [
+      error.path && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
+        "Path: ",
+        error.path
+      ] }),
+      error.requestId && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
+        "Request ID: ",
+        error.requestId
+      ] }),
+      error.timestamp && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
+        "Timestamp: ",
+        error.timestamp
+      ] })
+    ] }),
+    details.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 rounded-md border border-destructive/20 bg-destructive/5 p-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-destructive", children: "Details" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "mt-2 space-y-1 text-xs text-muted-foreground", children: details.map(([field, message]) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium text-foreground", children: [
+          field,
+          ":"
+        ] }),
+        " ",
+        message
+      ] }, field)) })
+    ] })
+  ] });
+};
 const LoadingIndicator = ({ label }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-background/80 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 rounded-md border bg-card px-4 py-3 text-sm font-medium text-foreground shadow-card", children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-4 w-4 animate-spin text-primary" }),
   label
@@ -19903,6 +19941,41 @@ function useReferenceData() {
   }, []);
   return { referenceData, loadingReferenceData };
 }
+async function readApiErrorResponse(response, fallbackMessage) {
+  const text = await response.text();
+  if (text) {
+    try {
+      const data = JSON.parse(text);
+      return {
+        status: data.status ?? response.status,
+        error: data.error ?? response.statusText,
+        message: data.message ?? fallbackMessage,
+        path: data.path,
+        requestId: data.requestId,
+        details: data.details,
+        timestamp: data.timestamp
+      };
+    } catch {
+      return {
+        status: response.status,
+        error: response.statusText,
+        message: text
+      };
+    }
+  }
+  return {
+    status: response.status,
+    error: response.statusText,
+    message: fallbackMessage
+  };
+}
+function toClientApiError(error, fallbackMessage) {
+  return {
+    status: 0,
+    error: "Client Error",
+    message: error instanceof Error ? error.message : fallbackMessage
+  };
+}
 const API_BASE_URL$5 = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT$3 = `${API_BASE_URL$5}/v1/figures`;
 const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$5}/v1/franchises`;
@@ -19935,6 +20008,7 @@ const FigurePage = () => {
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
   const [dialogOpen, setDialogOpen] = reactExports.useState(false);
   const [selectedFigure, setSelectedFigure] = reactExports.useState(null);
   const [figureToDelete, setFigureToDelete] = reactExports.useState(null);
@@ -20031,9 +20105,7 @@ const FigurePage = () => {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving figure. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving figure."));
         return;
       }
       await fetchData(false);
@@ -20041,7 +20113,7 @@ const FigurePage = () => {
       setSelectedFigure(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -20054,22 +20126,21 @@ const FigurePage = () => {
         method: "DELETE"
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting figure. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting figure."));
         return;
       }
       await fetchData(false);
       setFigureToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -21107,6 +21178,7 @@ const FigureAliasPage = () => {
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
   const [dialogOpen, setDialogOpen] = reactExports.useState(false);
   const [selectedAlias, setSelectedAlias] = reactExports.useState(null);
   const [aliasToDelete, setAliasToDelete] = reactExports.useState(null);
@@ -21200,9 +21272,7 @@ const FigureAliasPage = () => {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving figure alias. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving figure alias."));
         return;
       }
       await fetchData(false);
@@ -21210,7 +21280,7 @@ const FigureAliasPage = () => {
       setSelectedAlias(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -21223,22 +21293,21 @@ const FigureAliasPage = () => {
         method: "DELETE"
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting figure alias. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting figure alias."));
         return;
       }
       await fetchData(false);
       setAliasToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -21643,6 +21712,7 @@ const FigureSourceListingPage = () => {
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
   const [dialogOpen, setDialogOpen] = reactExports.useState(false);
   const [selectedListing, setSelectedListing] = reactExports.useState(null);
   const [listingToDelete, setListingToDelete] = reactExports.useState(null);
@@ -21732,9 +21802,7 @@ const FigureSourceListingPage = () => {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving figure source listing. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving figure source listing."));
         return;
       }
       await fetchData(false);
@@ -21742,7 +21810,7 @@ const FigureSourceListingPage = () => {
       setSelectedListing(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -21755,22 +21823,21 @@ const FigureSourceListingPage = () => {
         method: "DELETE"
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting figure source listing. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting figure source listing."));
         return;
       }
       await fetchData(false);
       setListingToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -22032,6 +22099,7 @@ const FranchisePage = () => {
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
   const [dialogOpen, setDialogOpen] = reactExports.useState(false);
   const [selectedFranchise, setSelectedFranchise] = reactExports.useState(null);
   const [franchiseToDelete, setFranchiseToDelete] = reactExports.useState(null);
@@ -22090,9 +22158,7 @@ const FranchisePage = () => {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving franchise. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving franchise."));
         return;
       }
       await fetchFranchises(false);
@@ -22100,7 +22166,7 @@ const FranchisePage = () => {
       setSelectedFranchise(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -22113,22 +22179,21 @@ const FranchisePage = () => {
         method: "DELETE"
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting franchise. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting franchise."));
         return;
       }
       await fetchFranchises(false);
       setFranchiseToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -22429,6 +22494,7 @@ const SourcePage = () => {
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
   const [dialogOpen, setDialogOpen] = reactExports.useState(false);
   const [selectedSource, setSelectedSource] = reactExports.useState(null);
   const [sourceToDelete, setSourceToDelete] = reactExports.useState(null);
@@ -22486,9 +22552,7 @@ const SourcePage = () => {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving source. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving source."));
         return;
       }
       await fetchSources(false);
@@ -22496,7 +22560,7 @@ const SourcePage = () => {
       setSelectedSource(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -22509,22 +22573,21 @@ const SourcePage = () => {
         method: "DELETE"
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting source. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting source."));
         return;
       }
       await fetchSources(false);
       setSourceToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -24389,6 +24452,7 @@ const CandidateReviewPage = () => {
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
   const [dialogOpen, setDialogOpen] = reactExports.useState(false);
   const [selectedCandidate, setSelectedCandidate] = reactExports.useState(null);
   const [candidateToDelete, setCandidateToDelete] = reactExports.useState(null);
@@ -24484,9 +24548,7 @@ const CandidateReviewPage = () => {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving candidate. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving candidate."));
         return;
       }
       await fetchData(false);
@@ -24494,7 +24556,7 @@ const CandidateReviewPage = () => {
       setSelectedCandidate(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -24507,16 +24569,14 @@ const CandidateReviewPage = () => {
         method: "DELETE"
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting candidate. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting candidate."));
         return;
       }
       await fetchData(false);
       setCandidateToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -24531,9 +24591,7 @@ const CandidateReviewPage = () => {
         body: JSON.stringify({ reviewNotes: candidate.reviewNotes || "" })
       });
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert(`Error trying to ${action} candidate. Check console.`);
+        setApiError(await readApiErrorResponse(response, `Error trying to ${action} candidate.`));
         return;
       }
       await fetchData(false);
@@ -24541,13 +24599,14 @@ const CandidateReviewPage = () => {
       setCandidateToReject(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setStatusChanging(false);
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
