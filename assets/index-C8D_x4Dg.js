@@ -25285,7 +25285,14 @@ const relationLoaders = {
   },
   characterForms: {
     endpoint: endpoints.characterForms,
-    map: (item) => ({ id: Number(item.id), label: String(item.canonicalName || item.characterFormName || item.id) })
+    map: (item) => {
+      const formName = String(item.canonicalName || item.characterFormName || item.id);
+      const characterName = item.characterName ? String(item.characterName) : "";
+      return {
+        id: Number(item.id),
+        label: characterName ? `${characterName} - ${formName}` : formName
+      };
+    }
   },
   figures: {
     endpoint: endpoints.figures,
@@ -25493,8 +25500,9 @@ const CharacterAdminPage = ({ config }) => {
     const selectClass = "w-full rounded border border-input bg-background p-2 text-foreground";
     const optionClass = "bg-background text-foreground";
     const requiredMark = field.required ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-destructive", children: "*" }) : null;
+    const fieldClass = field.fullWidth ? "md:col-span-2" : void 0;
     if (field.type === "boolean") {
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: fieldClass, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
           field.label,
           " ",
@@ -25510,7 +25518,7 @@ const CharacterAdminPage = ({ config }) => {
     if (field.type === "select") {
       const fieldOptions = field.staticOptions || (field.optionsKey ? options[field.optionsKey] : []);
       if (field.optionsKey && !field.staticOptions) {
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: fieldClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
             field.label,
             " ",
@@ -25531,7 +25539,7 @@ const CharacterAdminPage = ({ config }) => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
         ] }, field.name);
       }
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: fieldClass, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
           field.label,
           " ",
@@ -25554,7 +25562,7 @@ const CharacterAdminPage = ({ config }) => {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
       ] }, field.name);
     }
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: fieldClass, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
         field.label,
         " ",
@@ -25749,7 +25757,7 @@ const characterFormFields = [
   { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character form is active." }
 ];
 const characterFormAliasFields = [
-  { name: "characterFormId", label: "Character Form", type: "select", required: true, optionsKey: "characterForms", helper: "Character form that owns this alias." },
+  { name: "characterFormId", label: "Character Form", type: "select", required: true, optionsKey: "characterForms", helper: "Character form that owns this alias.", fullWidth: true },
   { name: "alias", label: "Character Form Alias", type: "text", required: true, maxLength: 255, helper: "Alternate character form name." },
   {
     name: "aliasNormalized",
