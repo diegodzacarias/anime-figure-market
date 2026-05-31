@@ -25182,8 +25182,9 @@ const EntityCombobox = ({
   nullable,
   onChange
 }) => {
+  const [open, setOpen] = reactExports.useState(false);
   const selectedOption = options.find((option) => option.id.toString() === value);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { open, onOpenChange: setOpen, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       Button,
       {
@@ -25203,15 +25204,28 @@ const EntityCombobox = ({
       /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandList, { className: "max-h-80", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No option found." }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandGroup, { children: [
-          nullable && /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandItem, { value: "none", onSelect: () => onChange(""), children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: cn("mr-2 h-4 w-4", value === "" ? "opacity-100" : "opacity-0") }),
-            "None"
-          ] }),
+          nullable && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            CommandItem,
+            {
+              value: "none",
+              onSelect: () => {
+                onChange("");
+                setOpen(false);
+              },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: cn("mr-2 h-4 w-4", value === "" ? "opacity-100" : "opacity-0") }),
+                "None"
+              ]
+            }
+          ),
           options.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             CommandItem,
             {
               value: `${option.label} ${option.id}`,
-              onSelect: () => onChange(option.id.toString()),
+              onSelect: () => {
+                onChange(option.id.toString());
+                setOpen(false);
+              },
               className: "items-start gap-2 py-3",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
