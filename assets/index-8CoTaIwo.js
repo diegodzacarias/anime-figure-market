@@ -21122,8 +21122,9 @@ const FigureCombobox = ({
   loading,
   onChange
 }) => {
+  const [open, setOpen] = reactExports.useState(false);
   const selectedFigure = figures2.find((figure) => figure.id.toString() === value);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { modal: true, open, onOpenChange: setOpen, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       Button,
       {
@@ -21140,30 +21141,41 @@ const FigureCombobox = ({
     ) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverContent, { align: "start", className: "w-[min(42rem,calc(100vw-2rem))] p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Command, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(CommandInput, { placeholder: "Search figure..." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandList, { className: "max-h-80", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No figure found." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CommandGroup, { children: figures2.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          CommandItem,
-          {
-            value: `${figure.name} ${figure.id}`,
-            onSelect: () => onChange(figure.id.toString()),
-            className: "items-start gap-2 py-3",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                Check,
-                {
-                  className: cn(
-                    "mt-0.5 h-4 w-4 shrink-0",
-                    value === figure.id.toString() ? "opacity-100" : "opacity-0"
-                  )
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal leading-snug", children: figure.name })
-            ]
-          },
-          figure.id
-        )) })
-      ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        CommandList,
+        {
+          className: "max-h-80 overflow-y-auto",
+          onWheelCapture: (event) => event.stopPropagation(),
+          onTouchMoveCapture: (event) => event.stopPropagation(),
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No figure found." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CommandGroup, { children: figures2.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              CommandItem,
+              {
+                value: `${figure.name} ${figure.id}`,
+                onSelect: () => {
+                  onChange(figure.id.toString());
+                  setOpen(false);
+                },
+                className: "items-start gap-2 py-3",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    Check,
+                    {
+                      className: cn(
+                        "mt-0.5 h-4 w-4 shrink-0",
+                        value === figure.id.toString() ? "opacity-100" : "opacity-0"
+                      )
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal leading-snug", children: figure.name })
+                ]
+              },
+              figure.id
+            )) })
+          ]
+        }
+      )
     ] }) })
   ] });
 };
@@ -25184,7 +25196,7 @@ const EntityCombobox = ({
 }) => {
   const [open, setOpen] = reactExports.useState(false);
   const selectedOption = options.find((option) => option.id.toString() === value);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { open, onOpenChange: setOpen, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { modal: true, open, onOpenChange: setOpen, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       Button,
       {
@@ -25201,49 +25213,57 @@ const EntityCombobox = ({
     ) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverContent, { align: "start", className: "w-[min(42rem,calc(100vw-2rem))] p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Command, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(CommandInput, { placeholder: `Search ${placeholder.toLowerCase()}...` }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandList, { className: "max-h-80", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No option found." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandGroup, { children: [
-          nullable && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            CommandItem,
-            {
-              value: "none",
-              onSelect: () => {
-                onChange("");
-                setOpen(false);
-              },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: cn("mr-2 h-4 w-4", value === "" ? "opacity-100" : "opacity-0") }),
-                "None"
-              ]
-            }
-          ),
-          options.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            CommandItem,
-            {
-              value: `${option.label} ${option.id}`,
-              onSelect: () => {
-                onChange(option.id.toString());
-                setOpen(false);
-              },
-              className: "items-start gap-2 py-3",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  Check,
-                  {
-                    className: cn(
-                      "mt-0.5 h-4 w-4 shrink-0",
-                      value === option.id.toString() ? "opacity-100" : "opacity-0"
-                    )
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal leading-snug", children: option.label })
-              ]
-            },
-            option.id
-          ))
-        ] })
-      ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        CommandList,
+        {
+          className: "max-h-80 overflow-y-auto",
+          onWheelCapture: (event) => event.stopPropagation(),
+          onTouchMoveCapture: (event) => event.stopPropagation(),
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No option found." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandGroup, { children: [
+              nullable && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                CommandItem,
+                {
+                  value: "none",
+                  onSelect: () => {
+                    onChange("");
+                    setOpen(false);
+                  },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: cn("mr-2 h-4 w-4", value === "" ? "opacity-100" : "opacity-0") }),
+                    "None"
+                  ]
+                }
+              ),
+              options.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                CommandItem,
+                {
+                  value: `${option.label} ${option.id}`,
+                  onSelect: () => {
+                    onChange(option.id.toString());
+                    setOpen(false);
+                  },
+                  className: "items-start gap-2 py-3",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      Check,
+                      {
+                        className: cn(
+                          "mt-0.5 h-4 w-4 shrink-0",
+                          value === option.id.toString() ? "opacity-100" : "opacity-0"
+                        )
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal leading-snug", children: option.label })
+                  ]
+                },
+                option.id
+              ))
+            ] })
+          ]
+        }
+      )
     ] }) })
   ] });
 };
