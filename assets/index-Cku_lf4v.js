@@ -25215,6 +25215,7 @@ const CharacterAdminPage = ({ config }) => {
   const [rows, setRows] = reactExports.useState([]);
   const [options, setOptions] = reactExports.useState(emptyOptions);
   const [form, setForm] = reactExports.useState({});
+  const [editableDerivedFields, setEditableDerivedFields] = reactExports.useState({});
   const [relatedRows, setRelatedRows] = reactExports.useState({});
   const [loading, setLoading] = reactExports.useState(true);
   const [loadingOptions, setLoadingOptions] = reactExports.useState(true);
@@ -25301,17 +25302,27 @@ const CharacterAdminPage = ({ config }) => {
   const openCreateDialog = () => {
     setSelectedRecord(null);
     setForm(buildInitialForm(config.fields, null));
+    setEditableDerivedFields({});
     setRelatedRows({});
     setDialogOpen(true);
   };
   const openEditDialog = async (record) => {
     setSelectedRecord(record);
     setForm(buildInitialForm(config.fields, record));
+    setEditableDerivedFields({});
     setDialogOpen(true);
     await fetchRelatedRows(record);
   };
   const handleChange = (name, value) => {
-    setForm((current) => ({ ...current, [name]: value }));
+    setForm((current) => {
+      const next = { ...current, [name]: value };
+      config.fields.forEach((field) => {
+        if (field.lockedDerivedFrom === name && !editableDerivedFields[field.name] && field.deriveValue) {
+          next[field.name] = field.deriveValue(value);
+        }
+      });
+      return next;
+    });
   };
   const buildPayload = () => {
     const payload = {};
@@ -25434,18 +25445,33 @@ const CharacterAdminPage = ({ config }) => {
         " ",
         requiredMark
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Input,
-        {
-          name: field.name,
-          type: field.type,
-          maxLength: field.maxLength,
-          value,
-          required: field.required,
-          min: field.type === "number" ? 0 : void 0,
-          onChange: (event) => handleChange(field.name, event.target.value)
-        }
-      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: field.lockedDerivedFrom ? "flex gap-2" : void 0, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Input,
+          {
+            name: field.name,
+            type: field.type,
+            maxLength: field.maxLength,
+            value,
+            required: field.required,
+            min: field.type === "number" ? 0 : void 0,
+            disabled: Boolean(field.lockedDerivedFrom) && !editableDerivedFields[field.name],
+            onChange: (event) => handleChange(field.name, event.target.value)
+          }
+        ),
+        field.lockedDerivedFrom && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            type: "button",
+            variant: "ghost",
+            onClick: () => setEditableDerivedFields((current) => ({
+              ...current,
+              [field.name]: !current[field.name]
+            })),
+            children: editableDerivedFields[field.name] ? "Lock" : "Edit"
+          }
+        )
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
     ] }, field.name);
   };
@@ -25565,27 +25591,61 @@ const CharacterAdminPage = ({ config }) => {
 };
 const characterFields = [
   { name: "canonicalName", label: "Canonical Name", type: "text", required: true, helper: "Main character name." },
-  { name: "normalizedName", label: "Normalized Name", type: "text", required: true, helper: "Normalized name used for lookups." },
+  {
+    name: "normalizedName",
+    label: "Normalized Name",
+    type: "text",
+    required: true,
+    helper: "Lowercase lookup name derived from Canonical Name unless manually edited.",
+    lockedDerivedFrom: "canonicalName",
+    deriveValue: (value) => value.trim().toLowerCase()
+  },
   { name: "franchiseId", label: "Franchise", type: "select", required: true, optionsKey: "franchises", helper: "Franchise this character belongs to." },
   { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character is active." }
 ];
 const characterAliasFields = [
   { name: "characterId", label: "Character", type: "select", required: true, optionsKey: "characters", helper: "Character that owns this alias." },
   { name: "alias", label: "Character Alias", type: "text", required: true, maxLength: 255, helper: "Alternate character name." },
-  { name: "aliasNormalized", label: "Character Alias Normalized", type: "text", required: true, maxLength: 255, helper: "Normalized alias used for matching." },
+  {
+    name: "aliasNormalized",
+    label: "Character Alias Normalized",
+    type: "text",
+    required: true,
+    maxLength: 255,
+    helper: "Lowercase alias used for matching unless manually edited.",
+    lockedDerivedFrom: "alias",
+    deriveValue: (value) => value.trim().toLowerCase()
+  },
   { name: "loadMethod", label: "Load Method", type: "select", required: true, defaultValue: "MANUAL", staticOptions: loadMethodOptions, helper: "How this alias was loaded." },
   { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character alias is active." }
 ];
 const characterFormFields = [
   { name: "characterId", label: "Character", type: "select", required: true, optionsKey: "characters", helper: "Base character for this form." },
   { name: "canonicalName", label: "Character Form Canonical Name", type: "text", required: true, helper: "Canonical name of the character form." },
-  { name: "normalizedName", label: "Character Form Normalized Name", type: "text", required: true, helper: "Normalized form name used for lookups." },
+  {
+    name: "normalizedName",
+    label: "Character Form Normalized Name",
+    type: "text",
+    required: true,
+    helper: "Lowercase form name used for lookups unless manually edited.",
+    lockedDerivedFrom: "canonicalName",
+    deriveValue: (value) => value.trim().toLowerCase()
+  },
   { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character form is active." }
 ];
 const characterFormAliasFields = [
   { name: "characterFormId", label: "Character Form", type: "select", required: true, optionsKey: "characterForms", helper: "Character form that owns this alias." },
   { name: "alias", label: "Character Form Alias", type: "text", required: true, maxLength: 255, helper: "Alternate character form name." },
-  { name: "aliasNormalized", label: "Character Form Alias Normalized", type: "text", required: true, maxLength: 255, helper: "Normalized form alias used for matching." },
+  {
+    name: "aliasNormalized",
+    label: "Character Form Alias Normalized",
+    type: "text",
+    required: true,
+    maxLength: 255,
+    helper: "Lowercase form alias used for matching unless manually edited.",
+    lockedDerivedFrom: "alias",
+    deriveValue: (value) => value.trim().toLowerCase()
+  },
   { name: "loadMethod", label: "Load Method", type: "select", required: true, defaultValue: "MANUAL", staticOptions: loadMethodOptions, helper: "How this form alias was loaded." },
   { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character form alias is active." }
 ];
