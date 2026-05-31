@@ -12040,7 +12040,7 @@ function focusFirst$3(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport = ToastViewport$1;
-var Root2$4 = Toast$1;
+var Root2$5 = Toast$1;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action$1 = ToastAction$1;
@@ -14838,9 +14838,9 @@ const toastVariants = cva(
   }
 );
 const Toast = reactExports.forwardRef(({ className, variant, ...props }, ref) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$4, { ref, className: cn(toastVariants({ variant }), className), ...props });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$5, { ref, className: cn(toastVariants({ variant }), className), ...props });
 });
-Toast.displayName = Root2$4.displayName;
+Toast.displayName = Root2$5.displayName;
 const ToastAction = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
   Action$1,
   {
@@ -16840,8 +16840,8 @@ var PopperAnchor = reactExports.forwardRef(
   }
 );
 PopperAnchor.displayName = ANCHOR_NAME$2;
-var CONTENT_NAME$6 = "PopperContent";
-var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$6);
+var CONTENT_NAME$7 = "PopperContent";
+var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$7);
 var PopperContent = reactExports.forwardRef(
   (props, forwardedRef) => {
     var _a2, _b2, _c2, _d2, _e3, _f2;
@@ -16861,7 +16861,7 @@ var PopperContent = reactExports.forwardRef(
       onPlaced,
       ...contentProps
     } = props;
-    const context = usePopperContext(CONTENT_NAME$6, __scopePopper);
+    const context = usePopperContext(CONTENT_NAME$7, __scopePopper);
     const [content, setContent] = reactExports.useState(null);
     const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
     const [arrow$12, setArrow] = reactExports.useState(null);
@@ -16984,7 +16984,7 @@ var PopperContent = reactExports.forwardRef(
     );
   }
 );
-PopperContent.displayName = CONTENT_NAME$6;
+PopperContent.displayName = CONTENT_NAME$7;
 var ARROW_NAME$4 = "PopperArrow";
 var OPPOSITE_SIDE = {
   top: "bottom",
@@ -17079,9 +17079,9 @@ function getSideAndAlignFromPlacement(placement) {
   const [side, align = "center"] = placement.split("-");
   return [side, align];
 }
-var Root2$3 = Popper;
+var Root2$4 = Popper;
 var Anchor = PopperAnchor;
-var Content$1 = PopperContent;
+var Content$2 = PopperContent;
 var Arrow = PopperArrow;
 var [createTooltipContext, createTooltipScope] = createContextScope("Tooltip", [
   createPopperScope
@@ -17135,12 +17135,12 @@ var TooltipProvider$1 = (props) => {
 TooltipProvider$1.displayName = PROVIDER_NAME;
 var TOOLTIP_NAME = "Tooltip";
 var [TooltipContextProvider, useTooltipContext] = createTooltipContext(TOOLTIP_NAME);
-var TRIGGER_NAME$4 = "TooltipTrigger";
+var TRIGGER_NAME$5 = "TooltipTrigger";
 var TooltipTrigger = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeTooltip, ...triggerProps } = props;
-    const context = useTooltipContext(TRIGGER_NAME$4, __scopeTooltip);
-    const providerContext = useTooltipProviderContext(TRIGGER_NAME$4, __scopeTooltip);
+    const context = useTooltipContext(TRIGGER_NAME$5, __scopeTooltip);
+    const providerContext = useTooltipProviderContext(TRIGGER_NAME$5, __scopeTooltip);
     const popperScope = usePopperScope$2(__scopeTooltip);
     const ref = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, ref, context.onTriggerChange);
@@ -17184,23 +17184,23 @@ var TooltipTrigger = reactExports.forwardRef(
     ) });
   }
 );
-TooltipTrigger.displayName = TRIGGER_NAME$4;
+TooltipTrigger.displayName = TRIGGER_NAME$5;
 var PORTAL_NAME$5 = "TooltipPortal";
 var [PortalProvider$3, usePortalContext$3] = createTooltipContext(PORTAL_NAME$5, {
   forceMount: void 0
 });
-var CONTENT_NAME$5 = "TooltipContent";
+var CONTENT_NAME$6 = "TooltipContent";
 var TooltipContent$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const portalContext = usePortalContext$3(CONTENT_NAME$5, props.__scopeTooltip);
+    const portalContext = usePortalContext$3(CONTENT_NAME$6, props.__scopeTooltip);
     const { forceMount = portalContext.forceMount, side = "top", ...contentProps } = props;
-    const context = useTooltipContext(CONTENT_NAME$5, props.__scopeTooltip);
+    const context = useTooltipContext(CONTENT_NAME$6, props.__scopeTooltip);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: context.disableHoverableContent ? /* @__PURE__ */ jsxRuntimeExports.jsx(TooltipContentImpl, { side, ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(TooltipContentHoverable, { side, ...contentProps, ref: forwardedRef }) });
   }
 );
 var TooltipContentHoverable = reactExports.forwardRef((props, forwardedRef) => {
-  const context = useTooltipContext(CONTENT_NAME$5, props.__scopeTooltip);
-  const providerContext = useTooltipProviderContext(CONTENT_NAME$5, props.__scopeTooltip);
+  const context = useTooltipContext(CONTENT_NAME$6, props.__scopeTooltip);
+  const providerContext = useTooltipProviderContext(CONTENT_NAME$6, props.__scopeTooltip);
   const ref = reactExports.useRef(null);
   const composedRefs = useComposedRefs(forwardedRef, ref);
   const [pointerGraceArea, setPointerGraceArea] = reactExports.useState(null);
@@ -17271,7 +17271,7 @@ var TooltipContentImpl = reactExports.forwardRef(
       onPointerDownOutside,
       ...contentProps
     } = props;
-    const context = useTooltipContext(CONTENT_NAME$5, __scopeTooltip);
+    const context = useTooltipContext(CONTENT_NAME$6, __scopeTooltip);
     const popperScope = usePopperScope$2(__scopeTooltip);
     const { onClose } = context;
     reactExports.useEffect(() => {
@@ -17298,7 +17298,7 @@ var TooltipContentImpl = reactExports.forwardRef(
         onFocusOutside: (event) => event.preventDefault(),
         onDismiss: onClose,
         children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Content$1,
+          Content$2,
           {
             "data-state": context.stateAttribute,
             ...popperScope,
@@ -17325,7 +17325,7 @@ var TooltipContentImpl = reactExports.forwardRef(
     );
   }
 );
-TooltipContent$1.displayName = CONTENT_NAME$5;
+TooltipContent$1.displayName = CONTENT_NAME$6;
 var ARROW_NAME$3 = "TooltipArrow";
 var TooltipArrow = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -17523,6 +17523,7 @@ const Navbar = () => {
   const [showLogin, setShowLogin] = reactExports.useState(false);
   const [showWorkMenu, setShowWorkMenu] = reactExports.useState(false);
   const [showFigureAdminMenu, setShowFigureAdminMenu] = reactExports.useState(false);
+  const [showCharacterAdminMenu, setShowCharacterAdminMenu] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container flex h-16 items-center justify-between", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/", className: "flex items-center gap-2", children: [
@@ -17619,6 +17620,67 @@ const Navbar = () => {
               children: "Candidate Review"
             }
           ) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              className: "flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground",
+              onClick: () => setShowCharacterAdminMenu((current) => !current),
+              children: [
+                "CharacterAdmin",
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5" })
+              ]
+            }
+          ),
+          showCharacterAdminMenu && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute left-0 top-full mt-3 min-w-56 rounded-lg border border-border bg-card p-2 shadow-card", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/character-admin/characters",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: () => setShowCharacterAdminMenu(false),
+                children: "Characters"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/character-admin/character-aliases",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: () => setShowCharacterAdminMenu(false),
+                children: "Character Aliases"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/character-admin/character-forms",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: () => setShowCharacterAdminMenu(false),
+                children: "Character Forms"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/character-admin/character-form-aliases",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: () => setShowCharacterAdminMenu(false),
+                children: "Character Form Aliases"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/character-admin/figure-characters",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: () => setShowCharacterAdminMenu(false),
+                children: "Figure Characters"
+              }
+            )
+          ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
@@ -17687,9 +17749,9 @@ function withPageSize(endpoint, size2 = 1e3) {
   const separator = endpoint.includes("?") ? "&" : "?";
   return `${endpoint}${separator}size=${size2}`;
 }
-function withPagination(endpoint, page, size2) {
+function withPagination(endpoint, page, size2, sort = "id,asc") {
   const separator = endpoint.includes("?") ? "&" : "?";
-  return `${endpoint}${separator}page=${page}&size=${size2}`;
+  return `${endpoint}${separator}page=${page}&size=${size2}&sort=${encodeURIComponent(sort)}`;
 }
 const BASE_URL = "https://figure-market-core.onrender.com/api";
 async function getFranchises() {
@@ -18884,11 +18946,11 @@ var Dialog$1 = (props) => {
   );
 };
 Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME$3 = "DialogTrigger";
+var TRIGGER_NAME$4 = "DialogTrigger";
 var DialogTrigger = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, ...triggerProps } = props;
-    const context = useDialogContext(TRIGGER_NAME$3, __scopeDialog);
+    const context = useDialogContext(TRIGGER_NAME$4, __scopeDialog);
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
       Primitive.button,
@@ -18905,7 +18967,7 @@ var DialogTrigger = reactExports.forwardRef(
     );
   }
 );
-DialogTrigger.displayName = TRIGGER_NAME$3;
+DialogTrigger.displayName = TRIGGER_NAME$4;
 var PORTAL_NAME$4 = "DialogPortal";
 var [PortalProvider$2, usePortalContext$2] = createDialogContext(PORTAL_NAME$4, {
   forceMount: void 0
@@ -18946,19 +19008,19 @@ var DialogOverlayImpl = reactExports.forwardRef(
     );
   }
 );
-var CONTENT_NAME$4 = "DialogContent";
+var CONTENT_NAME$5 = "DialogContent";
 var DialogContent$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const portalContext = usePortalContext$2(CONTENT_NAME$4, props.__scopeDialog);
+    const portalContext = usePortalContext$2(CONTENT_NAME$5, props.__scopeDialog);
     const { forceMount = portalContext.forceMount, ...contentProps } = props;
-    const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$5, props.__scopeDialog);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentModal, { ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentNonModal, { ...contentProps, ref: forwardedRef }) });
   }
 );
-DialogContent$1.displayName = CONTENT_NAME$4;
+DialogContent$1.displayName = CONTENT_NAME$5;
 var DialogContentModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$5, props.__scopeDialog);
     const contentRef = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
     reactExports.useEffect(() => {
@@ -18993,7 +19055,7 @@ var DialogContentModal = reactExports.forwardRef(
 );
 var DialogContentNonModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$5, props.__scopeDialog);
     const hasInteractedOutsideRef = reactExports.useRef(false);
     const hasPointerDownOutsideRef = reactExports.useRef(false);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -19036,7 +19098,7 @@ var DialogContentNonModal = reactExports.forwardRef(
 var DialogContentImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
-    const context = useDialogContext(CONTENT_NAME$4, __scopeDialog);
+    const context = useDialogContext(CONTENT_NAME$5, __scopeDialog);
     const contentRef = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, contentRef);
     useFocusGuards();
@@ -19111,7 +19173,7 @@ function getState$1(open) {
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
 var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
-  contentName: CONTENT_NAME$4,
+  contentName: CONTENT_NAME$5,
   titleName: TITLE_NAME$1,
   docsSlug: "dialog"
 });
@@ -19145,10 +19207,10 @@ var DescriptionWarning$1 = ({ contentRef, descriptionId }) => {
   return null;
 };
 var Root$1 = Dialog$1;
-var Trigger$2 = DialogTrigger;
+var Trigger$3 = DialogTrigger;
 var Portal$2 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
-var Content = DialogContent$1;
+var Content$1 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose;
@@ -19163,15 +19225,15 @@ var AlertDialog$1 = (props) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Root$1, { ...dialogScope, ...alertDialogProps, modal: true });
 };
 AlertDialog$1.displayName = ROOT_NAME;
-var TRIGGER_NAME$2 = "AlertDialogTrigger";
+var TRIGGER_NAME$3 = "AlertDialogTrigger";
 var AlertDialogTrigger = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeAlertDialog, ...triggerProps } = props;
     const dialogScope = useDialogScope(__scopeAlertDialog);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Trigger$2, { ...dialogScope, ...triggerProps, ref: forwardedRef });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Trigger$3, { ...dialogScope, ...triggerProps, ref: forwardedRef });
   }
 );
-AlertDialogTrigger.displayName = TRIGGER_NAME$2;
+AlertDialogTrigger.displayName = TRIGGER_NAME$3;
 var PORTAL_NAME$3 = "AlertDialogPortal";
 var AlertDialogPortal$1 = (props) => {
   const { __scopeAlertDialog, ...portalProps } = props;
@@ -19188,8 +19250,8 @@ var AlertDialogOverlay$1 = reactExports.forwardRef(
   }
 );
 AlertDialogOverlay$1.displayName = OVERLAY_NAME;
-var CONTENT_NAME$3 = "AlertDialogContent";
-var [AlertDialogContentProvider, useAlertDialogContentContext] = createAlertDialogContext(CONTENT_NAME$3);
+var CONTENT_NAME$4 = "AlertDialogContent";
+var [AlertDialogContentProvider, useAlertDialogContentContext] = createAlertDialogContext(CONTENT_NAME$4);
 var Slottable = /* @__PURE__ */ createSlottable("AlertDialogContent");
 var AlertDialogContent$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -19201,11 +19263,11 @@ var AlertDialogContent$1 = reactExports.forwardRef(
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
       WarningProvider,
       {
-        contentName: CONTENT_NAME$3,
+        contentName: CONTENT_NAME$4,
         titleName: TITLE_NAME,
         docsSlug: "alert-dialog",
         children: /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogContentProvider, { scope: __scopeAlertDialog, cancelRef, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Content,
+          Content$1,
           {
             role: "alertdialog",
             ...dialogScope,
@@ -19228,7 +19290,7 @@ var AlertDialogContent$1 = reactExports.forwardRef(
     );
   }
 );
-AlertDialogContent$1.displayName = CONTENT_NAME$3;
+AlertDialogContent$1.displayName = CONTENT_NAME$4;
 var TITLE_NAME = "AlertDialogTitle";
 var AlertDialogTitle$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -19266,11 +19328,11 @@ var AlertDialogCancel$1 = reactExports.forwardRef(
 );
 AlertDialogCancel$1.displayName = CANCEL_NAME;
 var DescriptionWarning = ({ contentRef }) => {
-  const MESSAGE = `\`${CONTENT_NAME$3}\` requires a description for the component to be accessible for screen reader users.
+  const MESSAGE = `\`${CONTENT_NAME$4}\` requires a description for the component to be accessible for screen reader users.
 
-You can add a description to the \`${CONTENT_NAME$3}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.
+You can add a description to the \`${CONTENT_NAME$4}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.
 
-Alternatively, you can use your own component as a description by assigning it an \`id\` and passing the same value to the \`aria-describedby\` prop in \`${CONTENT_NAME$3}\`. If the description is confusing or duplicative for sighted users, you can use the \`@radix-ui/react-visually-hidden\` primitive as a wrapper around your description component.
+Alternatively, you can use your own component as a description by assigning it an \`id\` and passing the same value to the \`aria-describedby\` prop in \`${CONTENT_NAME$4}\`. If the description is confusing or duplicative for sighted users, you can use the \`@radix-ui/react-visually-hidden\` primitive as a wrapper around your description component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/alert-dialog`;
   reactExports.useEffect(() => {
@@ -19282,7 +19344,7 @@ For more information, see https://radix-ui.com/primitives/docs/components/alert-
   }, [MESSAGE, contentRef]);
   return null;
 };
-var Root2$2 = AlertDialog$1;
+var Root2$3 = AlertDialog$1;
 var Portal2$1 = AlertDialogPortal$1;
 var Overlay2 = AlertDialogOverlay$1;
 var Content2$3 = AlertDialogContent$1;
@@ -19290,7 +19352,7 @@ var Action = AlertDialogAction$1;
 var Cancel = AlertDialogCancel$1;
 var Title2 = AlertDialogTitle$1;
 var Description2 = AlertDialogDescription$1;
-const AlertDialog = Root2$2;
+const AlertDialog = Root2$3;
 const AlertDialogPortal = Portal2$1;
 const AlertDialogOverlay = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
   Overlay2,
@@ -19483,7 +19545,7 @@ DialogOverlay.displayName = Overlay.displayName;
 const DialogContent = reactExports.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogPortal, { children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlay, {}),
   /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    Content,
+    Content$1,
     {
       ref,
       className: cn(
@@ -19502,7 +19564,7 @@ const DialogContent = reactExports.forwardRef(({ className, children, ...props }
     }
   )
 ] }));
-DialogContent.displayName = Content.displayName;
+DialogContent.displayName = Content$1.displayName;
 const DialogHeader = ({ className, ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("flex flex-col space-y-1.5 text-center sm:text-left", className), ...props });
 DialogHeader.displayName = "DialogHeader";
 const DialogFooter = ({ className, ...props }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className), ...props });
@@ -19863,6 +19925,13 @@ const FigureFormDialog = ({
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Datos adicionales, variantes u observaciones internas." })
       ] }),
+      (figure == null ? void 0 : figure.id) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border bg-muted/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 md:flex-row md:items-center md:justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-foreground", children: "Figure Characters" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-xs text-muted-foreground", children: "Associate this Figure with Character and optional Character Form records." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/character-admin/figure-characters", children: "Manage Figure Characters" }) })
+      ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", onClick: () => onOpenChange(false), children: "Cancel" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving || validatingSlug, children: saving ? "Saving..." : validatingSlug ? "Validating slug..." : figure ? "Update" : "Create" })
@@ -19971,8 +20040,8 @@ const FigureTable = ({
     ] }, figure.id)) })
   ] }) }) });
 };
-const API_BASE_URL$6 = "https://figure-market-core.onrender.com/api";
-const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL$6}/v1/reference-data`;
+const API_BASE_URL$7 = "https://figure-market-core.onrender.com/api";
+const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL$7}/v1/reference-data`;
 const emptyReferenceData = {
   currencyCodes: [],
   figureStatuses: [],
@@ -20045,12 +20114,12 @@ function toClientApiError(error, fallbackMessage) {
     message: error instanceof Error ? error.message : fallbackMessage
   };
 }
-const API_BASE_URL$5 = "https://figure-market-core.onrender.com/api";
-const FIGURES_ENDPOINT$3 = `${API_BASE_URL$5}/v1/figures`;
+const API_BASE_URL$6 = "https://figure-market-core.onrender.com/api";
+const FIGURES_ENDPOINT$3 = `${API_BASE_URL$6}/v1/figures`;
 const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/availability`;
-const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$5}/v1/franchises`;
-const SOURCES_ENDPOINT$4 = `${API_BASE_URL$5}/v1/sources`;
+const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$6}/v1/franchises`;
+const SOURCES_ENDPOINT$4 = `${API_BASE_URL$6}/v1/sources`;
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },
@@ -20601,7 +20670,7 @@ var N = '[cmdk-group=""]', Y = '[cmdk-group-items=""]', be = '[cmdk-group-headin
   }, []), reactExports.createElement(Primitive.div, { ref: composeRefs(d, o), ...c, "cmdk-list": "", role: "listbox", tabIndex: -1, "aria-activedescendant": p2, "aria-label": u2, id: b.listId }, B(r2, (m2) => reactExports.createElement("div", { ref: composeRefs(f2, b.listInnerRef), "cmdk-list-sizer": "" }, m2)));
 }), xe = reactExports.forwardRef((r2, o) => {
   let { open: n2, onOpenChange: u2, overlayClassName: c, contentClassName: d, container: f2, ...p2 } = r2;
-  return reactExports.createElement(Root$1, { open: n2, onOpenChange: u2 }, reactExports.createElement(Portal$2, { container: f2 }, reactExports.createElement(Overlay, { "cmdk-overlay": "", className: c }), reactExports.createElement(Content, { "aria-label": r2.label, "cmdk-dialog": "", className: d }, reactExports.createElement(me, { ref: o, ...p2 }))));
+  return reactExports.createElement(Root$1, { open: n2, onOpenChange: u2 }, reactExports.createElement(Portal$2, { container: f2 }, reactExports.createElement(Overlay, { "cmdk-overlay": "", className: c }), reactExports.createElement(Content$1, { "aria-label": r2.label, "cmdk-dialog": "", className: d }, reactExports.createElement(me, { ref: o, ...p2 }))));
 }), Ie = reactExports.forwardRef((r2, o) => P((u2) => u2.filtered.count === 0) ? reactExports.createElement(Primitive.div, { ref: o, ...r2, "cmdk-empty": "", role: "presentation" }) : null), Pe = reactExports.forwardRef((r2, o) => {
   let { progress: n2, children: u2, label: c = "Loading...", ...d } = r2;
   return reactExports.createElement(Primitive.div, { ref: o, ...d, "cmdk-loading": "", role: "progressbar", "aria-valuenow": n2, "aria-valuemin": 0, "aria-valuemax": 100, "aria-label": c }, B(r2, (f2) => reactExports.createElement("div", { "aria-hidden": true }, f2)));
@@ -20753,7 +20822,7 @@ var Popover$1 = (props) => {
     onChange: onOpenChange,
     caller: POPOVER_NAME
   });
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$3, { ...popperScope, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$4, { ...popperScope, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
     PopoverProvider,
     {
       scope: __scopePopover,
@@ -20786,11 +20855,11 @@ var PopoverAnchor = reactExports.forwardRef(
   }
 );
 PopoverAnchor.displayName = ANCHOR_NAME$1;
-var TRIGGER_NAME$1 = "PopoverTrigger";
+var TRIGGER_NAME$2 = "PopoverTrigger";
 var PopoverTrigger$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopePopover, ...triggerProps } = props;
-    const context = usePopoverContext(TRIGGER_NAME$1, __scopePopover);
+    const context = usePopoverContext(TRIGGER_NAME$2, __scopePopover);
     const popperScope = usePopperScope$1(__scopePopover);
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
     const trigger = /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -20809,7 +20878,7 @@ var PopoverTrigger$1 = reactExports.forwardRef(
     return context.hasCustomAnchor ? trigger : /* @__PURE__ */ jsxRuntimeExports.jsx(Anchor, { asChild: true, ...popperScope, children: trigger });
   }
 );
-PopoverTrigger$1.displayName = TRIGGER_NAME$1;
+PopoverTrigger$1.displayName = TRIGGER_NAME$2;
 var PORTAL_NAME$2 = "PopoverPortal";
 var [PortalProvider$1, usePortalContext$1] = createPopoverContext(PORTAL_NAME$2, {
   forceMount: void 0
@@ -20820,20 +20889,20 @@ var PopoverPortal = (props) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(PortalProvider$1, { scope: __scopePopover, forceMount, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$3, { asChild: true, container, children }) }) });
 };
 PopoverPortal.displayName = PORTAL_NAME$2;
-var CONTENT_NAME$2 = "PopoverContent";
+var CONTENT_NAME$3 = "PopoverContent";
 var PopoverContent$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const portalContext = usePortalContext$1(CONTENT_NAME$2, props.__scopePopover);
+    const portalContext = usePortalContext$1(CONTENT_NAME$3, props.__scopePopover);
     const { forceMount = portalContext.forceMount, ...contentProps } = props;
-    const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
+    const context = usePopoverContext(CONTENT_NAME$3, props.__scopePopover);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverContentModal, { ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverContentNonModal, { ...contentProps, ref: forwardedRef }) });
   }
 );
-PopoverContent$1.displayName = CONTENT_NAME$2;
+PopoverContent$1.displayName = CONTENT_NAME$3;
 var Slot$1 = /* @__PURE__ */ createSlot("PopoverContent.RemoveScroll");
 var PopoverContentModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
+    const context = usePopoverContext(CONTENT_NAME$3, props.__scopePopover);
     const contentRef = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, contentRef);
     const isRightClickOutsideRef = reactExports.useRef(false);
@@ -20874,7 +20943,7 @@ var PopoverContentModal = reactExports.forwardRef(
 );
 var PopoverContentNonModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
+    const context = usePopoverContext(CONTENT_NAME$3, props.__scopePopover);
     const hasInteractedOutsideRef = reactExports.useRef(false);
     const hasPointerDownOutsideRef = reactExports.useRef(false);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -20928,7 +20997,7 @@ var PopoverContentImpl = reactExports.forwardRef(
       onInteractOutside,
       ...contentProps
     } = props;
-    const context = usePopoverContext(CONTENT_NAME$2, __scopePopover);
+    const context = usePopoverContext(CONTENT_NAME$3, __scopePopover);
     const popperScope = usePopperScope$1(__scopePopover);
     useFocusGuards();
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -20950,7 +21019,7 @@ var PopoverContentImpl = reactExports.forwardRef(
             onFocusOutside,
             onDismiss: () => context.onOpenChange(false),
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Content$1,
+              Content$2,
               {
                 "data-state": getState(context.open),
                 role: "dialog",
@@ -21006,12 +21075,12 @@ PopoverArrow.displayName = ARROW_NAME$2;
 function getState(open) {
   return open ? "open" : "closed";
 }
-var Root2$1 = Popover$1;
-var Trigger$1 = PopoverTrigger$1;
+var Root2$2 = Popover$1;
+var Trigger$2 = PopoverTrigger$1;
 var Portal$1 = PopoverPortal;
 var Content2$2 = PopoverContent$1;
-const Popover = Root2$1;
-const PopoverTrigger = Trigger$1;
+const Popover = Root2$2;
+const PopoverTrigger = Trigger$2;
 const PopoverContent = reactExports.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$1, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
   Content2$2,
   {
@@ -21253,10 +21322,10 @@ const FigureAliasTable = ({
     ] }, alias.id)) })
   ] }) });
 };
-const API_BASE_URL$4 = "https://figure-market-core.onrender.com/api";
-const FIGURES_ENDPOINT$2 = `${API_BASE_URL$4}/v1/figures`;
-const FIGURE_ALIASES_ENDPOINT = `${API_BASE_URL$4}/figure-aliases`;
-const SOURCES_ENDPOINT$3 = `${API_BASE_URL$4}/v1/sources`;
+const API_BASE_URL$5 = "https://figure-market-core.onrender.com/api";
+const FIGURES_ENDPOINT$2 = `${API_BASE_URL$5}/v1/figures`;
+const FIGURE_ALIASES_ENDPOINT = `${API_BASE_URL$5}/figure-aliases`;
+const SOURCES_ENDPOINT$3 = `${API_BASE_URL$5}/v1/sources`;
 const fallbackLoadMethods = [
   { value: "MANUAL", label: "Manual" },
   { value: "SCRAPED", label: "Scraped" },
@@ -21783,10 +21852,10 @@ const FigureSourceListingTable = ({
     ] }, listing.id)) })
   ] }) });
 };
-const API_BASE_URL$3 = "https://figure-market-core.onrender.com/api";
-const FIGURES_ENDPOINT$1 = `${API_BASE_URL$3}/v1/figures`;
-const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL$3}/figure-source-listings`;
-const SOURCES_ENDPOINT$2 = `${API_BASE_URL$3}/v1/sources`;
+const API_BASE_URL$4 = "https://figure-market-core.onrender.com/api";
+const FIGURES_ENDPOINT$1 = `${API_BASE_URL$4}/v1/figures`;
+const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL$4}/figure-source-listings`;
+const SOURCES_ENDPOINT$2 = `${API_BASE_URL$4}/v1/sources`;
 const fallbackCurrencyCodes$1 = [
   { value: "USD", label: "Usd", symbol: "$" },
   { value: "JPY", label: "Jpy", symbol: "¥" }
@@ -22185,8 +22254,8 @@ const FranchiseTable = ({
     ] }, franchise.id)) })
   ] }) });
 };
-const API_BASE_URL$2 = "https://figure-market-core.onrender.com/api";
-const FRANCHISES_ENDPOINT = `${API_BASE_URL$2}/v1/franchises`;
+const API_BASE_URL$3 = "https://figure-market-core.onrender.com/api";
+const FRANCHISES_ENDPOINT = `${API_BASE_URL$3}/v1/franchises`;
 const FranchisePage = () => {
   const [franchises, setFranchises] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(true);
@@ -22568,8 +22637,8 @@ const SourceTable = ({ sources, loading, onEdit, onDelete }) => {
     ] }, source.id)) })
   ] }) });
 };
-const API_BASE_URL$1 = "https://figure-market-core.onrender.com/api";
-const SOURCES_ENDPOINT$1 = `${API_BASE_URL$1}/v1/sources`;
+const API_BASE_URL$2 = "https://figure-market-core.onrender.com/api";
+const SOURCES_ENDPOINT$1 = `${API_BASE_URL$2}/v1/sources`;
 const fallbackSourceTypes = [
   { value: "OFFICIAL", label: "Official" },
   { value: "RETAILER", label: "Retailer" },
@@ -23335,7 +23404,7 @@ var [createMenuContext, createMenuScope] = createContextScope(MENU_NAME, [
   createRovingFocusGroupScope
 ]);
 var usePopperScope = createPopperScope();
-var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
 var [MenuProvider, useMenuContext] = createMenuContext(MENU_NAME);
 var [MenuRootProvider, useMenuRootContext] = createMenuContext(MENU_NAME);
 var Menu = (props) => {
@@ -23359,7 +23428,7 @@ var Menu = (props) => {
       document.removeEventListener("pointermove", handlePointer, { capture: true });
     };
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$3, { ...popperScope, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root2$4, { ...popperScope, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
     MenuProvider,
     {
       scope: __scopeMenu,
@@ -23401,20 +23470,20 @@ var MenuPortal = (props) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(PortalProvider, { scope: __scopeMenu, forceMount, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$3, { asChild: true, container, children }) }) });
 };
 MenuPortal.displayName = PORTAL_NAME$1;
-var CONTENT_NAME$1 = "MenuContent";
-var [MenuContentProvider, useMenuContentContext] = createMenuContext(CONTENT_NAME$1);
+var CONTENT_NAME$2 = "MenuContent";
+var [MenuContentProvider, useMenuContentContext] = createMenuContext(CONTENT_NAME$2);
 var MenuContent = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const portalContext = usePortalContext(CONTENT_NAME$1, props.__scopeMenu);
+    const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopeMenu);
     const { forceMount = portalContext.forceMount, ...contentProps } = props;
-    const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
-    const rootContext = useMenuRootContext(CONTENT_NAME$1, props.__scopeMenu);
+    const context = useMenuContext(CONTENT_NAME$2, props.__scopeMenu);
+    const rootContext = useMenuRootContext(CONTENT_NAME$2, props.__scopeMenu);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Provider, { scope: props.__scopeMenu, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Slot, { scope: props.__scopeMenu, children: rootContext.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(MenuRootContentModal, { ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(MenuRootContentNonModal, { ...contentProps, ref: forwardedRef }) }) }) });
   }
 );
 var MenuRootContentModal = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
+    const context = useMenuContext(CONTENT_NAME$2, props.__scopeMenu);
     const ref = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, ref);
     reactExports.useEffect(() => {
@@ -23440,7 +23509,7 @@ var MenuRootContentModal = reactExports.forwardRef(
   }
 );
 var MenuRootContentNonModal = reactExports.forwardRef((props, forwardedRef) => {
-  const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
+  const context = useMenuContext(CONTENT_NAME$2, props.__scopeMenu);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     MenuContentImpl,
     {
@@ -23472,10 +23541,10 @@ var MenuContentImpl = reactExports.forwardRef(
       disableOutsideScroll,
       ...contentProps
     } = props;
-    const context = useMenuContext(CONTENT_NAME$1, __scopeMenu);
-    const rootContext = useMenuRootContext(CONTENT_NAME$1, __scopeMenu);
+    const context = useMenuContext(CONTENT_NAME$2, __scopeMenu);
+    const rootContext = useMenuRootContext(CONTENT_NAME$2, __scopeMenu);
     const popperScope = usePopperScope(__scopeMenu);
-    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
+    const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeMenu);
     const getItems = useCollection(__scopeMenu);
     const [currentItemId, setCurrentItemId] = reactExports.useState(null);
     const contentRef = reactExports.useRef(null);
@@ -23581,7 +23650,7 @@ var MenuContentImpl = reactExports.forwardRef(
                     }),
                     preventScrollOnEntryFocus: true,
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      Content$1,
+                      Content$2,
                       {
                         role: "menu",
                         "aria-orientation": "vertical",
@@ -23640,7 +23709,7 @@ var MenuContentImpl = reactExports.forwardRef(
     );
   }
 );
-MenuContent.displayName = CONTENT_NAME$1;
+MenuContent.displayName = CONTENT_NAME$2;
 var GROUP_NAME$1 = "MenuGroup";
 var MenuGroup = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -23713,7 +23782,7 @@ var MenuItemImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeMenu, disabled = false, textValue, ...itemProps } = props;
     const contentContext = useMenuContentContext(ITEM_NAME$1, __scopeMenu);
-    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
+    const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeMenu);
     const ref = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, ref);
     const [isFocused, setIsFocused] = reactExports.useState(false);
@@ -23988,10 +24057,10 @@ MenuSubTrigger.displayName = SUB_TRIGGER_NAME$1;
 var SUB_CONTENT_NAME$1 = "MenuSubContent";
 var MenuSubContent = reactExports.forwardRef(
   (props, forwardedRef) => {
-    const portalContext = usePortalContext(CONTENT_NAME$1, props.__scopeMenu);
+    const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopeMenu);
     const { forceMount = portalContext.forceMount, ...subContentProps } = props;
-    const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
-    const rootContext = useMenuRootContext(CONTENT_NAME$1, props.__scopeMenu);
+    const context = useMenuContext(CONTENT_NAME$2, props.__scopeMenu);
+    const rootContext = useMenuRootContext(CONTENT_NAME$2, props.__scopeMenu);
     const subContext = useMenuSubContext(SUB_CONTENT_NAME$1, props.__scopeMenu);
     const ref = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, ref);
@@ -24146,11 +24215,11 @@ var DropdownMenu$1 = (props) => {
   );
 };
 DropdownMenu$1.displayName = DROPDOWN_MENU_NAME;
-var TRIGGER_NAME = "DropdownMenuTrigger";
+var TRIGGER_NAME$1 = "DropdownMenuTrigger";
 var DropdownMenuTrigger$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDropdownMenu, disabled = false, ...triggerProps } = props;
-    const context = useDropdownMenuContext(TRIGGER_NAME, __scopeDropdownMenu);
+    const context = useDropdownMenuContext(TRIGGER_NAME$1, __scopeDropdownMenu);
     const menuScope = useMenuScope(__scopeDropdownMenu);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Anchor2, { asChild: true, ...menuScope, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       Primitive.button,
@@ -24181,7 +24250,7 @@ var DropdownMenuTrigger$1 = reactExports.forwardRef(
     ) });
   }
 );
-DropdownMenuTrigger$1.displayName = TRIGGER_NAME;
+DropdownMenuTrigger$1.displayName = TRIGGER_NAME$1;
 var PORTAL_NAME = "DropdownMenuPortal";
 var DropdownMenuPortal = (props) => {
   const { __scopeDropdownMenu, ...portalProps } = props;
@@ -24189,11 +24258,11 @@ var DropdownMenuPortal = (props) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal, { ...menuScope, ...portalProps });
 };
 DropdownMenuPortal.displayName = PORTAL_NAME;
-var CONTENT_NAME = "DropdownMenuContent";
+var CONTENT_NAME$1 = "DropdownMenuContent";
 var DropdownMenuContent$1 = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDropdownMenu, ...contentProps } = props;
-    const context = useDropdownMenuContext(CONTENT_NAME, __scopeDropdownMenu);
+    const context = useDropdownMenuContext(CONTENT_NAME$1, __scopeDropdownMenu);
     const menuScope = useMenuScope(__scopeDropdownMenu);
     const hasInteractedOutsideRef = reactExports.useRef(false);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -24231,7 +24300,7 @@ var DropdownMenuContent$1 = reactExports.forwardRef(
     );
   }
 );
-DropdownMenuContent$1.displayName = CONTENT_NAME;
+DropdownMenuContent$1.displayName = CONTENT_NAME$1;
 var GROUP_NAME = "DropdownMenuGroup";
 var DropdownMenuGroup = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -24335,8 +24404,8 @@ var DropdownMenuSubContent$1 = reactExports.forwardRef((props, forwardedRef) => 
   );
 });
 DropdownMenuSubContent$1.displayName = SUB_CONTENT_NAME;
-var Root2 = DropdownMenu$1;
-var Trigger = DropdownMenuTrigger$1;
+var Root2$1 = DropdownMenu$1;
+var Trigger$1 = DropdownMenuTrigger$1;
 var Portal2 = DropdownMenuPortal;
 var Content2 = DropdownMenuContent$1;
 var Label2 = DropdownMenuLabel$1;
@@ -24347,8 +24416,8 @@ var ItemIndicator2 = DropdownMenuItemIndicator;
 var Separator2 = DropdownMenuSeparator$1;
 var SubTrigger2 = DropdownMenuSubTrigger$1;
 var SubContent2 = DropdownMenuSubContent$1;
-const DropdownMenu = Root2;
-const DropdownMenuTrigger = Trigger;
+const DropdownMenu = Root2$1;
+const DropdownMenuTrigger = Trigger$1;
 const DropdownMenuSubTrigger = reactExports.forwardRef(({ className, inset, children, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
   SubTrigger2,
   {
@@ -24512,10 +24581,10 @@ const CandidateReviewTable = ({
     ] }, candidate.id)) })
   ] }) }) });
 };
-const API_BASE_URL = "https://figure-market-core.onrender.com/api";
-const CANDIDATES_ENDPOINT = `${API_BASE_URL}/v1/scraping/candidates`;
-const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
-const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+const API_BASE_URL$1 = "https://figure-market-core.onrender.com/api";
+const CANDIDATES_ENDPOINT = `${API_BASE_URL$1}/v1/scraping/candidates`;
+const FIGURES_ENDPOINT = `${API_BASE_URL$1}/v1/figures`;
+const SOURCES_ENDPOINT = `${API_BASE_URL$1}/v1/sources`;
 const fallbackCurrencyCodes = [
   { value: "USD", label: "Usd", symbol: "$" },
   { value: "JPY", label: "Jpy", symbol: "JPY" }
@@ -24873,6 +24942,802 @@ const CandidateReviewPage = () => {
     )
   ] });
 };
+var TABS_NAME = "Tabs";
+var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [
+  createRovingFocusGroupScope
+]);
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
+var Tabs$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeTabs,
+      value: valueProp,
+      onValueChange,
+      defaultValue,
+      orientation = "horizontal",
+      dir,
+      activationMode = "automatic",
+      ...tabsProps
+    } = props;
+    const direction = useDirection(dir);
+    const [value, setValue] = useControllableState({
+      prop: valueProp,
+      onChange: onValueChange,
+      defaultProp: defaultValue ?? "",
+      caller: TABS_NAME
+    });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      TabsProvider,
+      {
+        scope: __scopeTabs,
+        baseId: useId(),
+        value,
+        onValueChange: setValue,
+        orientation,
+        dir: direction,
+        activationMode,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Primitive.div,
+          {
+            dir: direction,
+            "data-orientation": orientation,
+            ...tabsProps,
+            ref: forwardedRef
+          }
+        )
+      }
+    );
+  }
+);
+Tabs$1.displayName = TABS_NAME;
+var TAB_LIST_NAME = "TabsList";
+var TabsList$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeTabs, loop = true, ...listProps } = props;
+    const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
+    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Root,
+      {
+        asChild: true,
+        ...rovingFocusGroupScope,
+        orientation: context.orientation,
+        dir: context.dir,
+        loop,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Primitive.div,
+          {
+            role: "tablist",
+            "aria-orientation": context.orientation,
+            ...listProps,
+            ref: forwardedRef
+          }
+        )
+      }
+    );
+  }
+);
+TabsList$1.displayName = TAB_LIST_NAME;
+var TRIGGER_NAME = "TabsTrigger";
+var TabsTrigger$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
+    const context = useTabsContext(TRIGGER_NAME, __scopeTabs);
+    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+    const triggerId = makeTriggerId(context.baseId, value);
+    const contentId = makeContentId(context.baseId, value);
+    const isSelected = value === context.value;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Item,
+      {
+        asChild: true,
+        ...rovingFocusGroupScope,
+        focusable: !disabled,
+        active: isSelected,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Primitive.button,
+          {
+            type: "button",
+            role: "tab",
+            "aria-selected": isSelected,
+            "aria-controls": contentId,
+            "data-state": isSelected ? "active" : "inactive",
+            "data-disabled": disabled ? "" : void 0,
+            disabled,
+            id: triggerId,
+            ...triggerProps,
+            ref: forwardedRef,
+            onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
+              if (!disabled && event.button === 0 && event.ctrlKey === false) {
+                context.onValueChange(value);
+              } else {
+                event.preventDefault();
+              }
+            }),
+            onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+              if ([" ", "Enter"].includes(event.key)) context.onValueChange(value);
+            }),
+            onFocus: composeEventHandlers(props.onFocus, () => {
+              const isAutomaticActivation = context.activationMode !== "manual";
+              if (!isSelected && !disabled && isAutomaticActivation) {
+                context.onValueChange(value);
+              }
+            })
+          }
+        )
+      }
+    );
+  }
+);
+TabsTrigger$1.displayName = TRIGGER_NAME;
+var CONTENT_NAME = "TabsContent";
+var TabsContent$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
+    const context = useTabsContext(CONTENT_NAME, __scopeTabs);
+    const triggerId = makeTriggerId(context.baseId, value);
+    const contentId = makeContentId(context.baseId, value);
+    const isSelected = value === context.value;
+    const isMountAnimationPreventedRef = reactExports.useRef(isSelected);
+    reactExports.useEffect(() => {
+      const rAF = requestAnimationFrame(() => isMountAnimationPreventedRef.current = false);
+      return () => cancelAnimationFrame(rAF);
+    }, []);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || isSelected, children: ({ present }) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.div,
+      {
+        "data-state": isSelected ? "active" : "inactive",
+        "data-orientation": context.orientation,
+        role: "tabpanel",
+        "aria-labelledby": triggerId,
+        hidden: !present,
+        id: contentId,
+        tabIndex: 0,
+        ...contentProps,
+        ref: forwardedRef,
+        style: {
+          ...props.style,
+          animationDuration: isMountAnimationPreventedRef.current ? "0s" : void 0
+        },
+        children: present && children
+      }
+    ) });
+  }
+);
+TabsContent$1.displayName = CONTENT_NAME;
+function makeTriggerId(baseId, value) {
+  return `${baseId}-trigger-${value}`;
+}
+function makeContentId(baseId, value) {
+  return `${baseId}-content-${value}`;
+}
+var Root2 = Tabs$1;
+var List = TabsList$1;
+var Trigger = TabsTrigger$1;
+var Content = TabsContent$1;
+const Tabs = Root2;
+const TabsList = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  List,
+  {
+    ref,
+    className: cn(
+      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+      className
+    ),
+    ...props
+  }
+));
+TabsList.displayName = List.displayName;
+const TabsTrigger = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  Trigger,
+  {
+    ref,
+    className: cn(
+      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+      className
+    ),
+    ...props
+  }
+));
+TabsTrigger.displayName = Trigger.displayName;
+const TabsContent = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  Content,
+  {
+    ref,
+    className: cn(
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      className
+    ),
+    ...props
+  }
+));
+TabsContent.displayName = Content.displayName;
+const API_BASE_URL = "https://figure-market-core.onrender.com/api";
+const emptyOptions = {
+  franchises: [],
+  characters: [],
+  characterForms: [],
+  figures: []
+};
+const loadMethodOptions = [
+  { id: 0, label: "MANUAL" },
+  { id: 1, label: "SCRAPED" },
+  { id: 2, label: "GENERATED" },
+  { id: 3, label: "IMPORTED" }
+];
+const endpoints = {
+  characters: `${API_BASE_URL}/v1/characters`,
+  characterAliases: `${API_BASE_URL}/v1/character-aliases`,
+  characterForms: `${API_BASE_URL}/v1/character-forms`,
+  characterFormAliases: `${API_BASE_URL}/v1/character-form-aliases`,
+  figureCharacters: `${API_BASE_URL}/v1/figure-characters`,
+  franchises: `${API_BASE_URL}/v1/franchises`,
+  figures: `${API_BASE_URL}/v1/figures`
+};
+const adminRouteByEndpoint = {
+  [endpoints.characterAliases]: "/character-admin/character-aliases",
+  [endpoints.characterForms]: "/character-admin/character-forms",
+  [endpoints.characterFormAliases]: "/character-admin/character-form-aliases",
+  [endpoints.figureCharacters]: "/character-admin/figure-characters"
+};
+const relationLoaders = {
+  franchises: {
+    endpoint: endpoints.franchises,
+    map: (item) => ({ id: Number(item.id), label: String(item.name || item.slug || item.id) })
+  },
+  characters: {
+    endpoint: endpoints.characters,
+    map: (item) => ({ id: Number(item.id), label: String(item.canonicalName || item.characterName || item.id) })
+  },
+  characterForms: {
+    endpoint: endpoints.characterForms,
+    map: (item) => ({ id: Number(item.id), label: String(item.canonicalName || item.characterFormName || item.id) })
+  },
+  figures: {
+    endpoint: endpoints.figures,
+    map: (item) => ({ id: Number(item.id), label: String(item.name || item.slug || item.id) })
+  }
+};
+const valueToString = (value) => {
+  if (value === void 0 || value === null) return "";
+  if (typeof value === "boolean") return value ? "Yes" : "No";
+  return String(value);
+};
+const buildInitialForm = (fields, record) => Object.fromEntries(
+  fields.map((field) => [
+    field.name,
+    (record == null ? void 0 : record[field.name]) === void 0 || (record == null ? void 0 : record[field.name]) === null ? field.defaultValue || "" : String(record[field.name])
+  ])
+);
+const CharacterAdminPage = ({ config }) => {
+  var _a2;
+  const [rows, setRows] = reactExports.useState([]);
+  const [options, setOptions] = reactExports.useState(emptyOptions);
+  const [form, setForm] = reactExports.useState({});
+  const [relatedRows, setRelatedRows] = reactExports.useState({});
+  const [loading, setLoading] = reactExports.useState(true);
+  const [loadingOptions, setLoadingOptions] = reactExports.useState(true);
+  const [saving, setSaving] = reactExports.useState(false);
+  const [deleting, setDeleting] = reactExports.useState(false);
+  const [search, setSearch] = reactExports.useState("");
+  const [page, setPage] = reactExports.useState(0);
+  const [pageSize, setPageSize] = reactExports.useState(20);
+  const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
+  const [dialogOpen, setDialogOpen] = reactExports.useState(false);
+  const [selectedRecord, setSelectedRecord] = reactExports.useState(null);
+  const [recordToDelete, setRecordToDelete] = reactExports.useState(null);
+  const mutating = saving || deleting;
+  const fetchRows = async (showLoading = true) => {
+    if (showLoading) setLoading(true);
+    try {
+      const response = await fetch(withPagination(config.endpoint, page, pageSize));
+      if (!response.ok) {
+        setApiError(await readApiErrorResponse(response, `Error fetching ${config.title}.`));
+        return;
+      }
+      const data = await response.json();
+      setRows(getPageContent(data));
+      setPageMeta(getPageMeta(data, pageSize));
+    } catch (error) {
+      setApiError(toClientApiError(error, `Error fetching ${config.title}.`));
+    } finally {
+      if (showLoading) setLoading(false);
+    }
+  };
+  const fetchOptions = async () => {
+    setLoadingOptions(true);
+    try {
+      const needed = new Set(config.fields.map((field) => field.optionsKey).filter(Boolean));
+      const entries = await Promise.all(
+        Array.from(needed).map(async (key) => {
+          const loader = relationLoaders[key];
+          const response = await fetch(withPageSize(loader.endpoint));
+          if (!response.ok) return [key, []];
+          const data = await response.json();
+          return [key, getPageContent(data).map(loader.map)];
+        })
+      );
+      setOptions({ ...emptyOptions, ...Object.fromEntries(entries) });
+    } catch (error) {
+      setApiError(toClientApiError(error, "Error fetching select options."));
+    } finally {
+      setLoadingOptions(false);
+    }
+  };
+  const fetchRelatedRows = async (record) => {
+    if (!(record == null ? void 0 : record.id) || !config.relatedSections) {
+      setRelatedRows({});
+      return;
+    }
+    const result = {};
+    await Promise.all(
+      config.relatedSections.map(async (section) => {
+        const response = await fetch(withPageSize(`${section.endpoint}?${section.filterParam}=${record.id}`));
+        if (!response.ok) return;
+        const data = await response.json();
+        result[section.title] = getPageContent(data);
+      })
+    );
+    setRelatedRows(result);
+  };
+  reactExports.useEffect(() => {
+    fetchRows();
+  }, [page, pageSize, config.endpoint]);
+  reactExports.useEffect(() => {
+    fetchOptions();
+  }, [config.endpoint]);
+  reactExports.useEffect(() => {
+    setPage(0);
+  }, [search]);
+  const filteredRows = reactExports.useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return rows;
+    return rows.filter(
+      (row) => Object.values(row).filter((value) => value !== null && value !== void 0).some((value) => String(value).toLowerCase().includes(query))
+    );
+  }, [rows, search]);
+  const openCreateDialog = () => {
+    setSelectedRecord(null);
+    setForm(buildInitialForm(config.fields, null));
+    setRelatedRows({});
+    setDialogOpen(true);
+  };
+  const openEditDialog = async (record) => {
+    setSelectedRecord(record);
+    setForm(buildInitialForm(config.fields, record));
+    setDialogOpen(true);
+    await fetchRelatedRows(record);
+  };
+  const handleChange = (name, value) => {
+    setForm((current) => ({ ...current, [name]: value }));
+  };
+  const buildPayload = () => {
+    const payload = {};
+    config.fields.forEach((field) => {
+      var _a3;
+      const rawValue = ((_a3 = form[field.name]) == null ? void 0 : _a3.trim()) ?? "";
+      if (!rawValue && field.nullable) {
+        payload[field.name] = null;
+        return;
+      }
+      if (!rawValue && !field.required) return;
+      if (field.type === "number" || field.type === "select") {
+        if (field.staticOptions) {
+          payload[field.name] = rawValue;
+        } else {
+          payload[field.name] = Number(rawValue);
+        }
+        return;
+      }
+      if (field.type === "boolean") {
+        payload[field.name] = rawValue === "true";
+        return;
+      }
+      payload[field.name] = rawValue;
+    });
+    return payload;
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSaving(true);
+    const isEditing = Boolean(selectedRecord == null ? void 0 : selectedRecord.id);
+    const endpoint = isEditing ? `${config.endpoint}/${selectedRecord == null ? void 0 : selectedRecord.id}` : config.endpoint;
+    try {
+      const response = await fetch(endpoint, {
+        method: isEditing ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildPayload())
+      });
+      if (!response.ok) {
+        setApiError(await readApiErrorResponse(response, `Error saving ${config.title}.`));
+        return;
+      }
+      await fetchRows(false);
+      setDialogOpen(false);
+      setSelectedRecord(null);
+    } catch (error) {
+      setApiError(toClientApiError(error, `Error saving ${config.title}.`));
+    } finally {
+      setSaving(false);
+    }
+  };
+  const handleDelete = async () => {
+    if (!(recordToDelete == null ? void 0 : recordToDelete.id)) return;
+    setDeleting(true);
+    try {
+      const response = await fetch(`${config.endpoint}/${recordToDelete.id}`, {
+        method: "DELETE"
+      });
+      if (!response.ok) {
+        setApiError(await readApiErrorResponse(response, `Error deleting ${config.title}.`));
+        return;
+      }
+      await fetchRows(false);
+      setRecordToDelete(null);
+    } catch (error) {
+      setApiError(toClientApiError(error, `Error deleting ${config.title}.`));
+    } finally {
+      setDeleting(false);
+    }
+  };
+  const renderField = (field) => {
+    const value = form[field.name] ?? "";
+    const labelClass = "mb-1 block text-sm font-medium text-foreground";
+    const helperClass = "mt-1 text-xs text-muted-foreground";
+    const selectClass = "w-full rounded border border-input bg-background p-2 text-foreground";
+    const optionClass = "bg-background text-foreground";
+    const requiredMark = field.required ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-destructive", children: "*" }) : null;
+    if (field.type === "boolean") {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+          field.label,
+          " ",
+          requiredMark
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("select", { className: selectClass, value: value || "true", onChange: (event) => handleChange(field.name, event.target.value), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "true", children: "Yes" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "false", children: "No" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
+      ] }, field.name);
+    }
+    if (field.type === "select") {
+      const fieldOptions = field.staticOptions || (field.optionsKey ? options[field.optionsKey] : []);
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+          field.label,
+          " ",
+          requiredMark
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "select",
+          {
+            className: selectClass,
+            value,
+            required: field.required,
+            disabled: loadingOptions,
+            onChange: (event) => handleChange(field.name, event.target.value),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: field.nullable ? "None" : loadingOptions ? "Loading options..." : `Select ${field.label}` }),
+              fieldOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: field.staticOptions ? option.label : option.id, children: option.label }, `${field.name}-${option.id}-${option.label}`))
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
+      ] }, field.name);
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+        field.label,
+        " ",
+        requiredMark
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Input,
+        {
+          name: field.name,
+          type: field.type,
+          maxLength: field.maxLength,
+          value,
+          required: field.required,
+          min: field.type === "number" ? 0 : void 0,
+          onChange: (event) => handleChange(field.name, event.target.value)
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
+    ] }, field.name);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-bold text-foreground", children: config.title }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-muted-foreground", children: config.description })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", className: "gap-2 md:self-center", onClick: openCreateDialog, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" }),
+          config.newLabel
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full md:max-w-sm", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { value: search, onChange: (event) => setSearch(event.target.value), placeholder: config.searchPlaceholder, className: "pl-9" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
+          filteredRows.length,
+          " shown - ",
+          pageMeta.totalElements,
+          " total records"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: mutating, message: `Updating ${config.title}...`, className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+          config.columns.map((column) => /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: column.label }, column.key)),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableCell, { colSpan: config.columns.length + 1, className: "h-28 text-center text-muted-foreground", children: [
+          "Loading ",
+          config.title,
+          "..."
+        ] }) }) : filteredRows.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: config.columns.length + 1, className: "h-28 text-center text-muted-foreground", children: "No records found." }) }) : filteredRows.map((row) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+          config.columns.map((column) => /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: valueToString(row[column.key]) || "-" }, `${row.id}-${column.key}`)),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", size: "sm", onClick: () => openEditDialog(row), children: "Actualizar" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "destructive", size: "sm", onClick: () => setRecordToDelete(row), children: "Eliminar" })
+          ] }) })
+        ] }, String(row.id))) })
+      ] }) }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        PageControls,
+        {
+          page: pageMeta.page,
+          size: pageMeta.size,
+          totalElements: pageMeta.totalElements,
+          totalPages: pageMeta.totalPages,
+          disabled: loading || mutating,
+          onPageChange: setPage,
+          onSizeChange: (size2) => {
+            setPageSize(size2);
+            setPage(0);
+          }
+        }
+      ) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: dialogOpen, onOpenChange: setDialogOpen, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { className: "max-h-[90vh] max-w-4xl overflow-y-auto", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: saving, label: `Saving ${config.title}...` }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { children: selectedRecord ? `Update ${config.title}` : config.newLabel }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { children: config.description })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "grid gap-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-4 md:grid-cols-2", children: config.fields.map(renderField) }),
+        (selectedRecord == null ? void 0 : selectedRecord.id) && config.relatedSections && /* @__PURE__ */ jsxRuntimeExports.jsxs(Tabs, { defaultValue: (_a2 = config.relatedSections[0]) == null ? void 0 : _a2.title, className: "mt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TabsList, { className: "flex h-auto flex-wrap justify-start", children: config.relatedSections.map((section) => /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: section.title, children: section.title }, section.title)) }),
+          config.relatedSections.map((section) => /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: section.title, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-foreground", children: section.title }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { className: "text-sm text-primary hover:underline", to: adminRouteByEndpoint[section.endpoint] || "/character-admin/characters", children: [
+                "Open ",
+                section.title
+              ] })
+            ] }),
+            (relatedRows[section.title] || []).length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "No related records found." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: section.columns.map((column) => /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: column.label }, column.key)) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: (relatedRows[section.title] || []).map((row) => /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: section.columns.map((column) => /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: valueToString(row[column.key]) || "-" }, `${row.id}-${column.key}`)) }, String(row.id))) })
+            ] }) })
+          ] }) }, section.title))
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", onClick: () => setDialogOpen(false), children: "Cancel" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving, children: saving ? "Saving..." : selectedRecord ? "Update" : "Create" })
+        ] })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AlertDialog,
+      {
+        open: Boolean(recordToDelete),
+        onOpenChange: (open) => {
+          if (!open) setRecordToDelete(null);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogContent, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogHeader, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogTitle, { children: "Delete record?" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogDescription, { children: [
+              "This action will delete record #",
+              recordToDelete == null ? void 0 : recordToDelete.id,
+              ". This cannot be undone."
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogFooter, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogCancel, { disabled: deleting, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogAction, { className: "bg-destructive text-destructive-foreground hover:bg-destructive/90", disabled: deleting, onClick: handleDelete, children: deleting ? "Deleting..." : "Delete" })
+          ] })
+        ] })
+      }
+    )
+  ] });
+};
+const characterFields = [
+  { name: "canonicalName", label: "Canonical Name", type: "text", required: true, helper: "Main character name." },
+  { name: "normalizedName", label: "Normalized Name", type: "text", required: true, helper: "Normalized name used for lookups." },
+  { name: "franchiseId", label: "Franchise", type: "select", required: true, optionsKey: "franchises", helper: "Franchise this character belongs to." },
+  { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character is active." }
+];
+const characterAliasFields = [
+  { name: "characterId", label: "Character", type: "select", required: true, optionsKey: "characters", helper: "Character that owns this alias." },
+  { name: "alias", label: "Character Alias", type: "text", required: true, maxLength: 255, helper: "Alternate character name." },
+  { name: "aliasNormalized", label: "Character Alias Normalized", type: "text", required: true, maxLength: 255, helper: "Normalized alias used for matching." },
+  { name: "loadMethod", label: "Load Method", type: "select", required: true, defaultValue: "MANUAL", staticOptions: loadMethodOptions, helper: "How this alias was loaded." },
+  { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character alias is active." }
+];
+const characterFormFields = [
+  { name: "characterId", label: "Character", type: "select", required: true, optionsKey: "characters", helper: "Base character for this form." },
+  { name: "canonicalName", label: "Character Form Canonical Name", type: "text", required: true, helper: "Canonical name of the character form." },
+  { name: "normalizedName", label: "Character Form Normalized Name", type: "text", required: true, helper: "Normalized form name used for lookups." },
+  { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character form is active." }
+];
+const characterFormAliasFields = [
+  { name: "characterFormId", label: "Character Form", type: "select", required: true, optionsKey: "characterForms", helper: "Character form that owns this alias." },
+  { name: "alias", label: "Character Form Alias", type: "text", required: true, maxLength: 255, helper: "Alternate character form name." },
+  { name: "aliasNormalized", label: "Character Form Alias Normalized", type: "text", required: true, maxLength: 255, helper: "Normalized form alias used for matching." },
+  { name: "loadMethod", label: "Load Method", type: "select", required: true, defaultValue: "MANUAL", staticOptions: loadMethodOptions, helper: "How this form alias was loaded." },
+  { name: "active", label: "Active", type: "boolean", required: true, defaultValue: "true", helper: "Whether this character form alias is active." }
+];
+const figureCharacterFields = [
+  { name: "figureId", label: "Figure", type: "select", required: true, optionsKey: "figures", helper: "Figure being associated." },
+  { name: "characterId", label: "Character", type: "select", required: true, optionsKey: "characters", helper: "Character represented by the figure." },
+  { name: "characterFormId", label: "Character Form", type: "select", nullable: true, optionsKey: "characterForms", helper: "Optional character form represented by the figure." },
+  { name: "primaryCharacter", label: "Primary Character", type: "boolean", required: true, defaultValue: "false", helper: "Marks the main represented character." },
+  { name: "displayOrder", label: "Display Order", type: "number", required: true, defaultValue: "0", helper: "Ordering when multiple characters are attached." }
+];
+const CharacterPage = () => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  CharacterAdminPage,
+  {
+    config: {
+      title: "Characters",
+      description: "Manage canonical characters connected to franchises.",
+      newLabel: "New Character",
+      endpoint: endpoints.characters,
+      searchPlaceholder: "Search characters",
+      columns: [
+        { key: "id", label: "ID" },
+        { key: "canonicalName", label: "Canonical Name" },
+        { key: "normalizedName", label: "Normalized Name" },
+        { key: "franchiseName", label: "Franchise" },
+        { key: "active", label: "Active" }
+      ],
+      fields: characterFields,
+      relatedSections: [
+        {
+          title: "Character Aliases",
+          endpoint: endpoints.characterAliases,
+          filterParam: "characterId",
+          columns: [
+            { key: "id", label: "ID" },
+            { key: "alias", label: "Character Alias" },
+            { key: "aliasNormalized", label: "Normalized" },
+            { key: "loadMethod", label: "Load Method" },
+            { key: "active", label: "Active" }
+          ]
+        },
+        {
+          title: "Character Forms",
+          endpoint: endpoints.characterForms,
+          filterParam: "characterId",
+          columns: [
+            { key: "id", label: "ID" },
+            { key: "canonicalName", label: "Character Form" },
+            { key: "normalizedName", label: "Normalized" },
+            { key: "active", label: "Active" }
+          ]
+        }
+      ]
+    }
+  }
+);
+const CharacterAliasPage = () => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  CharacterAdminPage,
+  {
+    config: {
+      title: "Character Aliases",
+      description: "Manage alternate names for characters.",
+      newLabel: "New Character Alias",
+      endpoint: endpoints.characterAliases,
+      searchPlaceholder: "Search character aliases",
+      columns: [
+        { key: "id", label: "ID" },
+        { key: "characterName", label: "Character" },
+        { key: "alias", label: "Character Alias" },
+        { key: "aliasNormalized", label: "Normalized" },
+        { key: "loadMethod", label: "Load Method" },
+        { key: "active", label: "Active" }
+      ],
+      fields: characterAliasFields
+    }
+  }
+);
+const CharacterFormPage = () => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  CharacterAdminPage,
+  {
+    config: {
+      title: "Character Forms",
+      description: "Manage named forms, transformations, costumes, or variants of characters.",
+      newLabel: "New Character Form",
+      endpoint: endpoints.characterForms,
+      searchPlaceholder: "Search character forms",
+      columns: [
+        { key: "id", label: "ID" },
+        { key: "characterName", label: "Character" },
+        { key: "canonicalName", label: "Character Form" },
+        { key: "normalizedName", label: "Normalized" },
+        { key: "active", label: "Active" }
+      ],
+      fields: characterFormFields,
+      relatedSections: [
+        {
+          title: "Character Form Aliases",
+          endpoint: endpoints.characterFormAliases,
+          filterParam: "characterFormId",
+          columns: [
+            { key: "id", label: "ID" },
+            { key: "alias", label: "Character Form Alias" },
+            { key: "aliasNormalized", label: "Normalized" },
+            { key: "loadMethod", label: "Load Method" },
+            { key: "active", label: "Active" }
+          ]
+        }
+      ]
+    }
+  }
+);
+const CharacterFormAliasPage = () => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  CharacterAdminPage,
+  {
+    config: {
+      title: "Character Form Aliases",
+      description: "Manage alternate names for specific character forms.",
+      newLabel: "New Character Form Alias",
+      endpoint: endpoints.characterFormAliases,
+      searchPlaceholder: "Search character form aliases",
+      columns: [
+        { key: "id", label: "ID" },
+        { key: "characterFormName", label: "Character Form" },
+        { key: "alias", label: "Character Form Alias" },
+        { key: "aliasNormalized", label: "Normalized" },
+        { key: "loadMethod", label: "Load Method" },
+        { key: "active", label: "Active" }
+      ],
+      fields: characterFormAliasFields
+    }
+  }
+);
+const FigureCharacterPage = () => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  CharacterAdminPage,
+  {
+    config: {
+      title: "Figure Characters",
+      description: "Associate figures with characters and optional character forms.",
+      newLabel: "New Figure Character",
+      endpoint: endpoints.figureCharacters,
+      searchPlaceholder: "Search figure characters",
+      columns: [
+        { key: "id", label: "ID" },
+        { key: "figureName", label: "Figure" },
+        { key: "characterName", label: "Character" },
+        { key: "characterFormName", label: "Character Form" },
+        { key: "primaryCharacter", label: "Primary" },
+        { key: "displayOrder", label: "Order" }
+      ],
+      fields: figureCharacterFields
+    }
+  }
+);
 const queryClient = new QueryClient();
 const App = () => /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TooltipProvider, { children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, {}),
@@ -24887,6 +25752,11 @@ const App = () => /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { c
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/work/franchises", element: /* @__PURE__ */ jsxRuntimeExports.jsx(FranchisePage, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/work/sources", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SourcePage, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/figure-admin/candidate-review", element: /* @__PURE__ */ jsxRuntimeExports.jsx(CandidateReviewPage, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/character-admin/characters", element: /* @__PURE__ */ jsxRuntimeExports.jsx(CharacterPage, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/character-admin/character-aliases", element: /* @__PURE__ */ jsxRuntimeExports.jsx(CharacterAliasPage, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/character-admin/character-forms", element: /* @__PURE__ */ jsxRuntimeExports.jsx(CharacterFormPage, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/character-admin/character-form-aliases", element: /* @__PURE__ */ jsxRuntimeExports.jsx(CharacterFormAliasPage, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/character-admin/figure-characters", element: /* @__PURE__ */ jsxRuntimeExports.jsx(FigureCharacterPage, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "*", element: /* @__PURE__ */ jsxRuntimeExports.jsx(NotFound, {}) })
   ] }) })
 ] }) });
