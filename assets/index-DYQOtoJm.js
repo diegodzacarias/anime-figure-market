@@ -17524,6 +17524,26 @@ const Navbar = () => {
   const [showWorkMenu, setShowWorkMenu] = reactExports.useState(false);
   const [showFigureAdminMenu, setShowFigureAdminMenu] = reactExports.useState(false);
   const [showCharacterAdminMenu, setShowCharacterAdminMenu] = reactExports.useState(false);
+  const closeMenus = () => {
+    setShowWorkMenu(false);
+    setShowFigureAdminMenu(false);
+    setShowCharacterAdminMenu(false);
+  };
+  const toggleWorkMenu = () => {
+    setShowWorkMenu((current) => !current);
+    setShowFigureAdminMenu(false);
+    setShowCharacterAdminMenu(false);
+  };
+  const toggleFigureAdminMenu = () => {
+    setShowFigureAdminMenu((current) => !current);
+    setShowWorkMenu(false);
+    setShowCharacterAdminMenu(false);
+  };
+  const toggleCharacterAdminMenu = () => {
+    setShowCharacterAdminMenu((current) => !current);
+    setShowWorkMenu(false);
+    setShowFigureAdminMenu(false);
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container flex h-16 items-center justify-between", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/", className: "flex items-center gap-2", children: [
@@ -17543,7 +17563,7 @@ const Navbar = () => {
             {
               type: "button",
               className: "flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground",
-              onClick: () => setShowWorkMenu((current) => !current),
+              onClick: toggleWorkMenu,
               children: [
                 "Work",
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5" })
@@ -17556,7 +17576,7 @@ const Navbar = () => {
               {
                 to: "/work/figure",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowWorkMenu(false),
+                onClick: closeMenus,
                 children: "Figure"
               }
             ),
@@ -17565,7 +17585,7 @@ const Navbar = () => {
               {
                 to: "/work/figure-alias",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowWorkMenu(false),
+                onClick: closeMenus,
                 children: "Figure Alias"
               }
             ),
@@ -17574,7 +17594,7 @@ const Navbar = () => {
               {
                 to: "/work/figure-source-listing",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowWorkMenu(false),
+                onClick: closeMenus,
                 children: "Figure Source Listing"
               }
             ),
@@ -17583,7 +17603,7 @@ const Navbar = () => {
               {
                 to: "/work/franchises",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowWorkMenu(false),
+                onClick: closeMenus,
                 children: "Franchises"
               }
             ),
@@ -17592,7 +17612,7 @@ const Navbar = () => {
               {
                 to: "/work/sources",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowWorkMenu(false),
+                onClick: closeMenus,
                 children: "Sources"
               }
             )
@@ -17604,7 +17624,7 @@ const Navbar = () => {
             {
               type: "button",
               className: "flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground",
-              onClick: () => setShowFigureAdminMenu((current) => !current),
+              onClick: toggleFigureAdminMenu,
               children: [
                 "FigureAdmin",
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5" })
@@ -17616,7 +17636,7 @@ const Navbar = () => {
             {
               to: "/figure-admin/candidate-review",
               className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-              onClick: () => setShowFigureAdminMenu(false),
+              onClick: closeMenus,
               children: "Candidate Review"
             }
           ) })
@@ -17627,7 +17647,7 @@ const Navbar = () => {
             {
               type: "button",
               className: "flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground",
-              onClick: () => setShowCharacterAdminMenu((current) => !current),
+              onClick: toggleCharacterAdminMenu,
               children: [
                 "CharacterAdmin",
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5" })
@@ -17640,7 +17660,7 @@ const Navbar = () => {
               {
                 to: "/character-admin/characters",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowCharacterAdminMenu(false),
+                onClick: closeMenus,
                 children: "Characters"
               }
             ),
@@ -17649,7 +17669,7 @@ const Navbar = () => {
               {
                 to: "/character-admin/character-aliases",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowCharacterAdminMenu(false),
+                onClick: closeMenus,
                 children: "Character Aliases"
               }
             ),
@@ -17658,7 +17678,7 @@ const Navbar = () => {
               {
                 to: "/character-admin/character-forms",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowCharacterAdminMenu(false),
+                onClick: closeMenus,
                 children: "Character Forms"
               }
             ),
@@ -17667,7 +17687,7 @@ const Navbar = () => {
               {
                 to: "/character-admin/character-form-aliases",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowCharacterAdminMenu(false),
+                onClick: closeMenus,
                 children: "Character Form Aliases"
               }
             ),
@@ -17676,7 +17696,7 @@ const Navbar = () => {
               {
                 to: "/character-admin/figure-characters",
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                onClick: () => setShowCharacterAdminMenu(false),
+                onClick: closeMenus,
                 children: "Figure Characters"
               }
             )
@@ -25154,6 +25174,65 @@ const TabsContent = reactExports.forwardRef(({ className, ...props }, ref) => /*
 ));
 TabsContent.displayName = Content.displayName;
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
+const EntityCombobox = ({
+  options,
+  value,
+  placeholder,
+  disabled,
+  nullable,
+  onChange
+}) => {
+  const selectedOption = options.find((option) => option.id.toString() === value);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Button,
+      {
+        type: "button",
+        variant: "outline",
+        role: "combobox",
+        disabled,
+        className: "min-h-10 w-full justify-between whitespace-normal text-left font-normal",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "line-clamp-2", children: selectedOption ? selectedOption.label : nullable ? "None" : placeholder }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronsUpDown, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
+        ]
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverContent, { align: "start", className: "w-[min(42rem,calc(100vw-2rem))] p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Command, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CommandInput, { placeholder: `Search ${placeholder.toLowerCase()}...` }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandList, { className: "max-h-80", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No option found." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandGroup, { children: [
+          nullable && /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandItem, { value: "none", onSelect: () => onChange(""), children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: cn("mr-2 h-4 w-4", value === "" ? "opacity-100" : "opacity-0") }),
+            "None"
+          ] }),
+          options.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            CommandItem,
+            {
+              value: `${option.label} ${option.id}`,
+              onSelect: () => onChange(option.id.toString()),
+              className: "items-start gap-2 py-3",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Check,
+                  {
+                    className: cn(
+                      "mt-0.5 h-4 w-4 shrink-0",
+                      value === option.id.toString() ? "opacity-100" : "opacity-0"
+                    )
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal leading-snug", children: option.label })
+              ]
+            },
+            option.id
+          ))
+        ] })
+      ] })
+    ] }) })
+  ] });
+};
 const emptyOptions = {
   franchises: [],
   characters: [],
@@ -25416,6 +25495,28 @@ const CharacterAdminPage = ({ config }) => {
     }
     if (field.type === "select") {
       const fieldOptions = field.staticOptions || (field.optionsKey ? options[field.optionsKey] : []);
+      if (field.optionsKey && !field.staticOptions) {
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            field.label,
+            " ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            EntityCombobox,
+            {
+              options: fieldOptions,
+              value,
+              placeholder: loadingOptions ? "Loading options..." : `Select ${field.label}`,
+              disabled: loadingOptions,
+              nullable: field.nullable,
+              onChange: (nextValue) => handleChange(field.name, nextValue)
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("input", { value, required: field.required, className: "sr-only", onChange: () => void 0 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: field.helper })
+        ] }, field.name);
+      }
       return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
           field.label,
