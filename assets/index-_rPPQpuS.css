@@ -857,6 +857,9 @@ video {
 .h-2\.5 {
   height: 0.625rem;
 }
+.h-20 {
+  height: 5rem;
+}
 .h-28 {
   height: 7rem;
 }
@@ -1052,9 +1055,6 @@ video {
 }
 .max-w-2xl {
   max-width: 42rem;
-}
-.max-w-3xl {
-  max-width: 48rem;
 }
 .max-w-4xl {
   max-width: 56rem;
@@ -1421,6 +1421,9 @@ video {
 .bg-destructive {
   background-color: hsl(var(--destructive));
 }
+.bg-destructive\/10 {
+  background-color: hsl(var(--destructive) / 0.1);
+}
 .bg-destructive\/5 {
   background-color: hsl(var(--destructive) / 0.05);
 }
@@ -1569,6 +1572,9 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 .pb-3 {
   padding-bottom: 0.75rem;

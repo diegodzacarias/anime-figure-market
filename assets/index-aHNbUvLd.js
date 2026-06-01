@@ -11365,7 +11365,7 @@ function useControllableState({
     (nextValue) => {
       var _a2;
       if (isControlled) {
-        const value2 = isFunction(nextValue) ? nextValue(prop) : nextValue;
+        const value2 = isFunction$1(nextValue) ? nextValue(prop) : nextValue;
         if (value2 !== prop) {
           (_a2 = onChangeRef.current) == null ? void 0 : _a2.call(onChangeRef, value2);
         }
@@ -11396,7 +11396,7 @@ function useUncontrolledState({
   }, [value, prevValueRef]);
   return [value, setValue, onChangeRef];
 }
-function isFunction(value) {
+function isFunction$1(value) {
   return typeof value === "function";
 }
 var VISUALLY_HIDDEN_STYLES = Object.freeze({
@@ -17135,12 +17135,12 @@ var TooltipProvider$1 = (props) => {
 TooltipProvider$1.displayName = PROVIDER_NAME;
 var TOOLTIP_NAME = "Tooltip";
 var [TooltipContextProvider, useTooltipContext] = createTooltipContext(TOOLTIP_NAME);
-var TRIGGER_NAME$5 = "TooltipTrigger";
+var TRIGGER_NAME$6 = "TooltipTrigger";
 var TooltipTrigger = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeTooltip, ...triggerProps } = props;
-    const context = useTooltipContext(TRIGGER_NAME$5, __scopeTooltip);
-    const providerContext = useTooltipProviderContext(TRIGGER_NAME$5, __scopeTooltip);
+    const context = useTooltipContext(TRIGGER_NAME$6, __scopeTooltip);
+    const providerContext = useTooltipProviderContext(TRIGGER_NAME$6, __scopeTooltip);
     const popperScope = usePopperScope$2(__scopeTooltip);
     const ref = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, ref, context.onTriggerChange);
@@ -17184,7 +17184,7 @@ var TooltipTrigger = reactExports.forwardRef(
     ) });
   }
 );
-TooltipTrigger.displayName = TRIGGER_NAME$5;
+TooltipTrigger.displayName = TRIGGER_NAME$6;
 var PORTAL_NAME$5 = "TooltipPortal";
 var [PortalProvider$3, usePortalContext$3] = createTooltipContext(PORTAL_NAME$5, {
   forceMount: void 0
@@ -18966,11 +18966,11 @@ var Dialog$1 = (props) => {
   );
 };
 Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME$4 = "DialogTrigger";
+var TRIGGER_NAME$5 = "DialogTrigger";
 var DialogTrigger = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, ...triggerProps } = props;
-    const context = useDialogContext(TRIGGER_NAME$4, __scopeDialog);
+    const context = useDialogContext(TRIGGER_NAME$5, __scopeDialog);
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
       Primitive.button,
@@ -18979,7 +18979,7 @@ var DialogTrigger = reactExports.forwardRef(
         "aria-haspopup": "dialog",
         "aria-expanded": context.open,
         "aria-controls": context.contentId,
-        "data-state": getState$1(context.open),
+        "data-state": getState$2(context.open),
         ...triggerProps,
         ref: composedTriggerRef,
         onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
@@ -18987,7 +18987,7 @@ var DialogTrigger = reactExports.forwardRef(
     );
   }
 );
-DialogTrigger.displayName = TRIGGER_NAME$4;
+DialogTrigger.displayName = TRIGGER_NAME$5;
 var PORTAL_NAME$4 = "DialogPortal";
 var [PortalProvider$2, usePortalContext$2] = createDialogContext(PORTAL_NAME$4, {
   forceMount: void 0
@@ -19019,7 +19019,7 @@ var DialogOverlayImpl = reactExports.forwardRef(
       /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot$2, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         Primitive.div,
         {
-          "data-state": getState$1(context.open),
+          "data-state": getState$2(context.open),
           ...overlayProps,
           ref: forwardedRef,
           style: { pointerEvents: "auto", ...overlayProps.style }
@@ -19138,7 +19138,7 @@ var DialogContentImpl = reactExports.forwardRef(
               id: context.contentId,
               "aria-describedby": context.descriptionId,
               "aria-labelledby": context.titleId,
-              "data-state": getState$1(context.open),
+              "data-state": getState$2(context.open),
               ...contentProps,
               ref: composedRefs,
               onDismiss: () => context.onOpenChange(false)
@@ -19188,7 +19188,7 @@ var DialogClose = reactExports.forwardRef(
   }
 );
 DialogClose.displayName = CLOSE_NAME$1;
-function getState$1(open) {
+function getState$2(open) {
   return open ? "open" : "closed";
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
@@ -19245,7 +19245,7 @@ var AlertDialog$1 = (props) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Root$1, { ...dialogScope, ...alertDialogProps, modal: true });
 };
 AlertDialog$1.displayName = ROOT_NAME;
-var TRIGGER_NAME$3 = "AlertDialogTrigger";
+var TRIGGER_NAME$4 = "AlertDialogTrigger";
 var AlertDialogTrigger = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeAlertDialog, ...triggerProps } = props;
@@ -19253,7 +19253,7 @@ var AlertDialogTrigger = reactExports.forwardRef(
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Trigger$3, { ...dialogScope, ...triggerProps, ref: forwardedRef });
   }
 );
-AlertDialogTrigger.displayName = TRIGGER_NAME$3;
+AlertDialogTrigger.displayName = TRIGGER_NAME$4;
 var PORTAL_NAME$3 = "AlertDialogPortal";
 var AlertDialogPortal$1 = (props) => {
   const { __scopeAlertDialog, ...portalProps } = props;
@@ -19600,853 +19600,286 @@ const DialogTitle = reactExports.forwardRef(({ className, ...props }, ref) => /*
 DialogTitle.displayName = Title.displayName;
 const DialogDescription = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(Description, { ref, className: cn("text-sm text-muted-foreground", className), ...props }));
 DialogDescription.displayName = Description.displayName;
-const getFigureFranchiseId = (figure) => {
-  var _a2;
-  return (figure == null ? void 0 : figure.franchiseId) || ((_a2 = figure == null ? void 0 : figure.franchise) == null ? void 0 : _a2.id) || "";
-};
-const getFigureBrandId = (figure) => {
-  var _a2;
-  return (figure == null ? void 0 : figure.brandId) || ((_a2 = figure == null ? void 0 : figure.brand) == null ? void 0 : _a2.id) || "";
-};
-const FigureFormDialog = ({
-  figure,
-  franchises,
-  brands: brands2,
-  currencyCodes,
-  figureStatuses,
-  open,
-  saving,
-  loadingOptions,
-  onOpenChange,
-  onGenerateSlug,
-  onValidateSlug,
-  onSubmit
-}) => {
-  const [slugEditable, setSlugEditable] = reactExports.useState(false);
-  const [generatingSlug, setGeneratingSlug] = reactExports.useState(false);
-  const [validatingSlug, setValidatingSlug] = reactExports.useState(false);
-  const [slugMessage, setSlugMessage] = reactExports.useState("");
-  const [form, setForm] = reactExports.useState({
-    franchiseId: "",
-    brandId: "",
-    name: "",
-    slug: "",
-    scene: "",
-    lineName: "",
-    material: "",
-    janCode: "",
-    officialProductCode: "",
-    isLicensed: "true",
-    editionSize: "",
-    baseCurrencyCode: "USD",
-    status: "RELEASED",
-    notes: ""
+function usePrevious(value) {
+  const ref = reactExports.useRef({ value, previous: value });
+  return reactExports.useMemo(() => {
+    if (ref.current.value !== value) {
+      ref.current.previous = ref.current.value;
+      ref.current.value = value;
+    }
+    return ref.current.previous;
+  }, [value]);
+}
+var CHECKBOX_NAME = "Checkbox";
+var [createCheckboxContext, createCheckboxScope] = createContextScope(CHECKBOX_NAME);
+var [CheckboxProviderImpl, useCheckboxContext] = createCheckboxContext(CHECKBOX_NAME);
+function CheckboxProvider(props) {
+  const {
+    __scopeCheckbox,
+    checked: checkedProp,
+    children,
+    defaultChecked,
+    disabled,
+    form,
+    name,
+    onCheckedChange,
+    required,
+    value = "on",
+    // @ts-expect-error
+    internal_do_not_use_render
+  } = props;
+  const [checked, setChecked] = useControllableState({
+    prop: checkedProp,
+    defaultProp: defaultChecked ?? false,
+    onChange: onCheckedChange,
+    caller: CHECKBOX_NAME
   });
-  reactExports.useEffect(() => {
-    var _a2;
-    if (!open) return;
-    setForm({
-      franchiseId: getFigureFranchiseId(figure).toString(),
-      brandId: getFigureBrandId(figure).toString(),
-      name: (figure == null ? void 0 : figure.name) || "",
-      slug: (figure == null ? void 0 : figure.slug) || "",
-      scene: (figure == null ? void 0 : figure.scene) || "",
-      lineName: (figure == null ? void 0 : figure.lineName) || "",
-      material: (figure == null ? void 0 : figure.material) || "",
-      janCode: (figure == null ? void 0 : figure.janCode) || "",
-      officialProductCode: (figure == null ? void 0 : figure.officialProductCode) || "",
-      isLicensed: ((figure == null ? void 0 : figure.isLicensed) ?? true).toString(),
-      editionSize: ((_a2 = figure == null ? void 0 : figure.editionSize) == null ? void 0 : _a2.toString()) || "",
-      baseCurrencyCode: (figure == null ? void 0 : figure.baseCurrencyCode) || "USD",
-      status: (figure == null ? void 0 : figure.status) || "RELEASED",
-      notes: (figure == null ? void 0 : figure.notes) || ""
-    });
-    setSlugEditable(false);
-    setSlugMessage("");
-  }, [figure, open]);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+  const [control, setControl] = reactExports.useState(null);
+  const [bubbleInput, setBubbleInput] = reactExports.useState(null);
+  const hasConsumerStoppedPropagationRef = reactExports.useRef(false);
+  const isFormControl = control ? !!form || !!control.closest("form") : (
+    // We set this to true by default so that events bubble to forms without JS (SSR)
+    true
+  );
+  const context = {
+    checked,
+    disabled,
+    setChecked,
+    control,
+    setControl,
+    name,
+    form,
+    value,
+    hasConsumerStoppedPropagationRef,
+    required,
+    defaultChecked: isIndeterminate$1(defaultChecked) ? false : defaultChecked,
+    isFormControl,
+    bubbleInput,
+    setBubbleInput
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSlugMessage("");
-    if (!form.slug.trim()) {
-      setSlugMessage("Generate a slug before saving, or unlock the field and enter one.");
-      return;
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    CheckboxProviderImpl,
+    {
+      scope: __scopeCheckbox,
+      ...context,
+      children: isFunction(internal_do_not_use_render) ? internal_do_not_use_render(context) : children
     }
-    setValidatingSlug(true);
-    try {
-      const slugAvailable = await onValidateSlug(form.slug.trim(), figure == null ? void 0 : figure.id);
-      if (!slugAvailable) {
-        setSlugMessage("This slug is already in use. Edit it or generate another one.");
-        return;
+  );
+}
+var TRIGGER_NAME$3 = "CheckboxTrigger";
+var CheckboxTrigger = reactExports.forwardRef(
+  ({ __scopeCheckbox, onKeyDown, onClick, ...checkboxProps }, forwardedRef) => {
+    const {
+      control,
+      value,
+      disabled,
+      checked,
+      required,
+      setControl,
+      setChecked,
+      hasConsumerStoppedPropagationRef,
+      isFormControl,
+      bubbleInput
+    } = useCheckboxContext(TRIGGER_NAME$3, __scopeCheckbox);
+    const composedRefs = useComposedRefs(forwardedRef, setControl);
+    const initialCheckedStateRef = reactExports.useRef(checked);
+    reactExports.useEffect(() => {
+      const form = control == null ? void 0 : control.form;
+      if (form) {
+        const reset = () => setChecked(initialCheckedStateRef.current);
+        form.addEventListener("reset", reset);
+        return () => form.removeEventListener("reset", reset);
       }
-    } catch {
-      return;
-    } finally {
-      setValidatingSlug(false);
-    }
-    const payload = {
-      franchiseId: Number(form.franchiseId),
-      brandId: Number(form.brandId),
-      name: form.name.trim(),
-      slug: form.slug.trim(),
-      isLicensed: form.isLicensed === "true",
-      baseCurrencyCode: form.baseCurrencyCode,
-      status: form.status
-    };
-    if (form.scene.trim()) payload.scene = form.scene.trim();
-    if (form.lineName.trim()) payload.lineName = form.lineName.trim();
-    if (form.material.trim()) payload.material = form.material.trim();
-    if (form.janCode.trim()) payload.janCode = form.janCode.trim();
-    if (form.officialProductCode.trim()) payload.officialProductCode = form.officialProductCode.trim();
-    if (form.editionSize) payload.editionSize = Number(form.editionSize);
-    if (form.notes.trim()) payload.notes = form.notes.trim();
-    await onSubmit(payload);
-  };
-  const handleGenerateSlug = async () => {
-    const name = form.name.trim();
-    if (!name) {
-      setSlugMessage("Write a name before generating the slug.");
-      return;
-    }
-    setSlugMessage("");
-    setGeneratingSlug(true);
-    try {
-      const slug = await onGenerateSlug(name);
-      setForm((prev) => ({ ...prev, slug }));
-      setSlugEditable(false);
-      setSlugMessage("Slug generated and available.");
-    } finally {
-      setGeneratingSlug(false);
-    }
-  };
-  const selectClass = "w-full border border-input bg-background text-foreground p-2 rounded";
-  const optionClass = "bg-background text-foreground";
-  const helperClass = "mt-1 text-xs text-muted-foreground";
-  const labelClass = "mb-1 block text-sm font-medium text-foreground";
-  const requiredMark = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-destructive", children: "*" });
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open, onOpenChange, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { className: "max-h-[90vh] max-w-3xl overflow-y-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: saving, label: "Saving figure..." }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { children: figure ? "Update Figure" : "New Figure" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { children: "Manage the main figure record used by aliases and source listings." })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "grid gap-5", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 md:grid-cols-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Franchise ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "select",
-            {
-              name: "franchiseId",
-              value: form.franchiseId,
-              onChange: handleChange,
-              className: selectClass,
-              disabled: loadingOptions || franchises.length === 0,
-              required: true,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: loadingOptions ? "Loading franchises..." : "Select a franchise" }),
-                franchises.map((franchise) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: franchise.id, children: franchise.name }, franchise.id))
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Anime o universo al que pertenece la figura." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Brand ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "select",
-            {
-              name: "brandId",
-              value: form.brandId,
-              onChange: handleChange,
-              className: selectClass,
-              required: true,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: "Select a brand" }),
-                brands2.map((brand) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: brand.id, children: brand.name }, brand.id))
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Fabricante o marca que produce la figura." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Name ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "name", maxLength: 255, value: form.name, onChange: handleChange, required: true }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Nombre completo del producto." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Slug ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Input,
-              {
-                name: "slug",
-                maxLength: 300,
-                value: form.slug,
-                onChange: (event) => {
-                  handleChange(event);
-                  setSlugMessage("");
-                },
-                disabled: !slugEditable,
-                required: true,
-                className: "sm:flex-1"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                type: "button",
-                variant: "outline",
-                disabled: generatingSlug || !form.name.trim(),
-                onClick: handleGenerateSlug,
-                children: generatingSlug ? "Generating..." : "Generate"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "ghost", onClick: () => setSlugEditable((current) => !current), children: slugEditable ? "Lock" : "Edit" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: slugMessage || "Generate it from the name, or unlock it if manual editing is needed." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Scene" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "scene", maxLength: 255, value: form.scene, onChange: handleChange }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Pose, escena o transformacion representada." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Line Name" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "lineName", maxLength: 150, value: form.lineName, onChange: handleChange }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Linea o coleccion comercial de la marca." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Material" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "material", maxLength: 100, value: form.material, onChange: handleChange }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Material principal, como PVC, ABS o resina." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "JAN/EAN Code" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "janCode", maxLength: 20, value: form.janCode, onChange: handleChange }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Codigo JAN/EAN canonico usado para matching y verificacion." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Official Product Code" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Input,
-            {
-              name: "officialProductCode",
-              maxLength: 100,
-              value: form.officialProductCode,
-              onChange: handleChange
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Codigo oficial publicado por el fabricante o marca." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Edition Size" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Input,
-            {
-              name: "editionSize",
-              type: "number",
-              min: "0",
-              value: form.editionSize,
-              onChange: handleChange
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Cantidad producida si es una edicion limitada." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Licensed ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "select",
-            {
-              name: "isLicensed",
-              value: form.isLicensed,
-              onChange: handleChange,
-              className: selectClass,
-              required: true,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "true", children: "Yes" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "false", children: "No" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Indica si es una figura oficial/licenciada." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Status ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "select",
-            {
-              name: "status",
-              value: form.status,
-              onChange: handleChange,
-              className: selectClass,
-              required: true,
-              children: figureStatuses.map((status) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: status.value, children: status.label }, status.value))
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Disponibilidad actual: preventa, lanzada o agotada." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Base Currency ",
-            requiredMark
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "select",
-            {
-              name: "baseCurrencyCode",
-              value: form.baseCurrencyCode,
-              onChange: handleChange,
-              className: selectClass,
-              required: true,
-              children: currencyCodes.map((currency) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { className: optionClass, value: currency.value, children: [
-                currency.label,
-                currency.symbol ? ` (${currency.symbol})` : ""
-              ] }, currency.value))
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Moneda base requerida por el backend." })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Notes" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "textarea",
-          {
-            name: "notes",
-            value: form.notes,
-            onChange: handleChange,
-            className: "w-full rounded border border-input bg-background p-3 text-foreground"
+    }, [control, setChecked]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.button,
+      {
+        type: "button",
+        role: "checkbox",
+        "aria-checked": isIndeterminate$1(checked) ? "mixed" : checked,
+        "aria-required": required,
+        "data-state": getState$1(checked),
+        "data-disabled": disabled ? "" : void 0,
+        disabled,
+        value,
+        ...checkboxProps,
+        ref: composedRefs,
+        onKeyDown: composeEventHandlers(onKeyDown, (event) => {
+          if (event.key === "Enter") event.preventDefault();
+        }),
+        onClick: composeEventHandlers(onClick, (event) => {
+          setChecked((prevChecked) => isIndeterminate$1(prevChecked) ? true : !prevChecked);
+          if (bubbleInput && isFormControl) {
+            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
           }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Datos adicionales, variantes u observaciones internas." })
-      ] }),
-      (figure == null ? void 0 : figure.id) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border bg-muted/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 md:flex-row md:items-center md:justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-foreground", children: "Figure Characters" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-xs text-muted-foreground", children: "Associate this Figure with Character and optional Character Form records." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/character-admin/figure-characters", children: "Manage Figure Characters" }) })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", onClick: () => onOpenChange(false), children: "Cancel" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving || validatingSlug, children: saving ? "Saving..." : validatingSlug ? "Validating slug..." : figure ? "Update" : "Create" })
-      ] })
-    ] })
-  ] }) });
-};
-const Table = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative w-full overflow-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("table", { ref, className: cn("w-full caption-bottom text-sm", className), ...props }) })
-);
-Table.displayName = "Table";
-const TableHeader = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { ref, className: cn("[&_tr]:border-b", className), ...props })
-);
-TableHeader.displayName = "TableHeader";
-const TableBody = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { ref, className: cn("[&_tr:last-child]:border-0", className), ...props })
-);
-TableBody.displayName = "TableBody";
-const TableFooter = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("tfoot", { ref, className: cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className), ...props })
-);
-TableFooter.displayName = "TableFooter";
-const TableRow = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "tr",
-    {
-      ref,
-      className: cn("border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50", className),
-      ...props
-    }
-  )
-);
-TableRow.displayName = "TableRow";
-const TableHead = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "th",
-    {
-      ref,
-      className: cn(
-        "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-        className
-      ),
-      ...props
-    }
-  )
-);
-TableHead.displayName = "TableHead";
-const TableCell = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("td", { ref, className: cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className), ...props })
-);
-TableCell.displayName = "TableCell";
-const TableCaption = reactExports.forwardRef(
-  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("caption", { ref, className: cn("mt-4 text-sm text-muted-foreground", className), ...props })
-);
-TableCaption.displayName = "TableCaption";
-const getFranchiseName = (figure, franchiseNames) => {
-  var _a2, _b2;
-  const franchiseId = figure.franchiseId || ((_a2 = figure.franchise) == null ? void 0 : _a2.id);
-  return ((_b2 = figure.franchise) == null ? void 0 : _b2.name) || (franchiseId ? franchiseNames[franchiseId] : "") || "-";
-};
-const getBrandName = (figure, brandNames) => {
-  var _a2, _b2;
-  const brandId = figure.brandId || ((_a2 = figure.brand) == null ? void 0 : _a2.id);
-  return ((_b2 = figure.brand) == null ? void 0 : _b2.name) || (brandId ? brandNames[brandId] : "") || "-";
-};
-const FigureTable = ({
-  figures: figures2,
-  loading,
-  franchiseNames,
-  brandNames,
-  onEdit,
-  onDelete
-}) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Name" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Slug" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Franchise" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Brand" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "JAN/EAN" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Product Code" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures2.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures2.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: figure.id }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.name || "-" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.slug || "-" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getFranchiseName(figure, franchiseNames) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getBrandName(figure, brandNames) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.janCode || "-" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.officialProductCode || "-" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.status || "-" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", variant: "outline", size: "sm", className: "gap-2", onClick: () => onEdit(figure), children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Pencil, { className: "h-3.5 w-3.5" }),
-          "Actualizar"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", variant: "destructive", size: "sm", className: "gap-2", onClick: () => onDelete(figure), children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "h-3.5 w-3.5" }),
-          "Eliminar"
-        ] })
-      ] }) })
-    ] }, figure.id)) })
-  ] }) }) });
-};
-const API_BASE_URL$7 = "https://figure-market-core.onrender.com/api";
-const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL$7}/v1/reference-data`;
-const emptyReferenceData = {
-  currencyCodes: [],
-  figureStatuses: [],
-  figureSourceListingStatuses: [],
-  loadMethods: [],
-  sourcePriorities: [],
-  sourceTypes: [],
-  scrapedListingCandidateStatuses: [],
-  matchDecisions: []
-};
-function useReferenceData() {
-  const [referenceData, setReferenceData] = reactExports.useState(emptyReferenceData);
-  const [loadingReferenceData, setLoadingReferenceData] = reactExports.useState(true);
-  reactExports.useEffect(() => {
-    const fetchReferenceData = async () => {
-      setLoadingReferenceData(true);
-      try {
-        const response = await fetch(REFERENCE_DATA_ENDPOINT);
-        if (!response.ok) {
-          console.error("Error fetching reference data");
-          return;
-        }
-        const data = await response.json();
-        setReferenceData({
-          ...emptyReferenceData,
-          ...data
-        });
-      } catch (error) {
-        console.error("Request error fetching reference data:", error);
-      } finally {
-        setLoadingReferenceData(false);
+        })
       }
-    };
-    fetchReferenceData();
-  }, []);
-  return { referenceData, loadingReferenceData };
-}
-async function readApiErrorResponse(response, fallbackMessage) {
-  const text = await response.text();
-  if (text) {
-    try {
-      const data = JSON.parse(text);
-      return {
-        status: data.status ?? response.status,
-        error: data.error ?? response.statusText,
-        message: data.message ?? fallbackMessage,
-        path: data.path,
-        requestId: data.requestId,
-        details: data.details,
-        timestamp: data.timestamp
-      };
-    } catch {
-      return {
-        status: response.status,
-        error: response.statusText,
-        message: text
-      };
-    }
+    );
   }
-  return {
-    status: response.status,
-    error: response.statusText,
-    message: fallbackMessage
-  };
-}
-function toClientApiError(error, fallbackMessage) {
-  return {
-    status: 0,
-    error: "Client Error",
-    message: error instanceof Error ? error.message : fallbackMessage
-  };
-}
-const API_BASE_URL$6 = "https://figure-market-core.onrender.com/api";
-const FIGURES_ENDPOINT$3 = `${API_BASE_URL$6}/v1/figures`;
-const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/suggestion`;
-const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/availability`;
-const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$6}/v1/franchises`;
-const SOURCES_ENDPOINT$4 = `${API_BASE_URL$6}/v1/sources`;
-const brands = [
-  { id: 1, name: "Good Smile Company" },
-  { id: 2, name: "Kotobukiya" },
-  { id: 3, name: "MegaHouse" },
-  { id: 4, name: "Prime 1" },
-  { id: 5, name: "FREEing" }
-];
-const fallbackCurrencyCodes$2 = [
-  { value: "USD", label: "Usd", symbol: "$" },
-  { value: "JPY", label: "Jpy", symbol: "¥" }
-];
-const fallbackFigureStatuses = [
-  { value: "PREORDER", label: "Preorder" },
-  { value: "RELEASED", label: "Released" },
-  { value: "SOLD_OUT", label: "Sold Out" }
-];
-const FigurePage = () => {
-  const [figures2, setFigures] = reactExports.useState([]);
-  const [franchises, setFranchises] = reactExports.useState([]);
-  const [sources, setSources] = reactExports.useState([]);
-  const [loading, setLoading] = reactExports.useState(true);
-  const [loadingOptions, setLoadingOptions] = reactExports.useState(true);
-  const [saving, setSaving] = reactExports.useState(false);
-  const [deleting, setDeleting] = reactExports.useState(false);
-  const [search, setSearch] = reactExports.useState("");
-  const [page, setPage] = reactExports.useState(0);
-  const [pageSize, setPageSize] = reactExports.useState(20);
-  const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
-  const [apiError, setApiError] = reactExports.useState(null);
-  const [dialogOpen, setDialogOpen] = reactExports.useState(false);
-  const [selectedFigure, setSelectedFigure] = reactExports.useState(null);
-  const [figureToDelete, setFigureToDelete] = reactExports.useState(null);
-  const mutating = saving || deleting;
-  const { referenceData } = useReferenceData();
-  const fetchData = async (showLoading = true) => {
-    if (showLoading) {
-      setLoading(true);
-      setLoadingOptions(true);
-    }
-    try {
-      const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
-        fetch(withPagination(FIGURES_ENDPOINT$3, page, pageSize)),
-        fetch(withPageSize(FRANCHISES_ENDPOINT$1)),
-        fetch(withPageSize(SOURCES_ENDPOINT$4))
-      ]);
-      if (figuresResponse.ok) {
-        const data = await figuresResponse.json();
-        setFigures(getPageContent(data));
-        setPageMeta(getPageMeta(data, pageSize));
-      } else {
-        console.error("Error fetching figures");
-      }
-      if (franchisesResponse.ok) {
-        const data = await franchisesResponse.json();
-        setFranchises(getPageContent(data));
-      } else {
-        console.error("Error fetching franchises");
-      }
-      if (sourcesResponse.ok) {
-        const data = await sourcesResponse.json();
-        setSources(getPageContent(data));
-      } else {
-        console.error("Error fetching sources");
-      }
-    } catch (error) {
-      console.error("Request error fetching figures:", error);
-    } finally {
-      if (showLoading) {
-        setLoading(false);
-        setLoadingOptions(false);
-      }
-    }
-  };
-  reactExports.useEffect(() => {
-    fetchData();
-  }, [page, pageSize]);
-  reactExports.useEffect(() => {
-    setPage(0);
-  }, [search]);
-  const franchiseNames = reactExports.useMemo(
-    () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
-    [franchises]
-  );
-  const brandNames = reactExports.useMemo(
-    () => Object.fromEntries(brands.map((brand) => [brand.id, brand.name])),
-    []
-  );
-  const filteredFigures = reactExports.useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return figures2;
-    return figures2.filter(
-      (figure) => {
-        var _a2, _b2, _c2;
-        return [
-          (_a2 = figure.id) == null ? void 0 : _a2.toString(),
-          figure.name,
-          figure.slug,
-          figure.janCode,
-          figure.officialProductCode,
-          (_b2 = figure.franchise) == null ? void 0 : _b2.name,
-          (_c2 = figure.brand) == null ? void 0 : _c2.name,
-          figure.status
-        ].filter(Boolean).some((value) => value == null ? void 0 : value.toLowerCase().includes(query));
-      }
-    );
-  }, [figures2, search]);
-  const openCreateDialog = () => {
-    setSelectedFigure(null);
-    setDialogOpen(true);
-  };
-  const openEditDialog = (figure) => {
-    setSelectedFigure(figure);
-    setDialogOpen(true);
-  };
-  const generateSlug = async (name) => {
-    const response = await fetch(
-      `${FIGURE_SLUG_SUGGESTION_ENDPOINT}?title=${encodeURIComponent(name)}`
-    );
-    if (!response.ok) {
-      setApiError(await readApiErrorResponse(response, "Error generating slug."));
-      throw new Error("Error generating slug");
-    }
-    const data = await response.json();
-    return data.slug || "";
-  };
-  const validateSlug = async (slug, figureId) => {
-    const params = new URLSearchParams({ slug });
-    if (figureId) {
-      params.set("excludeFigureId", figureId.toString());
-    }
-    const response = await fetch(`${FIGURE_SLUG_AVAILABILITY_ENDPOINT}?${params.toString()}`);
-    if (!response.ok) {
-      setApiError(await readApiErrorResponse(response, "Error validating slug."));
-      throw new Error("Error validating slug");
-    }
-    const data = await response.json();
-    return Boolean(data.available);
-  };
-  const handleSubmit = async (payload) => {
-    setSaving(true);
-    const isEditing = Boolean(selectedFigure == null ? void 0 : selectedFigure.id);
-    const endpoint = isEditing ? `${FIGURES_ENDPOINT$3}/${selectedFigure == null ? void 0 : selectedFigure.id}` : FIGURES_ENDPOINT$3;
-    try {
-      const response = await fetch(endpoint, {
-        method: isEditing ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) {
-        setApiError(await readApiErrorResponse(response, "Error saving figure."));
-        return;
-      }
-      await fetchData(false);
-      setDialogOpen(false);
-      setSelectedFigure(null);
-    } catch (error) {
-      console.error("Request error:", error);
-      setApiError(toClientApiError(error, "Error connecting to backend."));
-    } finally {
-      setSaving(false);
-    }
-  };
-  const handleDelete = async () => {
-    if (!(figureToDelete == null ? void 0 : figureToDelete.id)) return;
-    setDeleting(true);
-    try {
-      const response = await fetch(`${FIGURES_ENDPOINT$3}/${figureToDelete.id}`, {
-        method: "DELETE"
-      });
-      if (!response.ok) {
-        setApiError(await readApiErrorResponse(response, "Error deleting figure."));
-        return;
-      }
-      await fetchData(false);
-      setFigureToDelete(null);
-    } catch (error) {
-      console.error("Request error:", error);
-      setApiError(toClientApiError(error, "Error connecting to backend."));
-    } finally {
-      setDeleting(false);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-bold text-foreground", children: "Figures" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-muted-foreground", children: "Manage figure records used by aliases, listings, and marketplace views." })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", className: "gap-2 md:self-center", onClick: openCreateDialog, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" }),
-          "New Figure"
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 rounded-lg border bg-muted/30 p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-medium text-foreground", children: "Source quick links" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 flex flex-wrap gap-2", children: sources.filter((source) => source.baseUrl).length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "No source URLs available." }) : sources.filter((source) => source.baseUrl).map((source) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "a",
-          {
-            href: source.baseUrl,
-            target: "_blank",
-            rel: "noopener noreferrer",
-            className: "rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground",
-            children: source.name
-          },
-          source.id
-        )) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full md:max-w-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" }),
+);
+CheckboxTrigger.displayName = TRIGGER_NAME$3;
+var Checkbox$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeCheckbox,
+      name,
+      checked,
+      defaultChecked,
+      required,
+      disabled,
+      value,
+      onCheckedChange,
+      form,
+      ...checkboxProps
+    } = props;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      CheckboxProvider,
+      {
+        __scopeCheckbox,
+        checked,
+        defaultChecked,
+        disabled,
+        required,
+        onCheckedChange,
+        name,
+        form,
+        value,
+        internal_do_not_use_render: ({ isFormControl }) => /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Input,
+            CheckboxTrigger,
             {
-              value: search,
-              onChange: (e) => setSearch(e.target.value),
-              placeholder: "Search figures",
-              className: "pl-9"
+              ...checkboxProps,
+              ref: forwardedRef,
+              __scopeCheckbox
+            }
+          ),
+          isFormControl && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            CheckboxBubbleInput,
+            {
+              __scopeCheckbox
             }
           )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
-          filteredFigures.length,
-          " shown - ",
-          pageMeta.totalElements,
-          " total records"
         ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: mutating, message: "Updating figures...", className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        FigureTable,
-        {
-          figures: filteredFigures,
-          loading,
-          franchiseNames,
-          brandNames,
-          onEdit: openEditDialog,
-          onDelete: setFigureToDelete
-        }
-      ) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        PageControls,
-        {
-          page: pageMeta.page,
-          size: pageMeta.size,
-          totalElements: pageMeta.totalElements,
-          totalPages: pageMeta.totalPages,
-          disabled: loading || mutating,
-          onPageChange: setPage,
-          onSizeChange: (size2) => {
-            setPageSize(size2);
-            setPage(0);
+      }
+    );
+  }
+);
+Checkbox$1.displayName = CHECKBOX_NAME;
+var INDICATOR_NAME$1 = "CheckboxIndicator";
+var CheckboxIndicator = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeCheckbox, forceMount, ...indicatorProps } = props;
+    const context = useCheckboxContext(INDICATOR_NAME$1, __scopeCheckbox);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Presence,
+      {
+        present: forceMount || isIndeterminate$1(context.checked) || context.checked === true,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Primitive.span,
+          {
+            "data-state": getState$1(context.checked),
+            "data-disabled": context.disabled ? "" : void 0,
+            ...indicatorProps,
+            ref: forwardedRef,
+            style: { pointerEvents: "none", ...props.style }
           }
+        )
+      }
+    );
+  }
+);
+CheckboxIndicator.displayName = INDICATOR_NAME$1;
+var BUBBLE_INPUT_NAME = "CheckboxBubbleInput";
+var CheckboxBubbleInput = reactExports.forwardRef(
+  ({ __scopeCheckbox, ...props }, forwardedRef) => {
+    const {
+      control,
+      hasConsumerStoppedPropagationRef,
+      checked,
+      defaultChecked,
+      required,
+      disabled,
+      name,
+      value,
+      form,
+      bubbleInput,
+      setBubbleInput
+    } = useCheckboxContext(BUBBLE_INPUT_NAME, __scopeCheckbox);
+    const composedRefs = useComposedRefs(forwardedRef, setBubbleInput);
+    const prevChecked = usePrevious(checked);
+    const controlSize = useSize(control);
+    reactExports.useEffect(() => {
+      const input = bubbleInput;
+      if (!input) return;
+      const inputProto = window.HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(
+        inputProto,
+        "checked"
+      );
+      const setChecked = descriptor.set;
+      const bubbles = !hasConsumerStoppedPropagationRef.current;
+      if (prevChecked !== checked && setChecked) {
+        const event = new Event("click", { bubbles });
+        input.indeterminate = isIndeterminate$1(checked);
+        setChecked.call(input, isIndeterminate$1(checked) ? false : checked);
+        input.dispatchEvent(event);
+      }
+    }, [bubbleInput, prevChecked, checked, hasConsumerStoppedPropagationRef]);
+    const defaultCheckedRef = reactExports.useRef(isIndeterminate$1(checked) ? false : checked);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.input,
+      {
+        type: "checkbox",
+        "aria-hidden": true,
+        defaultChecked: defaultChecked ?? defaultCheckedRef.current,
+        required,
+        disabled,
+        name,
+        value,
+        form,
+        ...props,
+        tabIndex: -1,
+        ref: composedRefs,
+        style: {
+          ...props.style,
+          ...controlSize,
+          position: "absolute",
+          pointerEvents: "none",
+          opacity: 0,
+          margin: 0,
+          // We transform because the input is absolutely positioned but we have
+          // rendered it **after** the button. This pulls it back to sit on top
+          // of the button.
+          transform: "translateX(-100%)"
         }
-      ) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      FigureFormDialog,
-      {
-        figure: selectedFigure,
-        franchises,
-        brands,
-        open: dialogOpen,
-        saving,
-        loadingOptions,
-        currencyCodes: referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes$2,
-        figureStatuses: referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses,
-        onOpenChange: setDialogOpen,
-        onGenerateSlug: generateSlug,
-        onValidateSlug: validateSlug,
-        onSubmit: handleSubmit
       }
+    );
+  }
+);
+CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME;
+function isFunction(value) {
+  return typeof value === "function";
+}
+function isIndeterminate$1(checked) {
+  return checked === "indeterminate";
+}
+function getState$1(checked) {
+  return isIndeterminate$1(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
+}
+const Checkbox = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  Checkbox$1,
+  {
+    ref,
+    className: cn(
+      "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+      className
     ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      AlertDialog,
-      {
-        open: Boolean(figureToDelete),
-        onOpenChange: (open) => {
-          if (!open) setFigureToDelete(null);
-        },
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogContent, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogHeader, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogTitle, { children: "Delete figure?" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogDescription, { children: [
-              'This action will delete "',
-              (figureToDelete == null ? void 0 : figureToDelete.name) || "this figure",
-              '" from the database. This cannot be undone.'
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogFooter, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogCancel, { disabled: deleting, children: "Cancel" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              AlertDialogAction,
-              {
-                className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-                disabled: deleting,
-                onClick: handleDelete,
-                children: deleting ? "Deleting..." : "Delete"
-              }
-            )
-          ] })
-        ] })
-      }
-    )
-  ] });
-};
+    ...props,
+    children: /* @__PURE__ */ jsxRuntimeExports.jsx(CheckboxIndicator, { className: cn("flex items-center justify-center text-current"), children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "h-4 w-4" }) })
+  }
+));
+Checkbox.displayName = Checkbox$1.displayName;
 var U = 1, Y$1 = 0.9, H = 0.8, J = 0.17, p = 0.1, u = 0.999, $ = 0.9999;
 var k$1 = 0.99, m = /[\\\/_+.#"@\[\(\{&]/, B$1 = /[\\\/_+.#"@\[\(\{&]/g, K$1 = /[\s-]/, X = /[\s-]/g;
 function G(_, C2, h, P2, A2, f2, O2) {
@@ -21115,6 +20548,1273 @@ const PopoverContent = reactExports.forwardRef(({ className, align = "center", s
   }
 ) }));
 PopoverContent.displayName = Content2$2.displayName;
+const Table = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative w-full overflow-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("table", { ref, className: cn("w-full caption-bottom text-sm", className), ...props }) })
+);
+Table.displayName = "Table";
+const TableHeader = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { ref, className: cn("[&_tr]:border-b", className), ...props })
+);
+TableHeader.displayName = "TableHeader";
+const TableBody = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { ref, className: cn("[&_tr:last-child]:border-0", className), ...props })
+);
+TableBody.displayName = "TableBody";
+const TableFooter = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("tfoot", { ref, className: cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className), ...props })
+);
+TableFooter.displayName = "TableFooter";
+const TableRow = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "tr",
+    {
+      ref,
+      className: cn("border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50", className),
+      ...props
+    }
+  )
+);
+TableRow.displayName = "TableRow";
+const TableHead = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "th",
+    {
+      ref,
+      className: cn(
+        "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        className
+      ),
+      ...props
+    }
+  )
+);
+TableHead.displayName = "TableHead";
+const TableCell = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("td", { ref, className: cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className), ...props })
+);
+TableCell.displayName = "TableCell";
+const TableCaption = reactExports.forwardRef(
+  ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("caption", { ref, className: cn("mt-4 text-sm text-muted-foreground", className), ...props })
+);
+TableCaption.displayName = "TableCaption";
+async function readApiErrorResponse(response, fallbackMessage) {
+  const text = await response.text();
+  if (text) {
+    try {
+      const data = JSON.parse(text);
+      return {
+        status: data.status ?? response.status,
+        error: data.error ?? response.statusText,
+        message: data.message ?? fallbackMessage,
+        path: data.path,
+        requestId: data.requestId,
+        details: data.details,
+        timestamp: data.timestamp
+      };
+    } catch {
+      return {
+        status: response.status,
+        error: response.statusText,
+        message: text
+      };
+    }
+  }
+  return {
+    status: response.status,
+    error: response.statusText,
+    message: fallbackMessage
+  };
+}
+function toClientApiError(error, fallbackMessage) {
+  return {
+    status: 0,
+    error: "Client Error",
+    message: error instanceof Error ? error.message : fallbackMessage
+  };
+}
+const API_BASE_URL$8 = "https://figure-market-core.onrender.com/api";
+const CHARACTER_ENDPOINT = `${API_BASE_URL$8}/v1/characters`;
+const CHARACTER_FORM_ENDPOINT = `${API_BASE_URL$8}/v1/character-forms`;
+const FIGURE_CHARACTER_ENDPOINT = `${API_BASE_URL$8}/v1/figure-characters`;
+const getFigureFranchiseId = (figure) => {
+  var _a2;
+  return (figure == null ? void 0 : figure.franchiseId) || ((_a2 = figure == null ? void 0 : figure.franchise) == null ? void 0 : _a2.id) || "";
+};
+const getFigureBrandId = (figure) => {
+  var _a2;
+  return (figure == null ? void 0 : figure.brandId) || ((_a2 = figure == null ? void 0 : figure.brand) == null ? void 0 : _a2.id) || "";
+};
+const FigureRelationCombobox = ({
+  options,
+  value,
+  placeholder,
+  disabled,
+  nullable,
+  onChange
+}) => {
+  const [open, setOpen] = reactExports.useState(false);
+  const selectedOption = options.find((option) => option.id.toString() === value);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { modal: true, open, onOpenChange: setOpen, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      Button,
+      {
+        type: "button",
+        variant: "outline",
+        role: "combobox",
+        disabled,
+        className: "min-h-10 w-full justify-between whitespace-normal text-left font-normal",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "line-clamp-2", children: selectedOption ? selectedOption.label : nullable && !value ? "None" : placeholder }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronsUpDown, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
+        ]
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverContent, { align: "start", className: "w-[min(42rem,calc(100vw-2rem))] p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Command, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CommandInput, { placeholder: `Search ${placeholder.toLowerCase()}...` }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        CommandList,
+        {
+          className: "max-h-80 overflow-y-auto",
+          onWheelCapture: (event) => event.stopPropagation(),
+          onTouchMoveCapture: (event) => event.stopPropagation(),
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No option found." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandGroup, { children: [
+              nullable && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                CommandItem,
+                {
+                  value: "none",
+                  onSelect: () => {
+                    onChange("");
+                    setOpen(false);
+                  },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: cn("mr-2 h-4 w-4", value === "" ? "opacity-100" : "opacity-0") }),
+                    "None"
+                  ]
+                }
+              ),
+              options.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                CommandItem,
+                {
+                  value: `${option.label} ${option.id}`,
+                  onSelect: () => {
+                    onChange(option.id.toString());
+                    setOpen(false);
+                  },
+                  className: "items-start gap-2 py-3",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      Check,
+                      {
+                        className: cn(
+                          "mt-0.5 h-4 w-4 shrink-0",
+                          value === option.id.toString() ? "opacity-100" : "opacity-0"
+                        )
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal leading-snug", children: option.label })
+                  ]
+                },
+                option.id
+              ))
+            ] })
+          ]
+        }
+      )
+    ] }) })
+  ] });
+};
+const FigureCharactersSection = ({
+  figureId,
+  onApiError
+}) => {
+  const [rows, setRows] = reactExports.useState([]);
+  const [characters, setCharacters] = reactExports.useState([]);
+  const [characterForms, setCharacterForms] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const [loadingCharacters, setLoadingCharacters] = reactExports.useState(false);
+  const [loadingForms, setLoadingForms] = reactExports.useState(false);
+  const [savingRelation, setSavingRelation] = reactExports.useState(false);
+  const [editing, setEditing] = reactExports.useState(null);
+  const [rowToDelete, setRowToDelete] = reactExports.useState(null);
+  const [localError, setLocalError] = reactExports.useState("");
+  const [form, setRelationForm] = reactExports.useState({
+    characterId: "",
+    characterFormId: "",
+    primaryCharacter: false,
+    displayOrder: "0"
+  });
+  const busy = loading || savingRelation;
+  const resetRelationForm = () => {
+    setEditing(null);
+    setLocalError("");
+    setRelationForm({
+      characterId: "",
+      characterFormId: "",
+      primaryCharacter: false,
+      displayOrder: "0"
+    });
+    setCharacterForms([]);
+  };
+  const fetchFigureCharacters = async () => {
+    if (!figureId) return;
+    setLoading(true);
+    try {
+      const endpoint = `${FIGURE_CHARACTER_ENDPOINT}?figureId=${figureId}`;
+      const response = await fetch(withPagination(endpoint, 0, 100));
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error loading figure characters."));
+        return;
+      }
+      const data = await response.json();
+      setRows(getPageContent(data));
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchCharacters = async () => {
+    setLoadingCharacters(true);
+    try {
+      const response = await fetch(withPagination(CHARACTER_ENDPOINT, 0, 100, "canonicalName,asc"));
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error loading characters."));
+        return;
+      }
+      const data = await response.json();
+      setCharacters(
+        getPageContent(data).map((item) => ({
+          id: Number(item.id),
+          label: String(item.canonicalName || item.characterName || item.name || item.id)
+        }))
+      );
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setLoadingCharacters(false);
+    }
+  };
+  const fetchCharacterForms = async (characterId) => {
+    if (!characterId) {
+      setCharacterForms([]);
+      return;
+    }
+    setLoadingForms(true);
+    try {
+      const endpoint = `${CHARACTER_FORM_ENDPOINT}?characterId=${characterId}`;
+      const response = await fetch(withPagination(endpoint, 0, 100, "canonicalName,asc"));
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error loading character forms."));
+        return;
+      }
+      const data = await response.json();
+      setCharacterForms(
+        getPageContent(data).map((item) => ({
+          id: Number(item.id),
+          label: String(item.canonicalName || item.characterFormName || item.name || item.id)
+        }))
+      );
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setLoadingForms(false);
+    }
+  };
+  reactExports.useEffect(() => {
+    if (!figureId) {
+      setRows([]);
+      resetRelationForm();
+      return;
+    }
+    fetchFigureCharacters();
+    fetchCharacters();
+  }, [figureId]);
+  reactExports.useEffect(() => {
+    fetchCharacterForms(form.characterId);
+  }, [form.characterId]);
+  const handleCharacterChange = (characterId) => {
+    setLocalError("");
+    setRelationForm((current) => ({
+      ...current,
+      characterId,
+      characterFormId: ""
+    }));
+  };
+  const handleEdit = (row) => {
+    var _a2, _b2, _c2;
+    setLocalError("");
+    setEditing(row);
+    setRelationForm({
+      characterId: ((_a2 = row.characterId) == null ? void 0 : _a2.toString()) || "",
+      characterFormId: ((_b2 = row.characterFormId) == null ? void 0 : _b2.toString()) || "",
+      primaryCharacter: Boolean(row.primaryCharacter),
+      displayOrder: ((_c2 = row.displayOrder) == null ? void 0 : _c2.toString()) || "0"
+    });
+  };
+  const handleSave = async () => {
+    if (!figureId) return;
+    setLocalError("");
+    if (!form.characterId) {
+      setLocalError("Character is required.");
+      return;
+    }
+    if (form.displayOrder && Number(form.displayOrder) < 0) {
+      setLocalError("Display Order must be 0 or greater.");
+      return;
+    }
+    const characterId = Number(form.characterId);
+    const characterFormId = form.characterFormId ? Number(form.characterFormId) : null;
+    const duplicate = rows.some((row) => {
+      const sameRecord = (editing == null ? void 0 : editing.id) && row.id === editing.id;
+      return !sameRecord && row.characterId === characterId && (row.characterFormId || null) === characterFormId;
+    });
+    if (duplicate) {
+      setLocalError("This Figure + Character + Character Form combination already exists.");
+      return;
+    }
+    const payload = {
+      figureId,
+      characterId,
+      characterFormId,
+      primaryCharacter: form.primaryCharacter,
+      displayOrder: form.displayOrder ? Number(form.displayOrder) : 0
+    };
+    setSavingRelation(true);
+    try {
+      const response = await fetch(
+        (editing == null ? void 0 : editing.id) ? `${FIGURE_CHARACTER_ENDPOINT}/${editing.id}` : FIGURE_CHARACTER_ENDPOINT,
+        {
+          method: (editing == null ? void 0 : editing.id) ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }
+      );
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error saving figure character."));
+        return;
+      }
+      await fetchFigureCharacters();
+      resetRelationForm();
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingRelation(false);
+    }
+  };
+  const handleDelete = async (row) => {
+    if (!row.id) return;
+    setSavingRelation(true);
+    try {
+      const response = await fetch(`${FIGURE_CHARACTER_ENDPOINT}/${row.id}`, {
+        method: "DELETE"
+      });
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error deleting figure character."));
+        return;
+      }
+      await fetchFigureCharacters();
+      if ((editing == null ? void 0 : editing.id) === row.id) resetRelationForm();
+      setRowToDelete(null);
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingRelation(false);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-foreground", children: "Figure Characters" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Manage Character and optional Character Form relations through Figure Character records." })
+    ] }),
+    !figureId ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Save the Figure first to enable Figure Characters." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(LoadingOverlay, { active: busy, message: "Updating figure characters...", className: "mt-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 rounded-md border bg-background p-4 md:grid-cols-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "mb-1 block text-sm font-medium text-foreground", children: [
+            "Character ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-destructive", children: "*" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            FigureRelationCombobox,
+            {
+              options: characters,
+              value: form.characterId,
+              placeholder: loadingCharacters ? "Loading characters..." : "Select Character",
+              disabled: loadingCharacters || savingRelation,
+              onChange: handleCharacterChange
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "mb-1 block text-sm font-medium text-foreground", children: "Character Form" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            FigureRelationCombobox,
+            {
+              options: characterForms,
+              value: form.characterFormId,
+              placeholder: loadingForms ? "Loading forms..." : "Select Character Form",
+              disabled: !form.characterId || loadingForms || savingRelation,
+              nullable: true,
+              onChange: (value) => setRelationForm((current) => ({
+                ...current,
+                characterFormId: value
+              }))
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "mb-1 block text-sm font-medium text-foreground", children: "Display Order" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              type: "number",
+              min: "0",
+              value: form.displayOrder,
+              disabled: savingRelation,
+              onChange: (event) => setRelationForm((current) => ({
+                ...current,
+                displayOrder: event.target.value
+              }))
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-end justify-between gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-2 pb-2 text-sm font-medium text-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Checkbox,
+              {
+                checked: form.primaryCharacter,
+                disabled: savingRelation,
+                onCheckedChange: (checked) => setRelationForm((current) => ({
+                  ...current,
+                  primaryCharacter: checked === true
+                }))
+              }
+            ),
+            "Primary Character"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            editing && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", disabled: savingRelation, onClick: resetRelationForm, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", className: "gap-2", disabled: savingRelation, onClick: handleSave, children: [
+              !editing && /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" }),
+              editing ? "Update" : "Add"
+            ] })
+          ] })
+        ] }),
+        localError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "md:col-span-2 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive", children: localError })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 overflow-hidden rounded-md border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Character" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Character Form" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Primary Character" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Display Order" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "text-right", children: "Actions" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: rows.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 5, className: "h-20 text-center text-muted-foreground", children: "No Figure Characters found." }) }) : rows.map((row) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: row.characterName || row.characterId }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: row.characterFormName || "-" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: row.primaryCharacter ? "Yes" : "No" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: row.displayOrder ?? 0 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", variant: "outline", disabled: savingRelation, onClick: () => handleEdit(row), children: "Edit" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", variant: "destructive", disabled: savingRelation, onClick: () => setRowToDelete(row), children: "Delete" })
+          ] }) })
+        ] }, row.id)) })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AlertDialog,
+      {
+        open: Boolean(rowToDelete),
+        onOpenChange: (nextOpen) => {
+          if (!nextOpen) setRowToDelete(null);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogContent, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogHeader, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogTitle, { children: "Delete Figure Character?" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogDescription, { children: [
+              'This will remove the relation for "',
+              (rowToDelete == null ? void 0 : rowToDelete.characterName) || "this character",
+              '". The Figure and Character records will not be deleted.'
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogFooter, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogCancel, { disabled: savingRelation, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              AlertDialogAction,
+              {
+                className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                disabled: savingRelation,
+                onClick: () => {
+                  if (rowToDelete) handleDelete(rowToDelete);
+                },
+                children: savingRelation ? "Deleting..." : "Delete"
+              }
+            )
+          ] })
+        ] })
+      }
+    )
+  ] });
+};
+const FigureFormDialog = ({
+  figure,
+  franchises,
+  brands: brands2,
+  currencyCodes,
+  figureStatuses,
+  open,
+  saving,
+  loadingOptions,
+  onOpenChange,
+  onGenerateSlug,
+  onValidateSlug,
+  onSubmit,
+  onApiError
+}) => {
+  const [slugEditable, setSlugEditable] = reactExports.useState(false);
+  const [generatingSlug, setGeneratingSlug] = reactExports.useState(false);
+  const [validatingSlug, setValidatingSlug] = reactExports.useState(false);
+  const [slugMessage, setSlugMessage] = reactExports.useState("");
+  const [form, setForm] = reactExports.useState({
+    franchiseId: "",
+    brandId: "",
+    name: "",
+    slug: "",
+    scene: "",
+    lineName: "",
+    material: "",
+    janCode: "",
+    officialProductCode: "",
+    isLicensed: "true",
+    editionSize: "",
+    baseCurrencyCode: "USD",
+    status: "RELEASED",
+    notes: ""
+  });
+  reactExports.useEffect(() => {
+    var _a2;
+    if (!open) return;
+    setForm({
+      franchiseId: getFigureFranchiseId(figure).toString(),
+      brandId: getFigureBrandId(figure).toString(),
+      name: (figure == null ? void 0 : figure.name) || "",
+      slug: (figure == null ? void 0 : figure.slug) || "",
+      scene: (figure == null ? void 0 : figure.scene) || "",
+      lineName: (figure == null ? void 0 : figure.lineName) || "",
+      material: (figure == null ? void 0 : figure.material) || "",
+      janCode: (figure == null ? void 0 : figure.janCode) || "",
+      officialProductCode: (figure == null ? void 0 : figure.officialProductCode) || "",
+      isLicensed: ((figure == null ? void 0 : figure.isLicensed) ?? true).toString(),
+      editionSize: ((_a2 = figure == null ? void 0 : figure.editionSize) == null ? void 0 : _a2.toString()) || "",
+      baseCurrencyCode: (figure == null ? void 0 : figure.baseCurrencyCode) || "USD",
+      status: (figure == null ? void 0 : figure.status) || "RELEASED",
+      notes: (figure == null ? void 0 : figure.notes) || ""
+    });
+    setSlugEditable(false);
+    setSlugMessage("");
+  }, [figure, open]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSlugMessage("");
+    if (!form.slug.trim()) {
+      setSlugMessage("Generate a slug before saving, or unlock the field and enter one.");
+      return;
+    }
+    setValidatingSlug(true);
+    try {
+      const slugAvailable = await onValidateSlug(form.slug.trim(), figure == null ? void 0 : figure.id);
+      if (!slugAvailable) {
+        setSlugMessage("This slug is already in use. Edit it or generate another one.");
+        return;
+      }
+    } catch {
+      return;
+    } finally {
+      setValidatingSlug(false);
+    }
+    const payload = {
+      franchiseId: Number(form.franchiseId),
+      brandId: Number(form.brandId),
+      name: form.name.trim(),
+      slug: form.slug.trim(),
+      isLicensed: form.isLicensed === "true",
+      baseCurrencyCode: form.baseCurrencyCode,
+      status: form.status
+    };
+    if (form.scene.trim()) payload.scene = form.scene.trim();
+    if (form.lineName.trim()) payload.lineName = form.lineName.trim();
+    if (form.material.trim()) payload.material = form.material.trim();
+    if (form.janCode.trim()) payload.janCode = form.janCode.trim();
+    if (form.officialProductCode.trim()) payload.officialProductCode = form.officialProductCode.trim();
+    if (form.editionSize) payload.editionSize = Number(form.editionSize);
+    if (form.notes.trim()) payload.notes = form.notes.trim();
+    await onSubmit(payload);
+  };
+  const handleGenerateSlug = async () => {
+    const name = form.name.trim();
+    if (!name) {
+      setSlugMessage("Write a name before generating the slug.");
+      return;
+    }
+    setSlugMessage("");
+    setGeneratingSlug(true);
+    try {
+      const slug = await onGenerateSlug(name);
+      setForm((prev) => ({ ...prev, slug }));
+      setSlugEditable(false);
+      setSlugMessage("Slug generated and available.");
+    } finally {
+      setGeneratingSlug(false);
+    }
+  };
+  const selectClass = "w-full border border-input bg-background text-foreground p-2 rounded";
+  const optionClass = "bg-background text-foreground";
+  const helperClass = "mt-1 text-xs text-muted-foreground";
+  const labelClass = "mb-1 block text-sm font-medium text-foreground";
+  const requiredMark = /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-destructive", children: "*" });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open, onOpenChange, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { className: "max-h-[90vh] max-w-5xl overflow-y-auto", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: saving, label: "Saving figure..." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogHeader, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { children: figure ? "Update Figure" : "New Figure" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(DialogDescription, { children: "Manage the main figure record used by aliases and source listings." })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "grid gap-5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 md:grid-cols-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Franchise ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              name: "franchiseId",
+              value: form.franchiseId,
+              onChange: handleChange,
+              className: selectClass,
+              disabled: loadingOptions || franchises.length === 0,
+              required: true,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: loadingOptions ? "Loading franchises..." : "Select a franchise" }),
+                franchises.map((franchise) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: franchise.id, children: franchise.name }, franchise.id))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Anime o universo al que pertenece la figura." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Brand ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              name: "brandId",
+              value: form.brandId,
+              onChange: handleChange,
+              className: selectClass,
+              required: true,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: "Select a brand" }),
+                brands2.map((brand) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: brand.id, children: brand.name }, brand.id))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Fabricante o marca que produce la figura." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Name ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "name", maxLength: 255, value: form.name, onChange: handleChange, required: true }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Nombre completo del producto." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Slug ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Input,
+              {
+                name: "slug",
+                maxLength: 300,
+                value: form.slug,
+                onChange: (event) => {
+                  handleChange(event);
+                  setSlugMessage("");
+                },
+                disabled: !slugEditable,
+                required: true,
+                className: "sm:flex-1"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                type: "button",
+                variant: "outline",
+                disabled: generatingSlug || !form.name.trim(),
+                onClick: handleGenerateSlug,
+                children: generatingSlug ? "Generating..." : "Generate"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "ghost", onClick: () => setSlugEditable((current) => !current), children: slugEditable ? "Lock" : "Edit" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: slugMessage || "Generate it from the name, or unlock it if manual editing is needed." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Scene" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "scene", maxLength: 255, value: form.scene, onChange: handleChange }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Pose, escena o transformacion representada." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Line Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "lineName", maxLength: 150, value: form.lineName, onChange: handleChange }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Linea o coleccion comercial de la marca." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Material" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "material", maxLength: 100, value: form.material, onChange: handleChange }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Material principal, como PVC, ABS o resina." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "JAN/EAN Code" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "janCode", maxLength: 20, value: form.janCode, onChange: handleChange }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Codigo JAN/EAN canonico usado para matching y verificacion." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Official Product Code" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              name: "officialProductCode",
+              maxLength: 100,
+              value: form.officialProductCode,
+              onChange: handleChange
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Codigo oficial publicado por el fabricante o marca." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Edition Size" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              name: "editionSize",
+              type: "number",
+              min: "0",
+              value: form.editionSize,
+              onChange: handleChange
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Cantidad producida si es una edicion limitada." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Licensed ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              name: "isLicensed",
+              value: form.isLicensed,
+              onChange: handleChange,
+              className: selectClass,
+              required: true,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "true", children: "Yes" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "false", children: "No" })
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Indica si es una figura oficial/licenciada." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Status ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "select",
+            {
+              name: "status",
+              value: form.status,
+              onChange: handleChange,
+              className: selectClass,
+              required: true,
+              children: figureStatuses.map((status) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: status.value, children: status.label }, status.value))
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Disponibilidad actual: preventa, lanzada o agotada." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
+            "Base Currency ",
+            requiredMark
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "select",
+            {
+              name: "baseCurrencyCode",
+              value: form.baseCurrencyCode,
+              onChange: handleChange,
+              className: selectClass,
+              required: true,
+              children: currencyCodes.map((currency) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { className: optionClass, value: currency.value, children: [
+                currency.label,
+                currency.symbol ? ` (${currency.symbol})` : ""
+              ] }, currency.value))
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Moneda base requerida por el backend." })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Notes" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "textarea",
+          {
+            name: "notes",
+            value: form.notes,
+            onChange: handleChange,
+            className: "w-full rounded border border-input bg-background p-3 text-foreground"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Datos adicionales, variantes u observaciones internas." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(FigureCharactersSection, { figureId: figure == null ? void 0 : figure.id, onApiError }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", onClick: () => onOpenChange(false), children: "Cancel" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving || validatingSlug, children: saving ? "Saving..." : validatingSlug ? "Validating slug..." : figure ? "Update" : "Create" })
+      ] })
+    ] })
+  ] }) });
+};
+const getFranchiseName = (figure, franchiseNames) => {
+  var _a2, _b2;
+  const franchiseId = figure.franchiseId || ((_a2 = figure.franchise) == null ? void 0 : _a2.id);
+  return ((_b2 = figure.franchise) == null ? void 0 : _b2.name) || (franchiseId ? franchiseNames[franchiseId] : "") || "-";
+};
+const getBrandName = (figure, brandNames) => {
+  var _a2, _b2;
+  const brandId = figure.brandId || ((_a2 = figure.brand) == null ? void 0 : _a2.id);
+  return ((_b2 = figure.brand) == null ? void 0 : _b2.name) || (brandId ? brandNames[brandId] : "") || "-";
+};
+const FigureTable = ({
+  figures: figures2,
+  loading,
+  franchiseNames,
+  brandNames,
+  onEdit,
+  onDelete
+}) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Name" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Slug" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Franchise" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Brand" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "JAN/EAN" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Product Code" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures2.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures2.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: figure.id }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.name || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.slug || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getFranchiseName(figure, franchiseNames) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getBrandName(figure, brandNames) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.janCode || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.officialProductCode || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.status || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", variant: "outline", size: "sm", className: "gap-2", onClick: () => onEdit(figure), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Pencil, { className: "h-3.5 w-3.5" }),
+          "Actualizar"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", variant: "destructive", size: "sm", className: "gap-2", onClick: () => onDelete(figure), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "h-3.5 w-3.5" }),
+          "Eliminar"
+        ] })
+      ] }) })
+    ] }, figure.id)) })
+  ] }) }) });
+};
+const API_BASE_URL$7 = "https://figure-market-core.onrender.com/api";
+const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL$7}/v1/reference-data`;
+const emptyReferenceData = {
+  currencyCodes: [],
+  figureStatuses: [],
+  figureSourceListingStatuses: [],
+  loadMethods: [],
+  sourcePriorities: [],
+  sourceTypes: [],
+  scrapedListingCandidateStatuses: [],
+  matchDecisions: []
+};
+function useReferenceData() {
+  const [referenceData, setReferenceData] = reactExports.useState(emptyReferenceData);
+  const [loadingReferenceData, setLoadingReferenceData] = reactExports.useState(true);
+  reactExports.useEffect(() => {
+    const fetchReferenceData = async () => {
+      setLoadingReferenceData(true);
+      try {
+        const response = await fetch(REFERENCE_DATA_ENDPOINT);
+        if (!response.ok) {
+          console.error("Error fetching reference data");
+          return;
+        }
+        const data = await response.json();
+        setReferenceData({
+          ...emptyReferenceData,
+          ...data
+        });
+      } catch (error) {
+        console.error("Request error fetching reference data:", error);
+      } finally {
+        setLoadingReferenceData(false);
+      }
+    };
+    fetchReferenceData();
+  }, []);
+  return { referenceData, loadingReferenceData };
+}
+const API_BASE_URL$6 = "https://figure-market-core.onrender.com/api";
+const FIGURES_ENDPOINT$3 = `${API_BASE_URL$6}/v1/figures`;
+const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/suggestion`;
+const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/availability`;
+const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$6}/v1/franchises`;
+const SOURCES_ENDPOINT$4 = `${API_BASE_URL$6}/v1/sources`;
+const brands = [
+  { id: 1, name: "Good Smile Company" },
+  { id: 2, name: "Kotobukiya" },
+  { id: 3, name: "MegaHouse" },
+  { id: 4, name: "Prime 1" },
+  { id: 5, name: "FREEing" }
+];
+const fallbackCurrencyCodes$2 = [
+  { value: "USD", label: "Usd", symbol: "$" },
+  { value: "JPY", label: "Jpy", symbol: "¥" }
+];
+const fallbackFigureStatuses = [
+  { value: "PREORDER", label: "Preorder" },
+  { value: "RELEASED", label: "Released" },
+  { value: "SOLD_OUT", label: "Sold Out" }
+];
+const FigurePage = () => {
+  const [figures2, setFigures] = reactExports.useState([]);
+  const [franchises, setFranchises] = reactExports.useState([]);
+  const [sources, setSources] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(true);
+  const [loadingOptions, setLoadingOptions] = reactExports.useState(true);
+  const [saving, setSaving] = reactExports.useState(false);
+  const [deleting, setDeleting] = reactExports.useState(false);
+  const [search, setSearch] = reactExports.useState("");
+  const [page, setPage] = reactExports.useState(0);
+  const [pageSize, setPageSize] = reactExports.useState(20);
+  const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
+  const [apiError, setApiError] = reactExports.useState(null);
+  const [dialogOpen, setDialogOpen] = reactExports.useState(false);
+  const [selectedFigure, setSelectedFigure] = reactExports.useState(null);
+  const [figureToDelete, setFigureToDelete] = reactExports.useState(null);
+  const mutating = saving || deleting;
+  const { referenceData } = useReferenceData();
+  const fetchData = async (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+      setLoadingOptions(true);
+    }
+    try {
+      const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
+        fetch(withPagination(FIGURES_ENDPOINT$3, page, pageSize)),
+        fetch(withPageSize(FRANCHISES_ENDPOINT$1)),
+        fetch(withPageSize(SOURCES_ENDPOINT$4))
+      ]);
+      if (figuresResponse.ok) {
+        const data = await figuresResponse.json();
+        setFigures(getPageContent(data));
+        setPageMeta(getPageMeta(data, pageSize));
+      } else {
+        console.error("Error fetching figures");
+      }
+      if (franchisesResponse.ok) {
+        const data = await franchisesResponse.json();
+        setFranchises(getPageContent(data));
+      } else {
+        console.error("Error fetching franchises");
+      }
+      if (sourcesResponse.ok) {
+        const data = await sourcesResponse.json();
+        setSources(getPageContent(data));
+      } else {
+        console.error("Error fetching sources");
+      }
+    } catch (error) {
+      console.error("Request error fetching figures:", error);
+    } finally {
+      if (showLoading) {
+        setLoading(false);
+        setLoadingOptions(false);
+      }
+    }
+  };
+  reactExports.useEffect(() => {
+    fetchData();
+  }, [page, pageSize]);
+  reactExports.useEffect(() => {
+    setPage(0);
+  }, [search]);
+  const franchiseNames = reactExports.useMemo(
+    () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
+    [franchises]
+  );
+  const brandNames = reactExports.useMemo(
+    () => Object.fromEntries(brands.map((brand) => [brand.id, brand.name])),
+    []
+  );
+  const filteredFigures = reactExports.useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return figures2;
+    return figures2.filter(
+      (figure) => {
+        var _a2, _b2, _c2;
+        return [
+          (_a2 = figure.id) == null ? void 0 : _a2.toString(),
+          figure.name,
+          figure.slug,
+          figure.janCode,
+          figure.officialProductCode,
+          (_b2 = figure.franchise) == null ? void 0 : _b2.name,
+          (_c2 = figure.brand) == null ? void 0 : _c2.name,
+          figure.status
+        ].filter(Boolean).some((value) => value == null ? void 0 : value.toLowerCase().includes(query));
+      }
+    );
+  }, [figures2, search]);
+  const openCreateDialog = () => {
+    setSelectedFigure(null);
+    setDialogOpen(true);
+  };
+  const openEditDialog = (figure) => {
+    setSelectedFigure(figure);
+    setDialogOpen(true);
+  };
+  const generateSlug = async (name) => {
+    const response = await fetch(
+      `${FIGURE_SLUG_SUGGESTION_ENDPOINT}?title=${encodeURIComponent(name)}`
+    );
+    if (!response.ok) {
+      setApiError(await readApiErrorResponse(response, "Error generating slug."));
+      throw new Error("Error generating slug");
+    }
+    const data = await response.json();
+    return data.slug || "";
+  };
+  const validateSlug = async (slug, figureId) => {
+    const params = new URLSearchParams({ slug });
+    if (figureId) {
+      params.set("excludeFigureId", figureId.toString());
+    }
+    const response = await fetch(`${FIGURE_SLUG_AVAILABILITY_ENDPOINT}?${params.toString()}`);
+    if (!response.ok) {
+      setApiError(await readApiErrorResponse(response, "Error validating slug."));
+      throw new Error("Error validating slug");
+    }
+    const data = await response.json();
+    return Boolean(data.available);
+  };
+  const handleSubmit = async (payload) => {
+    setSaving(true);
+    const isEditing = Boolean(selectedFigure == null ? void 0 : selectedFigure.id);
+    const endpoint = isEditing ? `${FIGURES_ENDPOINT$3}/${selectedFigure == null ? void 0 : selectedFigure.id}` : FIGURES_ENDPOINT$3;
+    try {
+      const response = await fetch(endpoint, {
+        method: isEditing ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        setApiError(await readApiErrorResponse(response, "Error saving figure."));
+        return;
+      }
+      const savedFigure = await response.json();
+      await fetchData(false);
+      if (isEditing) {
+        setDialogOpen(false);
+        setSelectedFigure(null);
+      } else {
+        setSelectedFigure(savedFigure);
+      }
+    } catch (error) {
+      console.error("Request error:", error);
+      setApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSaving(false);
+    }
+  };
+  const handleDelete = async () => {
+    if (!(figureToDelete == null ? void 0 : figureToDelete.id)) return;
+    setDeleting(true);
+    try {
+      const response = await fetch(`${FIGURES_ENDPOINT$3}/${figureToDelete.id}`, {
+        method: "DELETE"
+      });
+      if (!response.ok) {
+        setApiError(await readApiErrorResponse(response, "Error deleting figure."));
+        return;
+      }
+      await fetchData(false);
+      setFigureToDelete(null);
+    } catch (error) {
+      console.error("Request error:", error);
+      setApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setDeleting(false);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ApiErrorToast, { error: apiError, onClose: () => setApiError(null) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "container py-10", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-end md:justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-bold text-foreground", children: "Figures" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-muted-foreground", children: "Manage figure records used by aliases, listings, and marketplace views." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", className: "gap-2 md:self-center", onClick: openCreateDialog, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" }),
+          "New Figure"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 rounded-lg border bg-muted/30 p-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-medium text-foreground", children: "Source quick links" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 flex flex-wrap gap-2", children: sources.filter((source) => source.baseUrl).length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "No source URLs available." }) : sources.filter((source) => source.baseUrl).map((source) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "a",
+          {
+            href: source.baseUrl,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground",
+            children: source.name
+          },
+          source.id
+        )) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full md:max-w-sm", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              value: search,
+              onChange: (e) => setSearch(e.target.value),
+              placeholder: "Search figures",
+              className: "pl-9"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
+          filteredFigures.length,
+          " shown - ",
+          pageMeta.totalElements,
+          " total records"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: mutating, message: "Updating figures...", className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        FigureTable,
+        {
+          figures: filteredFigures,
+          loading,
+          franchiseNames,
+          brandNames,
+          onEdit: openEditDialog,
+          onDelete: setFigureToDelete
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        PageControls,
+        {
+          page: pageMeta.page,
+          size: pageMeta.size,
+          totalElements: pageMeta.totalElements,
+          totalPages: pageMeta.totalPages,
+          disabled: loading || mutating,
+          onPageChange: setPage,
+          onSizeChange: (size2) => {
+            setPageSize(size2);
+            setPage(0);
+          }
+        }
+      ) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      FigureFormDialog,
+      {
+        figure: selectedFigure,
+        franchises,
+        brands,
+        open: dialogOpen,
+        saving,
+        loadingOptions,
+        currencyCodes: referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes$2,
+        figureStatuses: referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses,
+        onOpenChange: setDialogOpen,
+        onGenerateSlug: generateSlug,
+        onValidateSlug: validateSlug,
+        onApiError: setApiError,
+        onSubmit: handleSubmit
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AlertDialog,
+      {
+        open: Boolean(figureToDelete),
+        onOpenChange: (open) => {
+          if (!open) setFigureToDelete(null);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogContent, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogHeader, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogTitle, { children: "Delete figure?" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogDescription, { children: [
+              'This action will delete "',
+              (figureToDelete == null ? void 0 : figureToDelete.name) || "this figure",
+              '" from the database. This cannot be undone.'
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogFooter, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogCancel, { disabled: deleting, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              AlertDialogAction,
+              {
+                className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                disabled: deleting,
+                onClick: handleDelete,
+                children: deleting ? "Deleting..." : "Delete"
+              }
+            )
+          ] })
+        ] })
+      }
+    )
+  ] });
+};
 const FigureCombobox = ({
   figures: figures2,
   value,
