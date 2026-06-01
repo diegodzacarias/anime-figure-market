@@ -39,57 +39,63 @@ const FigureTable = ({
 }: FigureTableProps) => {
   return (
     <div className="overflow-hidden rounded-lg border bg-card">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-20">ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Slug</TableHead>
-            <TableHead>Franchise</TableHead>
-            <TableHead>Brand</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="w-48 text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading ? (
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={7} className="h-28 text-center text-muted-foreground">
-                Loading figures...
-              </TableCell>
+              <TableHead className="w-20">ID</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead>Franchise</TableHead>
+              <TableHead>Brand</TableHead>
+              <TableHead>JAN/EAN</TableHead>
+              <TableHead>Product Code</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="w-48 text-right">Actions</TableHead>
             </TableRow>
-          ) : figures.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={7} className="h-28 text-center text-muted-foreground">
-                No figures found.
-              </TableCell>
-            </TableRow>
-          ) : (
-            figures.map((figure) => (
-              <TableRow key={figure.id}>
-                <TableCell className="font-medium">{figure.id}</TableCell>
-                <TableCell>{figure.name || "-"}</TableCell>
-                <TableCell>{figure.slug || "-"}</TableCell>
-                <TableCell>{getFranchiseName(figure, franchiseNames)}</TableCell>
-                <TableCell>{getBrandName(figure, brandNames)}</TableCell>
-                <TableCell>{figure.status || "-"}</TableCell>
-                <TableCell>
-                  <div className="flex justify-end gap-2">
-                    <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => onEdit(figure)}>
-                      <Pencil className="h-3.5 w-3.5" />
-                      Actualizar
-                    </Button>
-                    <Button type="button" variant="destructive" size="sm" className="gap-2" onClick={() => onDelete(figure)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                      Eliminar
-                    </Button>
-                  </div>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={9} className="h-28 text-center text-muted-foreground">
+                  Loading figures...
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            ) : figures.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={9} className="h-28 text-center text-muted-foreground">
+                  No figures found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              figures.map((figure) => (
+                <TableRow key={figure.id}>
+                  <TableCell className="font-medium">{figure.id}</TableCell>
+                  <TableCell>{figure.name || "-"}</TableCell>
+                  <TableCell>{figure.slug || "-"}</TableCell>
+                  <TableCell>{getFranchiseName(figure, franchiseNames)}</TableCell>
+                  <TableCell>{getBrandName(figure, brandNames)}</TableCell>
+                  <TableCell>{figure.janCode || "-"}</TableCell>
+                  <TableCell>{figure.officialProductCode || "-"}</TableCell>
+                  <TableCell>{figure.status || "-"}</TableCell>
+                  <TableCell>
+                    <div className="flex justify-end gap-2">
+                      <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => onEdit(figure)}>
+                        <Pencil className="h-3.5 w-3.5" />
+                        Actualizar
+                      </Button>
+                      <Button type="button" variant="destructive" size="sm" className="gap-2" onClick={() => onDelete(figure)}>
+                        <Trash2 className="h-3.5 w-3.5" />
+                        Eliminar
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

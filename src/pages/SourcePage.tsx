@@ -12,11 +12,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import PageControls from "@/components/ui/page-controls";
 import SourceFormDialog, { Source } from "@/components/source/SourceFormDialog";
 import SourceTable from "@/components/source/SourceTable";
 import { useReferenceData } from "@/hooks/useReferenceData";
+import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { defaultPageMeta, getPageContent, getPageMeta, withPagination } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -43,6 +47,10 @@ const SourcePage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageMeta, setPageMeta] = useState(defaultPageMeta);
+  const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
   const [sourceToDelete, setSourceToDelete] = useState<Source | null>(null);
@@ -53,7 +61,7 @@ const SourcePage = () => {
     if (showLoading) setLoading(true);
 
     try {
-      const response = await fetch(SOURCES_ENDPOINT);
+      const response = await fetch(withPagination(SOURCES_ENDPOINT, page, pageSize));
 
       if (!response.ok) {
         console.error("Error fetching sources");
@@ -61,7 +69,8 @@ const SourcePage = () => {
       }
 
       const data = await response.json();
-      setSources(Array.isArray(data) ? data : []);
+      setSources(getPageContent<Source>(data));
+      setPageMeta(getPageMeta<Source>(data, pageSize));
     } catch (error) {
       console.error("Request error fetching sources:", error);
     } finally {
@@ -71,7 +80,11 @@ const SourcePage = () => {
 
   useEffect(() => {
     fetchSources();
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   const filteredSources = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -109,9 +122,7 @@ const SourcePage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving source. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving source."));
         return;
       }
 
@@ -121,7 +132,7 @@ const SourcePage = () => {
       setSelectedSource(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -138,9 +149,7 @@ const SourcePage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting source. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting source."));
         return;
       }
 
@@ -148,7 +157,7 @@ const SourcePage = () => {
       setSourceToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -157,6 +166,7 @@ const SourcePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -185,7 +195,7 @@ const SourcePage = () => {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredSources.length} of {sources.length} records
+            {filteredSources.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
 
@@ -197,6 +207,21 @@ const SourcePage = () => {
             onDelete={setSourceToDelete}
           />
         </LoadingOverlay>
+
+        <div className="mt-4">
+          <PageControls
+            page={pageMeta.page}
+            size={pageMeta.size}
+            totalElements={pageMeta.totalElements}
+            totalPages={pageMeta.totalPages}
+            disabled={loading || mutating}
+            onPageChange={setPage}
+            onSizeChange={(size) => {
+              setPageSize(size);
+              setPage(0);
+            }}
+          />
+        </div>
       </main>
 
       <SourceFormDialog

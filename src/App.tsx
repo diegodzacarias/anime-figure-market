@@ -13,6 +13,13 @@ import FigureSourceListingPage from "./pages/FigureSourceListingPage.tsx";
 import FranchisePage from "./pages/FranchisePage.tsx";
 import SourcePage from "./pages/SourcePage.tsx";
 import CandidateReviewPage from "./pages/CandidateReviewPage.tsx";
+import {
+    CharacterAliasPage,
+    CharacterFormAliasPage,
+    CharacterFormPage,
+    CharacterPage,
+    FigureCharacterPage,
+} from "./pages/CharacterAdminPages.tsx";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +40,11 @@ const App = () => (
                     <Route path="/work/franchises" element={<FranchisePage />} />
                     <Route path="/work/sources" element={<SourcePage />} />
                     <Route path="/figure-admin/candidate-review" element={<CandidateReviewPage />} />
+                    <Route path="/character-admin/characters" element={<CharacterPage />} />
+                    <Route path="/character-admin/character-aliases" element={<CharacterAliasPage />} />
+                    <Route path="/character-admin/character-forms" element={<CharacterFormPage />} />
+                    <Route path="/character-admin/character-form-aliases" element={<CharacterFormAliasPage />} />
+                    <Route path="/character-admin/figure-characters" element={<FigureCharacterPage />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>

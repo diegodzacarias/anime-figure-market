@@ -12,17 +12,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import PageControls from "@/components/ui/page-controls";
 import FigureFormDialog, { Figure, FranchiseOption } from "@/components/figure/FigureFormDialog";
 import FigureTable from "@/components/figure/FigureTable";
 import type { SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import { useReferenceData } from "@/hooks/useReferenceData";
+import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
+const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
+const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
 
@@ -54,6 +60,10 @@ const FigurePage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageMeta, setPageMeta] = useState(defaultPageMeta);
+  const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFigure, setSelectedFigure] = useState<Figure | null>(null);
   const [figureToDelete, setFigureToDelete] = useState<Figure | null>(null);
@@ -68,28 +78,29 @@ const FigurePage = () => {
 
     try {
       const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
-        fetch(FIGURES_ENDPOINT),
-        fetch(FRANCHISES_ENDPOINT),
-        fetch(SOURCES_ENDPOINT),
+        fetch(withPagination(FIGURES_ENDPOINT, page, pageSize)),
+        fetch(withPageSize(FRANCHISES_ENDPOINT)),
+        fetch(withPageSize(SOURCES_ENDPOINT)),
       ]);
 
       if (figuresResponse.ok) {
         const data = await figuresResponse.json();
-        setFigures(Array.isArray(data) ? data : []);
+        setFigures(getPageContent<Figure>(data));
+        setPageMeta(getPageMeta<Figure>(data, pageSize));
       } else {
         console.error("Error fetching figures");
       }
 
       if (franchisesResponse.ok) {
         const data = await franchisesResponse.json();
-        setFranchises(Array.isArray(data) ? data : []);
+        setFranchises(getPageContent<FranchiseOption>(data));
       } else {
         console.error("Error fetching franchises");
       }
 
       if (sourcesResponse.ok) {
         const data = await sourcesResponse.json();
-        setSources(Array.isArray(data) ? data : []);
+        setSources(getPageContent<SourceOption>(data));
       } else {
         console.error("Error fetching sources");
       }
@@ -105,7 +116,11 @@ const FigurePage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   const franchiseNames = useMemo(
     () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
@@ -127,6 +142,8 @@ const FigurePage = () => {
         figure.id?.toString(),
         figure.name,
         figure.slug,
+        figure.janCode,
+        figure.officialProductCode,
         figure.franchise?.name,
         figure.brand?.name,
         figure.status,
@@ -146,6 +163,38 @@ const FigurePage = () => {
     setDialogOpen(true);
   };
 
+  const generateSlug = async (name: string) => {
+    const response = await fetch(
+      `${FIGURE_SLUG_SUGGESTION_ENDPOINT}?title=${encodeURIComponent(name)}`
+    );
+
+    if (!response.ok) {
+      setApiError(await readApiErrorResponse(response, "Error generating slug."));
+      throw new Error("Error generating slug");
+    }
+
+    const data = await response.json();
+    return data.slug || "";
+  };
+
+  const validateSlug = async (slug: string, figureId?: number) => {
+    const params = new URLSearchParams({ slug });
+
+    if (figureId) {
+      params.set("excludeFigureId", figureId.toString());
+    }
+
+    const response = await fetch(`${FIGURE_SLUG_AVAILABILITY_ENDPOINT}?${params.toString()}`);
+
+    if (!response.ok) {
+      setApiError(await readApiErrorResponse(response, "Error validating slug."));
+      throw new Error("Error validating slug");
+    }
+
+    const data = await response.json();
+    return Boolean(data.available);
+  };
+
   const handleSubmit = async (payload: Record<string, string | number | boolean>) => {
     setSaving(true);
 
@@ -160,19 +209,22 @@ const FigurePage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving figure. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving figure."));
         return;
       }
 
+      const savedFigure = await response.json();
       await fetchData(false);
 
-      setDialogOpen(false);
-      setSelectedFigure(null);
+      if (isEditing) {
+        setDialogOpen(false);
+        setSelectedFigure(null);
+      } else {
+        setSelectedFigure(savedFigure);
+      }
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -189,9 +241,7 @@ const FigurePage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting figure. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting figure."));
         return;
       }
 
@@ -199,7 +249,7 @@ const FigurePage = () => {
       setFigureToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -208,6 +258,7 @@ const FigurePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -259,7 +310,7 @@ const FigurePage = () => {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredFigures.length} of {figures.length} records
+            {filteredFigures.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
 
@@ -273,6 +324,21 @@ const FigurePage = () => {
             onDelete={setFigureToDelete}
           />
         </LoadingOverlay>
+
+        <div className="mt-4">
+          <PageControls
+            page={pageMeta.page}
+            size={pageMeta.size}
+            totalElements={pageMeta.totalElements}
+            totalPages={pageMeta.totalPages}
+            disabled={loading || mutating}
+            onPageChange={setPage}
+            onSizeChange={(size) => {
+              setPageSize(size);
+              setPage(0);
+            }}
+          />
+        </div>
       </main>
 
       <FigureFormDialog
@@ -285,6 +351,9 @@ const FigurePage = () => {
         currencyCodes={referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes}
         figureStatuses={referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses}
         onOpenChange={setDialogOpen}
+        onGenerateSlug={generateSlug}
+        onValidateSlug={validateSlug}
+        onApiError={setApiError}
         onSubmit={handleSubmit}
       />
 

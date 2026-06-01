@@ -12,14 +12,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import PageControls from "@/components/ui/page-controls";
 import CandidateReviewFormDialog, {
   ScrapedListingCandidate,
 } from "@/components/candidateReview/CandidateReviewFormDialog";
 import CandidateReviewTable from "@/components/candidateReview/CandidateReviewTable";
 import type { FigureOption, SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import { useReferenceData } from "@/hooks/useReferenceData";
+import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -62,6 +66,10 @@ const CandidateReviewPage = () => {
   const [deleting, setDeleting] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageMeta, setPageMeta] = useState(defaultPageMeta);
+  const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<ScrapedListingCandidate | null>(null);
   const [candidateToDelete, setCandidateToDelete] = useState<ScrapedListingCandidate | null>(null);
@@ -78,28 +86,29 @@ const CandidateReviewPage = () => {
 
     try {
       const [candidatesResponse, figuresResponse, sourcesResponse] = await Promise.all([
-        fetch(CANDIDATES_ENDPOINT),
-        fetch(FIGURES_ENDPOINT),
-        fetch(SOURCES_ENDPOINT),
+        fetch(withPagination(CANDIDATES_ENDPOINT, page, pageSize)),
+        fetch(withPageSize(FIGURES_ENDPOINT)),
+        fetch(withPageSize(SOURCES_ENDPOINT)),
       ]);
 
       if (candidatesResponse.ok) {
         const data = await candidatesResponse.json();
-        setCandidates(Array.isArray(data) ? data : []);
+        setCandidates(getPageContent<ScrapedListingCandidate>(data));
+        setPageMeta(getPageMeta<ScrapedListingCandidate>(data, pageSize));
       } else {
         console.error("Error fetching scraped listing candidates");
       }
 
       if (figuresResponse.ok) {
         const data = await figuresResponse.json();
-        setFigures(Array.isArray(data) ? data : []);
+        setFigures(getPageContent<FigureOption>(data));
       } else {
         console.error("Error fetching figures");
       }
 
       if (sourcesResponse.ok) {
         const data = await sourcesResponse.json();
-        setSources(Array.isArray(data) ? data : []);
+        setSources(getPageContent<SourceOption>(data));
       } else {
         console.error("Error fetching sources");
       }
@@ -115,7 +124,11 @@ const CandidateReviewPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   const filteredCandidates = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -168,9 +181,7 @@ const CandidateReviewPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving candidate. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving candidate."));
         return;
       }
 
@@ -179,7 +190,7 @@ const CandidateReviewPage = () => {
       setSelectedCandidate(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -195,9 +206,7 @@ const CandidateReviewPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting candidate. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting candidate."));
         return;
       }
 
@@ -205,7 +214,7 @@ const CandidateReviewPage = () => {
       setCandidateToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -226,9 +235,7 @@ const CandidateReviewPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert(`Error trying to ${action} candidate. Check console.`);
+        setApiError(await readApiErrorResponse(response, `Error trying to ${action} candidate.`));
         return;
       }
 
@@ -237,7 +244,7 @@ const CandidateReviewPage = () => {
       setCandidateToReject(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setStatusChanging(false);
     }
@@ -246,6 +253,7 @@ const CandidateReviewPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -274,7 +282,7 @@ const CandidateReviewPage = () => {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredCandidates.length} of {candidates.length} records
+            {filteredCandidates.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
 
@@ -288,6 +296,21 @@ const CandidateReviewPage = () => {
             onDelete={setCandidateToDelete}
           />
         </LoadingOverlay>
+
+        <div className="mt-4">
+          <PageControls
+            page={pageMeta.page}
+            size={pageMeta.size}
+            totalElements={pageMeta.totalElements}
+            totalPages={pageMeta.totalPages}
+            disabled={loading || mutating}
+            onPageChange={setPage}
+            onSizeChange={(size) => {
+              setPageSize(size);
+              setPage(0);
+            }}
+          />
+        </div>
       </main>
 
       <CandidateReviewFormDialog

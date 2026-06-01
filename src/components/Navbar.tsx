@@ -8,6 +8,31 @@ const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showWorkMenu, setShowWorkMenu] = useState(false);
   const [showFigureAdminMenu, setShowFigureAdminMenu] = useState(false);
+  const [showCharacterAdminMenu, setShowCharacterAdminMenu] = useState(false);
+
+  const closeMenus = () => {
+    setShowWorkMenu(false);
+    setShowFigureAdminMenu(false);
+    setShowCharacterAdminMenu(false);
+  };
+
+  const toggleWorkMenu = () => {
+    setShowWorkMenu((current) => !current);
+    setShowFigureAdminMenu(false);
+    setShowCharacterAdminMenu(false);
+  };
+
+  const toggleFigureAdminMenu = () => {
+    setShowFigureAdminMenu((current) => !current);
+    setShowWorkMenu(false);
+    setShowCharacterAdminMenu(false);
+  };
+
+  const toggleCharacterAdminMenu = () => {
+    setShowCharacterAdminMenu((current) => !current);
+    setShowWorkMenu(false);
+    setShowFigureAdminMenu(false);
+  };
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
@@ -33,7 +58,7 @@ const Navbar = () => {
             <button
               type="button"
               className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-              onClick={() => setShowWorkMenu((current) => !current)}
+              onClick={toggleWorkMenu}
             >
               Work
               <ChevronDown className="h-3.5 w-3.5" />
@@ -44,35 +69,35 @@ const Navbar = () => {
                 <Link
                   to="/work/figure"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setShowWorkMenu(false)}
+                  onClick={closeMenus}
                 >
                   Figure
                 </Link>
                 <Link
                   to="/work/figure-alias"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setShowWorkMenu(false)}
+                  onClick={closeMenus}
                 >
                   Figure Alias
                 </Link>
                 <Link
                   to="/work/figure-source-listing"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setShowWorkMenu(false)}
+                  onClick={closeMenus}
                 >
                   Figure Source Listing
                 </Link>
                 <Link
                   to="/work/franchises"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setShowWorkMenu(false)}
+                  onClick={closeMenus}
                 >
                   Franchises
                 </Link>
                 <Link
                   to="/work/sources"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setShowWorkMenu(false)}
+                  onClick={closeMenus}
                 >
                   Sources
                 </Link>
@@ -83,7 +108,7 @@ const Navbar = () => {
             <button
               type="button"
               className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-              onClick={() => setShowFigureAdminMenu((current) => !current)}
+              onClick={toggleFigureAdminMenu}
             >
               FigureAdmin
               <ChevronDown className="h-3.5 w-3.5" />
@@ -94,9 +119,59 @@ const Navbar = () => {
                 <Link
                   to="/figure-admin/candidate-review"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  onClick={() => setShowFigureAdminMenu(false)}
+                  onClick={closeMenus}
                 >
                   Candidate Review
+                </Link>
+              </div>
+            )}
+          </div>
+          <div className="relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              onClick={toggleCharacterAdminMenu}
+            >
+              CharacterAdmin
+              <ChevronDown className="h-3.5 w-3.5" />
+            </button>
+
+            {showCharacterAdminMenu && (
+              <div className="absolute left-0 top-full mt-3 min-w-56 rounded-lg border border-border bg-card p-2 shadow-card">
+                <Link
+                  to="/character-admin/characters"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Characters
+                </Link>
+                <Link
+                  to="/character-admin/character-aliases"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Character Aliases
+                </Link>
+                <Link
+                  to="/character-admin/character-forms"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Character Forms
+                </Link>
+                <Link
+                  to="/character-admin/character-form-aliases"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Character Form Aliases
+                </Link>
+                <Link
+                  to="/character-admin/figure-characters"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Figure Characters
                 </Link>
               </div>
             )}

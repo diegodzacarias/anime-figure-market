@@ -12,10 +12,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import PageControls from "@/components/ui/page-controls";
 import FranchiseFormDialog, { Franchise } from "@/components/franchise/FranchiseFormDialog";
 import FranchiseTable from "@/components/franchise/FranchiseTable";
+import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { defaultPageMeta, getPageContent, getPageMeta, withPagination } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -28,6 +32,10 @@ const FranchisePage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageMeta, setPageMeta] = useState(defaultPageMeta);
+  const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFranchise, setSelectedFranchise] = useState<Franchise | null>(null);
   const [franchiseToDelete, setFranchiseToDelete] = useState<Franchise | null>(null);
@@ -37,7 +45,7 @@ const FranchisePage = () => {
     if (showLoading) setLoading(true);
 
     try {
-      const response = await fetch(FRANCHISES_ENDPOINT);
+      const response = await fetch(withPagination(FRANCHISES_ENDPOINT, page, pageSize));
 
       if (!response.ok) {
         console.error("Error fetching franchises");
@@ -45,7 +53,8 @@ const FranchisePage = () => {
       }
 
       const data = await response.json();
-      setFranchises(Array.isArray(data) ? data : []);
+      setFranchises(getPageContent<Franchise>(data));
+      setPageMeta(getPageMeta<Franchise>(data, pageSize));
     } catch (error) {
       console.error("Request error fetching franchises:", error);
     } finally {
@@ -55,7 +64,11 @@ const FranchisePage = () => {
 
   useEffect(() => {
     fetchFranchises();
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   const filteredFranchises = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -97,9 +110,7 @@ const FranchisePage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving franchise. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving franchise."));
         return;
       }
 
@@ -109,7 +120,7 @@ const FranchisePage = () => {
       setSelectedFranchise(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -126,9 +137,7 @@ const FranchisePage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting franchise. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting franchise."));
         return;
       }
 
@@ -136,7 +145,7 @@ const FranchisePage = () => {
       setFranchiseToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -145,6 +154,7 @@ const FranchisePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -173,7 +183,7 @@ const FranchisePage = () => {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredFranchises.length} of {franchises.length} records
+            {filteredFranchises.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
 
@@ -185,6 +195,21 @@ const FranchisePage = () => {
             onDelete={setFranchiseToDelete}
           />
         </LoadingOverlay>
+
+        <div className="mt-4">
+          <PageControls
+            page={pageMeta.page}
+            size={pageMeta.size}
+            totalElements={pageMeta.totalElements}
+            totalPages={pageMeta.totalPages}
+            disabled={loading || mutating}
+            onPageChange={setPage}
+            onSizeChange={(size) => {
+              setPageSize(size);
+              setPage(0);
+            }}
+          />
+        </div>
       </main>
 
       <FranchiseFormDialog

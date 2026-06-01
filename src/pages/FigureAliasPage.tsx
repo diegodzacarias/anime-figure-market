@@ -12,8 +12,10 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import PageControls from "@/components/ui/page-controls";
 import FigureAliasFormDialog, {
   FigureAlias,
   FigureOption,
@@ -21,6 +23,8 @@ import FigureAliasFormDialog, {
 } from "@/components/figureAlias/FigureAliasFormDialog";
 import FigureAliasTable from "@/components/figureAlias/FigureAliasTable";
 import { useReferenceData } from "@/hooks/useReferenceData";
+import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -45,6 +49,10 @@ const FigureAliasPage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageMeta, setPageMeta] = useState(defaultPageMeta);
+  const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAlias, setSelectedAlias] = useState<FigureAlias | null>(null);
   const [aliasToDelete, setAliasToDelete] = useState<FigureAlias | null>(null);
@@ -59,28 +67,29 @@ const FigureAliasPage = () => {
 
     try {
       const [aliasesResponse, figuresResponse, sourcesResponse] = await Promise.all([
-        fetch(FIGURE_ALIASES_ENDPOINT),
-        fetch(FIGURES_ENDPOINT),
-        fetch(SOURCES_ENDPOINT),
+        fetch(withPagination(FIGURE_ALIASES_ENDPOINT, page, pageSize)),
+        fetch(withPageSize(FIGURES_ENDPOINT)),
+        fetch(withPageSize(SOURCES_ENDPOINT)),
       ]);
 
       if (aliasesResponse.ok) {
         const data = await aliasesResponse.json();
-        setAliases(Array.isArray(data) ? data : []);
+        setAliases(getPageContent<FigureAlias>(data));
+        setPageMeta(getPageMeta<FigureAlias>(data, pageSize));
       } else {
         console.error("Error fetching figure aliases");
       }
 
       if (figuresResponse.ok) {
         const data = await figuresResponse.json();
-        setFigures(Array.isArray(data) ? data : []);
+        setFigures(getPageContent<FigureOption>(data));
       } else {
         console.error("Error fetching figures");
       }
 
       if (sourcesResponse.ok) {
         const data = await sourcesResponse.json();
-        setSources(Array.isArray(data) ? data : []);
+        setSources(getPageContent<SourceOption>(data));
       } else {
         console.error("Error fetching sources");
       }
@@ -96,7 +105,11 @@ const FigureAliasPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   const figureNames = useMemo(
     () => Object.fromEntries(figures.map((figure) => [figure.id, figure.name])),
@@ -152,9 +165,7 @@ const FigureAliasPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving figure alias. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving figure alias."));
         return;
       }
 
@@ -164,7 +175,7 @@ const FigureAliasPage = () => {
       setSelectedAlias(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -181,9 +192,7 @@ const FigureAliasPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting figure alias. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting figure alias."));
         return;
       }
 
@@ -191,7 +200,7 @@ const FigureAliasPage = () => {
       setAliasToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -200,6 +209,7 @@ const FigureAliasPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -228,7 +238,7 @@ const FigureAliasPage = () => {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredAliases.length} of {aliases.length} records
+            {filteredAliases.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
 
@@ -242,6 +252,21 @@ const FigureAliasPage = () => {
             onDelete={setAliasToDelete}
           />
         </LoadingOverlay>
+
+        <div className="mt-4">
+          <PageControls
+            page={pageMeta.page}
+            size={pageMeta.size}
+            totalElements={pageMeta.totalElements}
+            totalPages={pageMeta.totalPages}
+            disabled={loading || mutating}
+            onPageChange={setPage}
+            onSizeChange={(size) => {
+              setPageSize(size);
+              setPage(0);
+            }}
+          />
+        </div>
       </main>
 
       <FigureAliasFormDialog

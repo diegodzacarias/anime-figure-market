@@ -12,14 +12,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import PageControls from "@/components/ui/page-controls";
 import type { FigureOption, SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import FigureSourceListingFormDialog, {
   FigureSourceListing,
 } from "@/components/figureSourceListing/FigureSourceListingFormDialog";
 import FigureSourceListingTable from "@/components/figureSourceListing/FigureSourceListingTable";
 import { useReferenceData } from "@/hooks/useReferenceData";
+import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -49,6 +53,10 @@ const FigureSourceListingPage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [pageMeta, setPageMeta] = useState(defaultPageMeta);
+  const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<FigureSourceListing | null>(null);
   const [listingToDelete, setListingToDelete] = useState<FigureSourceListing | null>(null);
@@ -63,28 +71,29 @@ const FigureSourceListingPage = () => {
 
     try {
       const [listingsResponse, figuresResponse, sourcesResponse] = await Promise.all([
-        fetch(FIGURE_SOURCE_LISTINGS_ENDPOINT),
-        fetch(FIGURES_ENDPOINT),
-        fetch(SOURCES_ENDPOINT),
+        fetch(withPagination(FIGURE_SOURCE_LISTINGS_ENDPOINT, page, pageSize)),
+        fetch(withPageSize(FIGURES_ENDPOINT)),
+        fetch(withPageSize(SOURCES_ENDPOINT)),
       ]);
 
       if (listingsResponse.ok) {
         const data = await listingsResponse.json();
-        setListings(Array.isArray(data) ? data : []);
+        setListings(getPageContent<FigureSourceListing>(data));
+        setPageMeta(getPageMeta<FigureSourceListing>(data, pageSize));
       } else {
         console.error("Error fetching figure source listings");
       }
 
       if (figuresResponse.ok) {
         const data = await figuresResponse.json();
-        setFigures(Array.isArray(data) ? data : []);
+        setFigures(getPageContent<FigureOption>(data));
       } else {
         console.error("Error fetching figures");
       }
 
       if (sourcesResponse.ok) {
         const data = await sourcesResponse.json();
-        setSources(Array.isArray(data) ? data : []);
+        setSources(getPageContent<SourceOption>(data));
       } else {
         console.error("Error fetching sources");
       }
@@ -100,7 +109,11 @@ const FigureSourceListingPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   const filteredListings = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -150,9 +163,7 @@ const FigureSourceListingPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error saving figure source listing. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error saving figure source listing."));
         return;
       }
 
@@ -162,7 +173,7 @@ const FigureSourceListingPage = () => {
       setSelectedListing(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -179,9 +190,7 @@ const FigureSourceListingPage = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend error:", errorText);
-        alert("Error deleting figure source listing. Check console.");
+        setApiError(await readApiErrorResponse(response, "Error deleting figure source listing."));
         return;
       }
 
@@ -189,7 +198,7 @@ const FigureSourceListingPage = () => {
       setListingToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      alert("Error connecting to backend. Check console.");
+      setApiError(toClientApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -198,6 +207,7 @@ const FigureSourceListingPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -226,7 +236,7 @@ const FigureSourceListingPage = () => {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredListings.length} of {listings.length} records
+            {filteredListings.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
 
@@ -238,6 +248,21 @@ const FigureSourceListingPage = () => {
             onDelete={setListingToDelete}
           />
         </LoadingOverlay>
+
+        <div className="mt-4">
+          <PageControls
+            page={pageMeta.page}
+            size={pageMeta.size}
+            totalElements={pageMeta.totalElements}
+            totalPages={pageMeta.totalPages}
+            disabled={loading || mutating}
+            onPageChange={setPage}
+            onSizeChange={(size) => {
+              setPageSize(size);
+              setPage(0);
+            }}
+          />
+        </div>
       </main>
 
       <FigureSourceListingFormDialog

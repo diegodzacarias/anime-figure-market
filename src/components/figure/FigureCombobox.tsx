@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,10 +32,11 @@ const FigureCombobox = ({
   loading,
   onChange,
 }: FigureComboboxProps) => {
+  const [open, setOpen] = useState(false);
   const selectedFigure = figures.find((figure) => figure.id.toString() === value);
 
   return (
-    <Popover>
+    <Popover modal open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           type="button"
@@ -56,14 +58,21 @@ const FigureCombobox = ({
       <PopoverContent align="start" className="w-[min(42rem,calc(100vw-2rem))] p-0">
         <Command>
           <CommandInput placeholder="Search figure..." />
-          <CommandList className="max-h-80">
+          <CommandList
+            className="max-h-80 overflow-y-auto"
+            onWheelCapture={(event) => event.stopPropagation()}
+            onTouchMoveCapture={(event) => event.stopPropagation()}
+          >
             <CommandEmpty>No figure found.</CommandEmpty>
             <CommandGroup>
               {figures.map((figure) => (
                 <CommandItem
                   key={figure.id}
                   value={`${figure.name} ${figure.id}`}
-                  onSelect={() => onChange(figure.id.toString())}
+                  onSelect={() => {
+                    onChange(figure.id.toString());
+                    setOpen(false);
+                  }}
                   className="items-start gap-2 py-3"
                 >
                   <Check
