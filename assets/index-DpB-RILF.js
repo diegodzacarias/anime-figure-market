@@ -20636,6 +20636,7 @@ const API_BASE_URL$8 = "https://figure-market-core.onrender.com/api";
 const CHARACTER_ENDPOINT = `${API_BASE_URL$8}/v1/characters`;
 const CHARACTER_FORM_ENDPOINT = `${API_BASE_URL$8}/v1/character-forms`;
 const FIGURE_CHARACTER_ENDPOINT = `${API_BASE_URL$8}/v1/figure-characters`;
+const FIGURE_IMAGE_ENDPOINT = `${API_BASE_URL$8}/v1/figure-images`;
 const getFigureFranchiseId = (figure) => {
   var _a2;
   return (figure == null ? void 0 : figure.franchiseId) || ((_a2 = figure == null ? void 0 : figure.franchise) == null ? void 0 : _a2.id) || "";
@@ -21059,6 +21060,328 @@ const FigureCharactersSection = ({
     )
   ] });
 };
+const FigureImagesSection = ({
+  figureId,
+  onApiError
+}) => {
+  const [rows, setRows] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const [savingImage, setSavingImage] = reactExports.useState(false);
+  const [editing, setEditing] = reactExports.useState(null);
+  const [rowToDelete, setRowToDelete] = reactExports.useState(null);
+  const [localError, setLocalError] = reactExports.useState("");
+  const [form, setForm] = reactExports.useState({
+    imageUrl: "",
+    altText: "",
+    sortOrder: "",
+    primary: false,
+    sourceType: ""
+  });
+  const busy = loading || savingImage;
+  const resetImageForm = () => {
+    setEditing(null);
+    setLocalError("");
+    setForm({
+      imageUrl: "",
+      altText: "",
+      sortOrder: "",
+      primary: false,
+      sourceType: ""
+    });
+  };
+  const fetchFigureImages = async () => {
+    if (!figureId) return;
+    setLoading(true);
+    try {
+      const endpoint = `${FIGURE_IMAGE_ENDPOINT}?figureId=${figureId}`;
+      const response = await fetch(withPagination(endpoint, 0, 100, "sortOrder,asc"));
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error loading figure images."));
+        return;
+      }
+      const data = await response.json();
+      setRows(getPageContent(data));
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setLoading(false);
+    }
+  };
+  reactExports.useEffect(() => {
+    if (!figureId) {
+      setRows([]);
+      resetImageForm();
+      return;
+    }
+    fetchFigureImages();
+  }, [figureId]);
+  const handleEdit = (row) => {
+    var _a2;
+    setLocalError("");
+    setEditing(row);
+    setForm({
+      imageUrl: row.imageUrl || "",
+      altText: row.altText || "",
+      sortOrder: ((_a2 = row.sortOrder) == null ? void 0 : _a2.toString()) || "",
+      primary: row.primary === true,
+      sourceType: row.sourceType || ""
+    });
+  };
+  const buildPayload = (forcePrimary) => {
+    if (!figureId) return null;
+    return {
+      figureId,
+      imageUrl: form.imageUrl.trim(),
+      altText: form.altText.trim() || null,
+      sortOrder: form.sortOrder ? Number(form.sortOrder) : null,
+      primary: form.primary,
+      sourceType: form.sourceType.trim() || null
+    };
+  };
+  const handleSave = async () => {
+    if (!figureId) return;
+    setLocalError("");
+    if (!form.imageUrl.trim()) {
+      setLocalError("Image URL is required.");
+      return;
+    }
+    if (form.sortOrder && Number(form.sortOrder) < 0) {
+      setLocalError("Sort Order must be 0 or greater.");
+      return;
+    }
+    const payload = buildPayload();
+    if (!payload) return;
+    setSavingImage(true);
+    try {
+      const response = await fetch(
+        (editing == null ? void 0 : editing.id) ? `${FIGURE_IMAGE_ENDPOINT}/${editing.id}` : FIGURE_IMAGE_ENDPOINT,
+        {
+          method: (editing == null ? void 0 : editing.id) ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }
+      );
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error saving figure image."));
+        return;
+      }
+      await fetchFigureImages();
+      resetImageForm();
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingImage(false);
+    }
+  };
+  const handleMarkPrimary = async (row) => {
+    if (!figureId || !row.id) return;
+    setSavingImage(true);
+    try {
+      const response = await fetch(`${FIGURE_IMAGE_ENDPOINT}/${row.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          figureId,
+          imageUrl: row.imageUrl,
+          altText: row.altText || null,
+          sortOrder: row.sortOrder ?? null,
+          primary: true,
+          sourceType: row.sourceType || null
+        })
+      });
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error marking figure image as primary."));
+        return;
+      }
+      await fetchFigureImages();
+      if ((editing == null ? void 0 : editing.id) === row.id) {
+        setForm((current) => ({ ...current, primary: true }));
+      }
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingImage(false);
+    }
+  };
+  const handleDelete = async (row) => {
+    if (!row.id) return;
+    setSavingImage(true);
+    try {
+      const response = await fetch(`${FIGURE_IMAGE_ENDPOINT}/${row.id}`, {
+        method: "DELETE"
+      });
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error deleting figure image."));
+        return;
+      }
+      await fetchFigureImages();
+      if ((editing == null ? void 0 : editing.id) === row.id) resetImageForm();
+      setRowToDelete(null);
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingImage(false);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-foreground", children: "Figure Images" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Manage optional image URLs and previews for this Figure." })
+    ] }),
+    !figureId ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Save the Figure first to enable Figure Images." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(LoadingOverlay, { active: busy, message: "Updating figure images...", className: "mt-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 rounded-md border bg-background p-4 md:grid-cols-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "mb-1 block text-sm font-medium text-foreground", children: [
+            "Image URL ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-destructive", children: "*" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              type: "url",
+              value: form.imageUrl,
+              disabled: savingImage,
+              onChange: (event) => setForm((current) => ({ ...current, imageUrl: event.target.value })),
+              placeholder: "https://..."
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "mb-1 block text-sm font-medium text-foreground", children: "Alt Text" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              value: form.altText,
+              disabled: savingImage,
+              onChange: (event) => setForm((current) => ({ ...current, altText: event.target.value }))
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "mb-1 block text-sm font-medium text-foreground", children: "Source Type" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              value: form.sourceType,
+              disabled: savingImage,
+              onChange: (event) => setForm((current) => ({ ...current, sourceType: event.target.value })),
+              placeholder: "OFFICIAL, SOURCE, MANUAL..."
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "mb-1 block text-sm font-medium text-foreground", children: "Sort Order" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              type: "number",
+              min: "0",
+              value: form.sortOrder,
+              disabled: savingImage,
+              onChange: (event) => setForm((current) => ({ ...current, sortOrder: event.target.value }))
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-end justify-between gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-2 pb-2 text-sm font-medium text-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Checkbox,
+              {
+                checked: form.primary,
+                disabled: savingImage,
+                onCheckedChange: (checked) => setForm((current) => ({
+                  ...current,
+                  primary: checked === true
+                }))
+              }
+            ),
+            "Primary"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            editing && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", disabled: savingImage, onClick: resetImageForm, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", className: "gap-2", disabled: savingImage, onClick: handleSave, children: [
+              !editing && /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" }),
+              editing ? "Update" : "Add"
+            ] })
+          ] })
+        ] }),
+        localError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "md:col-span-2 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive", children: localError })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 grid gap-3", children: rows.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No Figure Images found." }) : rows.map((row) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 rounded-md border bg-background p-3 md:grid-cols-[8rem_1fr_auto]", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "aspect-square overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "img",
+          {
+            src: row.imageUrl,
+            alt: row.altText || row.figureName || "Figure image",
+            className: "h-full w-full object-cover",
+            loading: "lazy"
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "truncate text-sm font-medium text-foreground", children: row.altText || "Untitled image" }),
+            row.primary && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary", children: "Primary" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 break-all text-xs text-muted-foreground", children: row.imageUrl }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "Sort: ",
+              row.sortOrder ?? "-"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "Source: ",
+              row.sourceType || "-"
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap justify-end gap-2 md:flex-col md:items-stretch", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", variant: "outline", disabled: savingImage, onClick: () => handleEdit(row), children: "Edit" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              type: "button",
+              size: "sm",
+              variant: "outline",
+              disabled: savingImage || row.primary === true,
+              onClick: () => handleMarkPrimary(row),
+              children: "Set Primary"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", variant: "destructive", disabled: savingImage, onClick: () => setRowToDelete(row), children: "Delete" })
+        ] })
+      ] }, row.id)) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AlertDialog,
+      {
+        open: Boolean(rowToDelete),
+        onOpenChange: (nextOpen) => {
+          if (!nextOpen) setRowToDelete(null);
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogContent, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogHeader, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogTitle, { children: "Delete Figure Image?" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogDescription, { children: "This will remove this image URL from the Figure. The Figure record will not be deleted." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(AlertDialogFooter, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertDialogCancel, { disabled: savingImage, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              AlertDialogAction,
+              {
+                className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                disabled: savingImage,
+                onClick: () => {
+                  if (rowToDelete) handleDelete(rowToDelete);
+                },
+                children: savingImage ? "Deleting..." : "Delete"
+              }
+            )
+          ] })
+        ] })
+      }
+    )
+  ] });
+};
 const FigureFormDialog = ({
   figure,
   franchises,
@@ -21398,6 +21721,7 @@ const FigureFormDialog = ({
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Datos adicionales, variantes u observaciones internas." })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(FigureCharactersSection, { figureId: figure == null ? void 0 : figure.id, onApiError }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(FigureImagesSection, { figureId: figure == null ? void 0 : figure.id, onApiError }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogFooter, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "outline", onClick: () => onOpenChange(false), children: "Cancel" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "submit", disabled: saving || validatingSlug, children: saving ? "Saving..." : validatingSlug ? "Validating slug..." : figure ? "Update" : "Create" })
@@ -21498,6 +21822,7 @@ function useReferenceData() {
 }
 const API_BASE_URL$6 = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT$3 = `${API_BASE_URL$6}/v1/figures`;
+const FIGURE_SEARCH_ENDPOINT = `${FIGURES_ENDPOINT$3}/search`;
 const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT$3}/slug/availability`;
 const FRANCHISES_ENDPOINT$1 = `${API_BASE_URL$6}/v1/franchises`;
@@ -21518,6 +21843,20 @@ const fallbackFigureStatuses = [
   { value: "RELEASED", label: "Released" },
   { value: "SOLD_OUT", label: "Sold Out" }
 ];
+const buildFigureSearchUrl = (page, size2, query, filters) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    size: size2.toString(),
+    sort: "name,asc"
+  });
+  if (query.trim()) {
+    params.set("q", query.trim());
+  }
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) params.set(key, value);
+  });
+  return `${FIGURE_SEARCH_ENDPOINT}?${params.toString()}`;
+};
 const FigurePage = () => {
   const [figures2, setFigures] = reactExports.useState([]);
   const [franchises, setFranchises] = reactExports.useState([]);
@@ -21527,6 +21866,13 @@ const FigurePage = () => {
   const [saving, setSaving] = reactExports.useState(false);
   const [deleting, setDeleting] = reactExports.useState(false);
   const [search, setSearch] = reactExports.useState("");
+  const [filters, setFilters] = reactExports.useState({
+    franchiseId: "",
+    brandId: "",
+    status: "",
+    baseCurrencyCode: "",
+    isLicensed: ""
+  });
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
@@ -21543,7 +21889,7 @@ const FigurePage = () => {
     }
     try {
       const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
-        fetch(withPagination(FIGURES_ENDPOINT$3, page, pageSize)),
+        fetch(buildFigureSearchUrl(page, pageSize, search, filters)),
         fetch(withPageSize(FRANCHISES_ENDPOINT$1)),
         fetch(withPageSize(SOURCES_ENDPOINT$4))
       ]);
@@ -21577,10 +21923,7 @@ const FigurePage = () => {
   };
   reactExports.useEffect(() => {
     fetchData();
-  }, [page, pageSize]);
-  reactExports.useEffect(() => {
-    setPage(0);
-  }, [search]);
+  }, [page, pageSize, search, filters]);
   const franchiseNames = reactExports.useMemo(
     () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
     [franchises]
@@ -21589,25 +21932,11 @@ const FigurePage = () => {
     () => Object.fromEntries(brands.map((brand) => [brand.id, brand.name])),
     []
   );
-  const filteredFigures = reactExports.useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return figures2;
-    return figures2.filter(
-      (figure) => {
-        var _a2, _b2, _c2;
-        return [
-          (_a2 = figure.id) == null ? void 0 : _a2.toString(),
-          figure.name,
-          figure.slug,
-          figure.janCode,
-          figure.officialProductCode,
-          (_b2 = figure.franchise) == null ? void 0 : _b2.name,
-          (_c2 = figure.brand) == null ? void 0 : _c2.name,
-          figure.status
-        ].filter(Boolean).some((value) => value == null ? void 0 : value.toLowerCase().includes(query));
-      }
-    );
-  }, [figures2, search]);
+  const filteredFigures = figures2;
+  const updateFilter = (key, value) => {
+    setFilters((current) => ({ ...current, [key]: value }));
+    setPage(0);
+  };
   const openCreateDialog = () => {
     setSelectedFigure(null);
     setDialogOpen(true);
@@ -21717,24 +22046,92 @@ const FigurePage = () => {
           source.id
         )) })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full md:max-w-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Input,
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 rounded-lg border bg-card p-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 md:flex-row md:items-center md:justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full md:max-w-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Input,
+              {
+                value: search,
+                onChange: (e) => {
+                  setSearch(e.target.value);
+                  setPage(0);
+                },
+                placeholder: "Search figures",
+                className: "pl-9"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
+            filteredFigures.length,
+            " shown - ",
+            pageMeta.totalElements,
+            " total records"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 grid gap-3 md:grid-cols-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
             {
-              value: search,
-              onChange: (e) => setSearch(e.target.value),
-              placeholder: "Search figures",
-              className: "pl-9"
+              value: filters.franchiseId,
+              onChange: (event) => updateFilter("franchiseId", event.target.value),
+              className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All franchises" }),
+                franchises.map((franchise) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: franchise.id, children: franchise.name }, franchise.id))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: filters.brandId,
+              onChange: (event) => updateFilter("brandId", event.target.value),
+              className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All brands" }),
+                brands.map((brand) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: brand.id, children: brand.name }, brand.id))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: filters.status,
+              onChange: (event) => updateFilter("status", event.target.value),
+              className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All statuses" }),
+                (referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses).map((status) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: status.value, children: status.label }, status.value))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: filters.baseCurrencyCode,
+              onChange: (event) => updateFilter("baseCurrencyCode", event.target.value),
+              className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All currencies" }),
+                (referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes$2).map((currency) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: currency.value, children: currency.label }, currency.value))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: filters.isLicensed,
+              onChange: (event) => updateFilter("isLicensed", event.target.value),
+              className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All license states" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "true", children: "Licensed" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "false", children: "Unlicensed" })
+              ]
             }
           )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
-          filteredFigures.length,
-          " shown - ",
-          pageMeta.totalElements,
-          " total records"
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: mutating, message: "Updating figures...", className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -21915,12 +22312,13 @@ const FigureAliasFormDialog = ({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit({
+    const payload = {
       figureId: Number(form.figureId),
-      sourceId: Number(form.sourceId),
       alias: form.alias.trim(),
       loadMethod: form.loadMethod
-    });
+    };
+    if (form.sourceId) payload.sourceId = Number(form.sourceId);
+    await onSubmit(payload);
   };
   const selectClass = "w-full border border-input bg-background text-foreground p-2 rounded";
   const optionClass = "bg-background text-foreground";
@@ -21954,10 +22352,7 @@ const FigureAliasFormDialog = ({
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Figura a la que pertenece este alias." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
-            "Source ",
-            requiredMark
-          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Source" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "select",
             {
@@ -21966,14 +22361,13 @@ const FigureAliasFormDialog = ({
               onChange: handleChange,
               className: selectClass,
               disabled: loadingOptions || sources.length === 0,
-              required: true,
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: loadingOptions ? "Loading sources..." : "Select a source" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: loadingOptions ? "Loading sources..." : "None" }),
                 sources.map((source) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: source.id, children: source.name }, source.id))
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Fuente donde aplica o se identifico el alias." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Fuente donde aplica o se identifico el alias, si corresponde." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: labelClass, children: [
@@ -22030,14 +22424,16 @@ const FigureAliasTable = ({
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Alias" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Normalized Alias" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Figure" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Source" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Load Method" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 6, className: "h-28 text-center text-muted-foreground", children: "Loading figure aliases..." }) }) : aliases.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 6, className: "h-28 text-center text-muted-foreground", children: "No figure aliases found." }) }) : aliases.map((alias) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 7, className: "h-28 text-center text-muted-foreground", children: "Loading figure aliases..." }) }) : aliases.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 7, className: "h-28 text-center text-muted-foreground", children: "No figure aliases found." }) }) : aliases.map((alias) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: alias.id }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.alias || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.aliasNormalized || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.figureId ? figureNames[alias.figureId] || alias.figureId : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.sourceId ? sourceNames[alias.sourceId] || alias.sourceId : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.loadMethod || "-" }),
@@ -22144,6 +22540,7 @@ const FigureAliasPage = () => {
         return [
           (_a2 = alias.id) == null ? void 0 : _a2.toString(),
           alias.alias,
+          alias.aliasNormalized,
           alias.loadMethod,
           alias.figureId ? figureNames[alias.figureId] : "",
           alias.sourceId ? sourceNames[alias.sourceId] : ""
