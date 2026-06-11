@@ -1,14 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, User, ShoppingCart } from "lucide-react";
+import { ChevronDown, User, ShoppingCart, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+const THEME_STORAGE_KEY = "milo-theme";
 
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showWorkMenu, setShowWorkMenu] = useState(false);
   const [showFigureAdminMenu, setShowFigureAdminMenu] = useState(false);
   const [showCharacterAdminMenu, setShowCharacterAdminMenu] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const shouldUseDark = storedTheme === "dark";
+
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    setIsDarkMode(shouldUseDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextIsDark = !isDarkMode;
+
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    localStorage.setItem(THEME_STORAGE_KEY, nextIsDark ? "dark" : "light");
+    setIsDarkMode(nextIsDark);
+  };
 
   const closeMenus = () => {
     setShowWorkMenu(false);
@@ -179,6 +198,17 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground"
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDarkMode ? "Light mode" : "Dark mode"}
+            onClick={toggleTheme}
+          >
+            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
           <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
             <ShoppingCart className="h-5 w-5" />
           </Button>

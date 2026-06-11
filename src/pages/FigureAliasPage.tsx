@@ -130,6 +130,7 @@ const FigureAliasPage = () => {
       [
         alias.id?.toString(),
         alias.alias,
+        alias.aliasNormalized,
         alias.loadMethod,
         alias.figureId ? figureNames[alias.figureId] : "",
         alias.sourceId ? sourceNames[alias.sourceId] : "",

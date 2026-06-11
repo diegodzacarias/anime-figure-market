@@ -54,6 +54,7 @@ const API_BASE_URL =
 const CHARACTER_ENDPOINT = `${API_BASE_URL}/v1/characters`;
 const CHARACTER_FORM_ENDPOINT = `${API_BASE_URL}/v1/character-forms`;
 const FIGURE_CHARACTER_ENDPOINT = `${API_BASE_URL}/v1/figure-characters`;
+const FIGURE_IMAGE_ENDPOINT = `${API_BASE_URL}/v1/figure-images`;
 
 export type Figure = {
   id?: number;
@@ -100,6 +101,19 @@ type FigureCharacter = {
   characterFormName?: string | null;
   primaryCharacter?: boolean;
   displayOrder?: number;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+type FigureImage = {
+  id?: number;
+  figureId: number;
+  figureName?: string;
+  imageUrl: string;
+  altText?: string | null;
+  sortOrder?: number | null;
+  primary?: boolean | null;
+  sourceType?: string | null;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -628,6 +642,385 @@ const FigureCharactersSection = ({
   );
 };
 
+const FigureImagesSection = ({
+  figureId,
+  onApiError,
+}: {
+  figureId?: number;
+  onApiError: (error: ApiErrorResponse) => void;
+}) => {
+  const [rows, setRows] = useState<FigureImage[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [savingImage, setSavingImage] = useState(false);
+  const [editing, setEditing] = useState<FigureImage | null>(null);
+  const [rowToDelete, setRowToDelete] = useState<FigureImage | null>(null);
+  const [localError, setLocalError] = useState("");
+  const [form, setForm] = useState({
+    imageUrl: "",
+    altText: "",
+    sortOrder: "",
+    primary: false,
+    sourceType: "",
+  });
+
+  const busy = loading || savingImage;
+
+  const resetImageForm = () => {
+    setEditing(null);
+    setLocalError("");
+    setForm({
+      imageUrl: "",
+      altText: "",
+      sortOrder: "",
+      primary: false,
+      sourceType: "",
+    });
+  };
+
+  const fetchFigureImages = async () => {
+    if (!figureId) return;
+
+    setLoading(true);
+
+    try {
+      const endpoint = `${FIGURE_IMAGE_ENDPOINT}?figureId=${figureId}`;
+      const response = await fetch(withPagination(endpoint, 0, 100, "sortOrder,asc"));
+
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error loading figure images."));
+        return;
+      }
+
+      const data = await response.json();
+      setRows(getPageContent<FigureImage>(data));
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!figureId) {
+      setRows([]);
+      resetImageForm();
+      return;
+    }
+
+    fetchFigureImages();
+  }, [figureId]);
+
+  const handleEdit = (row: FigureImage) => {
+    setLocalError("");
+    setEditing(row);
+    setForm({
+      imageUrl: row.imageUrl || "",
+      altText: row.altText || "",
+      sortOrder: row.sortOrder?.toString() || "",
+      primary: row.primary === true,
+      sourceType: row.sourceType || "",
+    });
+  };
+
+  const buildPayload = (forcePrimary?: boolean) => {
+    if (!figureId) return null;
+
+    return {
+      figureId,
+      imageUrl: form.imageUrl.trim(),
+      altText: form.altText.trim() || null,
+      sortOrder: form.sortOrder ? Number(form.sortOrder) : null,
+      primary: forcePrimary ?? form.primary,
+      sourceType: form.sourceType.trim() || null,
+    };
+  };
+
+  const handleSave = async () => {
+    if (!figureId) return;
+
+    setLocalError("");
+
+    if (!form.imageUrl.trim()) {
+      setLocalError("Image URL is required.");
+      return;
+    }
+
+    if (form.sortOrder && Number(form.sortOrder) < 0) {
+      setLocalError("Sort Order must be 0 or greater.");
+      return;
+    }
+
+    const payload = buildPayload();
+    if (!payload) return;
+
+    setSavingImage(true);
+
+    try {
+      const response = await fetch(
+        editing?.id ? `${FIGURE_IMAGE_ENDPOINT}/${editing.id}` : FIGURE_IMAGE_ENDPOINT,
+        {
+          method: editing?.id ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error saving figure image."));
+        return;
+      }
+
+      await fetchFigureImages();
+      resetImageForm();
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingImage(false);
+    }
+  };
+
+  const handleMarkPrimary = async (row: FigureImage) => {
+    if (!figureId || !row.id) return;
+
+    setSavingImage(true);
+
+    try {
+      const response = await fetch(`${FIGURE_IMAGE_ENDPOINT}/${row.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          figureId,
+          imageUrl: row.imageUrl,
+          altText: row.altText || null,
+          sortOrder: row.sortOrder ?? null,
+          primary: true,
+          sourceType: row.sourceType || null,
+        }),
+      });
+
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error marking figure image as primary."));
+        return;
+      }
+
+      await fetchFigureImages();
+      if (editing?.id === row.id) {
+        setForm((current) => ({ ...current, primary: true }));
+      }
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingImage(false);
+    }
+  };
+
+  const handleDelete = async (row: FigureImage) => {
+    if (!row.id) return;
+
+    setSavingImage(true);
+
+    try {
+      const response = await fetch(`${FIGURE_IMAGE_ENDPOINT}/${row.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        onApiError(await readApiErrorResponse(response, "Error deleting figure image."));
+        return;
+      }
+
+      await fetchFigureImages();
+      if (editing?.id === row.id) resetImageForm();
+      setRowToDelete(null);
+    } catch (error) {
+      onApiError(toClientApiError(error, "Error connecting to backend."));
+    } finally {
+      setSavingImage(false);
+    }
+  };
+
+  return (
+    <div className="rounded-lg border bg-muted/30 p-4">
+      <div className="flex flex-col gap-1">
+        <h3 className="text-sm font-medium text-foreground">Figure Images</h3>
+        <p className="text-xs text-muted-foreground">
+          Manage optional image URLs and previews for this Figure.
+        </p>
+      </div>
+
+      {!figureId ? (
+        <p className="mt-4 rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground">
+          Save the Figure first to enable Figure Images.
+        </p>
+      ) : (
+        <LoadingOverlay active={busy} message="Updating figure images..." className="mt-4">
+          <div className="grid gap-4 rounded-md border bg-background p-4 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <label className="mb-1 block text-sm font-medium text-foreground">
+                Image URL <span className="text-destructive">*</span>
+              </label>
+              <Input
+                type="url"
+                value={form.imageUrl}
+                disabled={savingImage}
+                onChange={(event) => setForm((current) => ({ ...current, imageUrl: event.target.value }))}
+                placeholder="https://..."
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-foreground">Alt Text</label>
+              <Input
+                value={form.altText}
+                disabled={savingImage}
+                onChange={(event) => setForm((current) => ({ ...current, altText: event.target.value }))}
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-foreground">Source Type</label>
+              <Input
+                value={form.sourceType}
+                disabled={savingImage}
+                onChange={(event) => setForm((current) => ({ ...current, sourceType: event.target.value }))}
+                placeholder="OFFICIAL, SOURCE, MANUAL..."
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-foreground">Sort Order</label>
+              <Input
+                type="number"
+                min="0"
+                value={form.sortOrder}
+                disabled={savingImage}
+                onChange={(event) => setForm((current) => ({ ...current, sortOrder: event.target.value }))}
+              />
+            </div>
+
+            <div className="flex items-end justify-between gap-3">
+              <label className="flex items-center gap-2 pb-2 text-sm font-medium text-foreground">
+                <Checkbox
+                  checked={form.primary}
+                  disabled={savingImage}
+                  onCheckedChange={(checked) =>
+                    setForm((current) => ({
+                      ...current,
+                      primary: checked === true,
+                    }))
+                  }
+                />
+                Primary
+              </label>
+
+              <div className="flex gap-2">
+                {editing && (
+                  <Button type="button" variant="outline" disabled={savingImage} onClick={resetImageForm}>
+                    Cancel
+                  </Button>
+                )}
+                <Button type="button" className="gap-2" disabled={savingImage} onClick={handleSave}>
+                  {!editing && <Plus className="h-4 w-4" />}
+                  {editing ? "Update" : "Add"}
+                </Button>
+              </div>
+            </div>
+
+            {localError && (
+              <p className="md:col-span-2 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                {localError}
+              </p>
+            )}
+          </div>
+
+          <div className="mt-4 grid gap-3">
+            {rows.length === 0 ? (
+              <p className="rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground">
+                No Figure Images found.
+              </p>
+            ) : (
+              rows.map((row) => (
+                <div key={row.id} className="grid gap-4 rounded-md border bg-background p-3 md:grid-cols-[8rem_1fr_auto]">
+                  <div className="aspect-square overflow-hidden rounded-md border bg-muted">
+                    <img
+                      src={row.imageUrl}
+                      alt={row.altText || row.figureName || "Figure image"}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="truncate text-sm font-medium text-foreground">{row.altText || "Untitled image"}</p>
+                      {row.primary && (
+                        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                          Primary
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 break-all text-xs text-muted-foreground">{row.imageUrl}</p>
+                    <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                      <span>Sort: {row.sortOrder ?? "-"}</span>
+                      <span>Source: {row.sourceType || "-"}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap justify-end gap-2 md:flex-col md:items-stretch">
+                    <Button type="button" size="sm" variant="outline" disabled={savingImage} onClick={() => handleEdit(row)}>
+                      Edit
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={savingImage || row.primary === true}
+                      onClick={() => handleMarkPrimary(row)}
+                    >
+                      Set Primary
+                    </Button>
+                    <Button type="button" size="sm" variant="destructive" disabled={savingImage} onClick={() => setRowToDelete(row)}>
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </LoadingOverlay>
+      )}
+
+      <AlertDialog
+        open={Boolean(rowToDelete)}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen) setRowToDelete(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Figure Image?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove this image URL from the Figure. The Figure record will not be deleted.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={savingImage}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={savingImage}
+              onClick={() => {
+                if (rowToDelete) handleDelete(rowToDelete);
+              }}
+            >
+              {savingImage ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+};
+
 const FigureFormDialog = ({
   figure,
   franchises,
@@ -976,6 +1369,7 @@ const FigureFormDialog = ({
           </div>
 
           <FigureCharactersSection figureId={figure?.id} onApiError={onApiError} />
+          <FigureImagesSection figureId={figure?.id} onApiError={onApiError} />
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

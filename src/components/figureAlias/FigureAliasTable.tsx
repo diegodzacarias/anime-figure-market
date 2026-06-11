@@ -34,6 +34,7 @@ const FigureAliasTable = ({
           <TableRow>
             <TableHead className="w-20">ID</TableHead>
             <TableHead>Alias</TableHead>
+            <TableHead>Normalized Alias</TableHead>
             <TableHead>Figure</TableHead>
             <TableHead>Source</TableHead>
             <TableHead>Load Method</TableHead>
@@ -43,13 +44,13 @@ const FigureAliasTable = ({
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={6} className="h-28 text-center text-muted-foreground">
+              <TableCell colSpan={7} className="h-28 text-center text-muted-foreground">
                 Loading figure aliases...
               </TableCell>
             </TableRow>
           ) : aliases.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="h-28 text-center text-muted-foreground">
+              <TableCell colSpan={7} className="h-28 text-center text-muted-foreground">
                 No figure aliases found.
               </TableCell>
             </TableRow>
@@ -58,6 +59,7 @@ const FigureAliasTable = ({
               <TableRow key={alias.id}>
                 <TableCell className="font-medium">{alias.id}</TableCell>
                 <TableCell>{alias.alias || "-"}</TableCell>
+                <TableCell>{alias.aliasNormalized || "-"}</TableCell>
                 <TableCell>{alias.figureId ? figureNames[alias.figureId] || alias.figureId : "-"}</TableCell>
                 <TableCell>{alias.sourceId ? sourceNames[alias.sourceId] || alias.sourceId : "-"}</TableCell>
                 <TableCell>{alias.loadMethod || "-"}</TableCell>

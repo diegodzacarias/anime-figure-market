@@ -18,6 +18,7 @@ export type FigureAlias = {
   figureId?: number;
   sourceId?: number;
   alias?: string;
+  aliasNormalized?: string;
   loadMethod?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -89,12 +90,15 @@ const FigureAliasFormDialog = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await onSubmit({
+    const payload: Record<string, string | number> = {
       figureId: Number(form.figureId),
-      sourceId: Number(form.sourceId),
       alias: form.alias.trim(),
       loadMethod: form.loadMethod,
-    });
+    };
+
+    if (form.sourceId) payload.sourceId = Number(form.sourceId);
+
+    await onSubmit(payload);
   };
 
   const selectClass =
@@ -132,17 +136,16 @@ const FigureAliasFormDialog = ({
             </div>
 
             <div>
-              <label className={labelClass}>Source {requiredMark}</label>
+              <label className={labelClass}>Source</label>
               <select
                 name="sourceId"
                 value={form.sourceId}
                 onChange={handleChange}
                 className={selectClass}
                 disabled={loadingOptions || sources.length === 0}
-                required
               >
                 <option className={optionClass} value="">
-                  {loadingOptions ? "Loading sources..." : "Select a source"}
+                  {loadingOptions ? "Loading sources..." : "None"}
                 </option>
                 {sources.map((source) => (
                   <option className={optionClass} key={source.id} value={source.id}>
@@ -150,7 +153,7 @@ const FigureAliasFormDialog = ({
                   </option>
                 ))}
               </select>
-              <p className={helperClass}>Fuente donde aplica o se identifico el alias.</p>
+              <p className={helperClass}>Fuente donde aplica o se identifico el alias, si corresponde.</p>
             </div>
 
             <div>

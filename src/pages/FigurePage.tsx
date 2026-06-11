@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Plus, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import {
@@ -16,21 +16,24 @@ import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import PageControls from "@/components/ui/page-controls";
-import FigureFormDialog, { Figure, FranchiseOption } from "@/components/figure/FigureFormDialog";
 import FigureTable from "@/components/figure/FigureTable";
+import type { Figure, FranchiseOption } from "@/components/figure/FigureFormDialog";
 import type { SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import { useReferenceData } from "@/hooks/useReferenceData";
 import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
-import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
+import { defaultPageMeta, getPageContent, getPageMeta, withPageSize } from "@/lib/page";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
+const FIGURE_SEARCH_ENDPOINT = `${FIGURES_ENDPOINT}/search`;
 const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+
+const FigureFormDialog = lazy(() => import("@/components/figure/FigureFormDialog"));
 
 const brands = [
   { id: 1, name: "Good Smile Company" },
@@ -51,6 +54,37 @@ const fallbackFigureStatuses = [
   { value: "SOLD_OUT", label: "Sold Out" },
 ];
 
+type FigureSearchFilters = {
+  franchiseId: string;
+  brandId: string;
+  status: string;
+  baseCurrencyCode: string;
+  isLicensed: string;
+};
+
+const buildFigureSearchUrl = (
+  page: number,
+  size: number,
+  query: string,
+  filters: FigureSearchFilters
+) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    size: size.toString(),
+    sort: "name,asc",
+  });
+
+  if (query.trim()) {
+    params.set("q", query.trim());
+  }
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) params.set(key, value);
+  });
+
+  return `${FIGURE_SEARCH_ENDPOINT}?${params.toString()}`;
+};
+
 const FigurePage = () => {
   const [figures, setFigures] = useState<Figure[]>([]);
   const [franchises, setFranchises] = useState<FranchiseOption[]>([]);
@@ -60,6 +94,13 @@ const FigurePage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<FigureSearchFilters>({
+    franchiseId: "",
+    brandId: "",
+    status: "",
+    baseCurrencyCode: "",
+    isLicensed: "",
+  });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
@@ -78,7 +119,7 @@ const FigurePage = () => {
 
     try {
       const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
-        fetch(withPagination(FIGURES_ENDPOINT, page, pageSize)),
+        fetch(buildFigureSearchUrl(page, pageSize, search, filters)),
         fetch(withPageSize(FRANCHISES_ENDPOINT)),
         fetch(withPageSize(SOURCES_ENDPOINT)),
       ]);
@@ -116,11 +157,7 @@ const FigurePage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, pageSize]);
-
-  useEffect(() => {
-    setPage(0);
-  }, [search]);
+  }, [page, pageSize, search, filters]);
 
   const franchiseNames = useMemo(
     () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
@@ -132,26 +169,12 @@ const FigurePage = () => {
     []
   );
 
-  const filteredFigures = useMemo(() => {
-    const query = search.trim().toLowerCase();
+  const filteredFigures = figures;
 
-    if (!query) return figures;
-
-    return figures.filter((figure) =>
-      [
-        figure.id?.toString(),
-        figure.name,
-        figure.slug,
-        figure.janCode,
-        figure.officialProductCode,
-        figure.franchise?.name,
-        figure.brand?.name,
-        figure.status,
-      ]
-        .filter(Boolean)
-        .some((value) => value?.toLowerCase().includes(query))
-    );
-  }, [figures, search]);
+  const updateFilter = (key: keyof FigureSearchFilters, value: string) => {
+    setFilters((current) => ({ ...current, [key]: value }));
+    setPage(0);
+  };
 
   const openCreateDialog = () => {
     setSelectedFigure(null);
@@ -298,20 +321,89 @@ const FigurePage = () => {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between">
-          <div className="relative w-full md:max-w-sm">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search figures"
-              className="pl-9"
-            />
+        <div className="mt-6 rounded-lg border bg-card p-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="relative w-full md:max-w-sm">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(0);
+                }}
+                placeholder="Search figures"
+                className="pl-9"
+              />
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              {filteredFigures.length} shown - {pageMeta.totalElements} total records
+            </p>
           </div>
 
-          <p className="text-sm text-muted-foreground">
-            {filteredFigures.length} shown - {pageMeta.totalElements} total records
-          </p>
+          <div className="mt-4 grid gap-3 md:grid-cols-5">
+            <select
+              value={filters.franchiseId}
+              onChange={(event) => updateFilter("franchiseId", event.target.value)}
+              className="rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All franchises</option>
+              {franchises.map((franchise) => (
+                <option key={franchise.id} value={franchise.id}>
+                  {franchise.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filters.brandId}
+              onChange={(event) => updateFilter("brandId", event.target.value)}
+              className="rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All brands</option>
+              {brands.map((brand) => (
+                <option key={brand.id} value={brand.id}>
+                  {brand.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filters.status}
+              onChange={(event) => updateFilter("status", event.target.value)}
+              className="rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All statuses</option>
+              {(referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses).map((status) => (
+                <option key={status.value} value={status.value}>
+                  {status.label}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filters.baseCurrencyCode}
+              onChange={(event) => updateFilter("baseCurrencyCode", event.target.value)}
+              className="rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All currencies</option>
+              {(referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes).map((currency) => (
+                <option key={currency.value} value={currency.value}>
+                  {currency.label}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filters.isLicensed}
+              onChange={(event) => updateFilter("isLicensed", event.target.value)}
+              className="rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All license states</option>
+              <option value="true">Licensed</option>
+              <option value="false">Unlicensed</option>
+            </select>
+          </div>
         </div>
 
         <LoadingOverlay active={mutating} message="Updating figures..." className="mt-4">
@@ -341,21 +433,25 @@ const FigurePage = () => {
         </div>
       </main>
 
-      <FigureFormDialog
-        figure={selectedFigure}
-        franchises={franchises}
-        brands={brands}
-        open={dialogOpen}
-        saving={saving}
-        loadingOptions={loadingOptions}
-        currencyCodes={referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes}
-        figureStatuses={referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses}
-        onOpenChange={setDialogOpen}
-        onGenerateSlug={generateSlug}
-        onValidateSlug={validateSlug}
-        onApiError={setApiError}
-        onSubmit={handleSubmit}
-      />
+      {dialogOpen && (
+        <Suspense fallback={null}>
+          <FigureFormDialog
+            figure={selectedFigure}
+            franchises={franchises}
+            brands={brands}
+            open={dialogOpen}
+            saving={saving}
+            loadingOptions={loadingOptions}
+            currencyCodes={referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes}
+            figureStatuses={referenceData.figureStatuses.length > 0 ? referenceData.figureStatuses : fallbackFigureStatuses}
+            onOpenChange={setDialogOpen}
+            onGenerateSlug={generateSlug}
+            onValidateSlug={validateSlug}
+            onApiError={setApiError}
+            onSubmit={handleSubmit}
+          />
+        </Suspense>
+      )}
 
       <AlertDialog
         open={Boolean(figureToDelete)}
