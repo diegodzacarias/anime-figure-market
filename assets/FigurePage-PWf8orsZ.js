@@ -1,9 +1,9 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-CYBYPqNZ.js","assets/index-CLz3x6tc.js","assets/index-IJi9EzrO.css","assets/apiError-By7td0ok.js","assets/Navbar-qHTgk7Gs.js","assets/dialog-C3JkaupD.js","assets/popover-DHgnWgHQ.js","assets/page-DKdY7PVC.js"])))=>i.map(i=>d[i]);
-import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-CLz3x6tc.js";
-import { B as Button, N as Navbar, I as Input } from "./Navbar-qHTgk7Gs.js";
-import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, A as ApiErrorToast, P as Plus, S as Search, L as LoadingOverlay, f as PageControls, g as AlertDialog, h as AlertDialogContent, i as AlertDialogHeader, j as AlertDialogTitle, k as AlertDialogDescription, l as AlertDialogFooter, m as AlertDialogCancel, n as AlertDialogAction, r as readApiErrorResponse, t as toClientApiError } from "./apiError-By7td0ok.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-BOBM80Fb.js";
-import { u as useReferenceData } from "./useReferenceData-mt19d6uP.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-D_Has-cS.js","assets/index-WzxPZzqU.js","assets/index-CUTmOiYp.css","assets/apiError-Bp3oYuQD.js","assets/Navbar-DY2ajiLQ.js","assets/dialog-vJ1Ivy2A.js","assets/popover-9empWYoC.js","assets/page-DKdY7PVC.js"])))=>i.map(i=>d[i]);
+import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-WzxPZzqU.js";
+import { B as Button, N as Navbar, I as Input } from "./Navbar-DY2ajiLQ.js";
+import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, A as ApiErrorToast, P as Plus, S as Search, L as LoadingOverlay, f as PageControls, g as AlertDialog, h as AlertDialogContent, i as AlertDialogHeader, j as AlertDialogTitle, k as AlertDialogDescription, l as AlertDialogFooter, m as AlertDialogCancel, n as AlertDialogAction, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Bp3oYuQD.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-CJyMLCLQ.js";
+import { u as useReferenceData } from "./useReferenceData-D3MsqWEE.js";
 import { d as defaultPageMeta, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
 const getFranchiseName = (figure, franchiseNames) => {
   var _a, _b;
@@ -64,7 +64,7 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
-const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-CYBYPqNZ.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7]) : void 0));
+const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-D_Has-cS.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7]) : void 0));
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },
