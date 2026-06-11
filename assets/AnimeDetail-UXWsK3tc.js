@@ -1,10 +1,15 @@
-import { j as jsxRuntimeExports, L as Link } from "./react-vendor-Bhf2bzcN.js";
-import { N as Navbar, B as Button } from "./Navbar-_ItMA5Sh.js";
-import { A as useParams } from "./vendor-COs6rlZq.js";
-import { A as ArrowLeft } from "./icons-vendor-DLHCyI7j.js";
-import "./radix-vendor-KSOk4oW_.js";
-import "./index-DE6HQk3y.js";
-import "./query-vendor-CRnINZg8.js";
+import { c as createLucideIcon, a as useParams, j as jsxRuntimeExports, L as Link } from "./index-_-vfgGHr.js";
+import { N as Navbar, B as Button } from "./Navbar-BSyiII2D.js";
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ArrowLeft = createLucideIcon("ArrowLeft", [
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
+]);
 const animeNames = {
   berserk: "Berserk",
   naruto: "Naruto",

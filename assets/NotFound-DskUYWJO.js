@@ -1,5 +1,4 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./react-vendor-Bhf2bzcN.js";
-import { k as useLocation } from "./vendor-COs6rlZq.js";
+import { b as useLocation, r as reactExports, j as jsxRuntimeExports } from "./index-_-vfgGHr.js";
 const NotFound = () => {
   const location = useLocation();
   reactExports.useEffect(() => {

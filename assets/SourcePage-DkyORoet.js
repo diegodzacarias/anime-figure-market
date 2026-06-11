@@ -1,14 +1,10 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./react-vendor-Bhf2bzcN.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-_ItMA5Sh.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, A as ApiErrorToast, P as PageControls, f as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction, r as readApiErrorResponse, t as toClientApiError } from "./apiError-CWp63LAl.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DJdRbjCm.js";
-import { P as Pencil, T as Trash2, a as Plus, b as Search } from "./icons-vendor-DLHCyI7j.js";
-import { u as useReferenceData } from "./useReferenceData-m6mpmIsJ.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-_-vfgGHr.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-BSyiII2D.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, A as ApiErrorToast, P as Plus, S as Search, f as PageControls, g as AlertDialog, h as AlertDialogContent, i as AlertDialogHeader, j as AlertDialogTitle, k as AlertDialogDescription, l as AlertDialogFooter, m as AlertDialogCancel, n as AlertDialogAction, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Tyyvc9AH.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BogUNvft.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-7ewYfWml.js";
+import { u as useReferenceData } from "./useReferenceData-BP7RAqMV.js";
 import { d as defaultPageMeta, b as withPagination, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./vendor-COs6rlZq.js";
-import "./radix-vendor-KSOk4oW_.js";
-import "./index-DE6HQk3y.js";
-import "./query-vendor-CRnINZg8.js";
 const SourceFormDialog = ({
   source,
   sourceTypes,
