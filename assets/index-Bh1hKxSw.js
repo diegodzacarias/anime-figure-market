@@ -1,5 +1,5 @@
-import { r as reactExports, e as createCollection, f as createContextScope, j as jsxRuntimeExports, h as useComposedRefs, s as useControllableState, l as useCallbackRef, k as Primitive, i as composeEventHandlers } from "./index-WzxPZzqU.js";
-import { p as useId } from "./apiError-Bp3oYuQD.js";
+import { r as reactExports, e as createCollection, f as createContextScope, j as jsxRuntimeExports, h as useComposedRefs, s as useControllableState, l as useCallbackRef, k as Primitive, i as composeEventHandlers } from "./index-CIxedUMY.js";
+import { o as useId } from "./table-DlyYYwAu.js";
 var DirectionContext = reactExports.createContext(void 0);
 function useDirection(localDir) {
   const globalDir = reactExports.useContext(DirectionContext);

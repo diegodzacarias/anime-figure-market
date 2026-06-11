@@ -1,6 +1,5 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-WzxPZzqU.js";
-import { B as Button, S as ShoppingCart, N as Navbar } from "./Navbar-DY2ajiLQ.js";
-import { w as withPageSize, g as getPageContent } from "./page-DKdY7PVC.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-CIxedUMY.js";
+import { w as withPageSize, g as getPageContent, B as Button, S as ShoppingCart, N as Navbar } from "./page-dbkTYP82.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
 const onepieceImg = "/anime-figure-market/assets/onepiece-DNe8N-Mi.jpg";
@@ -17,11 +16,6 @@ const fallbackImages = {
   Berserk: berserkImg,
   Naruto: narutoImg,
   "One Piece": onepieceImg
-};
-const subtitles = {
-  Berserk: "La Espada del Guerrero Negro",
-  Naruto: "El Camino del Ninja",
-  "One Piece": "La Gran Era Pirata"
 };
 const AnimeHero = () => {
   const navigate = useNavigate();
@@ -74,7 +68,6 @@ const AnimeHero = () => {
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "anime-card-overlay absolute inset-0 flex flex-col items-center justify-end p-6", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-foreground", children: anime.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-muted-foreground", children: subtitles[anime.name] || "Explora su colección" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-3 rounded-full bg-primary/20 px-4 py-1 text-xs font-medium text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground", children: "Ver colección →" })
           ] })
         ]

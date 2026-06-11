@@ -1,5 +1,6 @@
-import { c as createLucideIcon, r as reactExports, t as useLayoutEffect2, v as React, l as useCallbackRef$1, h as useComposedRefs, j as jsxRuntimeExports, k as Primitive, f as createContextScope, i as composeEventHandlers, P as Presence, D as DismissableLayer, w as createContext2, s as useControllableState, p as Portal$1, q as createSlot, x as createSlottable, d as cn, X } from "./index-WzxPZzqU.js";
-import { b as buttonVariants, B as Button } from "./Navbar-DY2ajiLQ.js";
+import { c as createLucideIcon, r as reactExports, t as useLayoutEffect2, v as React, l as useCallbackRef$1, h as useComposedRefs, j as jsxRuntimeExports, k as Primitive, f as createContextScope, i as composeEventHandlers, P as Presence, D as DismissableLayer, w as createContext2, s as useControllableState, p as Portal$1, q as createSlot, x as createSlottable, d as cn } from "./index-CIxedUMY.js";
+import { c as buttonVariants, B as Button } from "./page-dbkTYP82.js";
+import { L as LoaderCircle } from "./apiError-IaQ_dzKe.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -17,15 +18,6 @@ const ChevronLeft = createLucideIcon("ChevronLeft", [
  */
 const ChevronRight = createLucideIcon("ChevronRight", [
   ["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]
-]);
-/**
- * @license lucide-react v0.462.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const LoaderCircle = createLucideIcon("LoaderCircle", [
-  ["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -1546,44 +1538,6 @@ const AlertDialogCancel = reactExports.forwardRef(({ className, ...props }, ref)
   }
 ));
 AlertDialogCancel.displayName = Cancel.displayName;
-const ApiErrorToast = ({ error, onClose }) => {
-  if (!error) return null;
-  const details = error.details ? Object.entries(error.details) : [];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed right-4 top-20 z-[100] w-[calc(100vw-2rem)] max-w-lg rounded-lg border border-destructive/30 bg-background/90 p-4 text-foreground shadow-lg backdrop-blur md:right-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-destructive", children: error.status ? `${error.status} ${error.error || "Error"}` : error.error || "Error" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm", children: error.message })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", variant: "ghost", size: "icon", className: "h-8 w-8 shrink-0", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-4 w-4" }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 space-y-1 text-xs text-muted-foreground", children: [
-      error.path && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
-        "Path: ",
-        error.path
-      ] }),
-      error.requestId && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
-        "Request ID: ",
-        error.requestId
-      ] }),
-      error.timestamp && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
-        "Timestamp: ",
-        error.timestamp
-      ] })
-    ] }),
-    details.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 rounded-md border border-destructive/20 bg-destructive/5 p-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-destructive", children: "Details" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "mt-2 space-y-1 text-xs text-muted-foreground", children: details.map(([field, message]) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium text-foreground", children: [
-          field,
-          ":"
-        ] }),
-        " ",
-        message
-      ] }, field)) })
-    ] })
-  ] });
-};
 const LoadingIndicator = ({ label }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-background/80 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 rounded-md border bg-card px-4 py-3 text-sm font-medium text-foreground shadow-card", children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-4 w-4 animate-spin text-primary" }),
   label
@@ -1723,43 +1677,8 @@ const TableCaption = reactExports.forwardRef(
   ({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx("caption", { ref, className: cn("mt-4 text-sm text-muted-foreground", className), ...props })
 );
 TableCaption.displayName = "TableCaption";
-async function readApiErrorResponse(response, fallbackMessage) {
-  const text = await response.text();
-  if (text) {
-    try {
-      const data = JSON.parse(text);
-      return {
-        status: data.status ?? response.status,
-        error: data.error ?? response.statusText,
-        message: data.message ?? fallbackMessage,
-        path: data.path,
-        requestId: data.requestId,
-        details: data.details,
-        timestamp: data.timestamp
-      };
-    } catch {
-      return {
-        status: response.status,
-        error: response.statusText,
-        message: text
-      };
-    }
-  }
-  return {
-    status: response.status,
-    error: response.statusText,
-    message: fallbackMessage
-  };
-}
-function toClientApiError(error, fallbackMessage) {
-  return {
-    status: 0,
-    error: "Client Error",
-    message: error instanceof Error ? error.message : fallbackMessage
-  };
-}
 export {
-  ApiErrorToast as A,
+  AlertDialog as A,
   ChevronRight as C,
   Description as D,
   FocusScope as F,
@@ -1775,22 +1694,19 @@ export {
   TableBody as d,
   TableCell as e,
   PageControls as f,
-  AlertDialog as g,
-  AlertDialogContent as h,
-  AlertDialogHeader as i,
-  AlertDialogTitle as j,
-  AlertDialogDescription as k,
-  AlertDialogFooter as l,
-  AlertDialogCancel as m,
-  AlertDialogAction as n,
-  hideOthers as o,
-  useId as p,
-  Root as q,
-  readApiErrorResponse as r,
-  Portal as s,
-  toClientApiError as t,
-  useFocusGuards as u,
-  Content as v,
-  Close as w,
-  Title as x
+  AlertDialogContent as g,
+  AlertDialogHeader as h,
+  AlertDialogTitle as i,
+  AlertDialogDescription as j,
+  AlertDialogFooter as k,
+  AlertDialogCancel as l,
+  AlertDialogAction as m,
+  hideOthers as n,
+  useId as o,
+  Root as p,
+  Portal as q,
+  Content as r,
+  Close as s,
+  Title as t,
+  useFocusGuards as u
 };
