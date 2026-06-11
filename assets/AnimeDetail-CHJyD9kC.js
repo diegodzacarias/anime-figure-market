@@ -1,5 +1,5 @@
-import { c as createLucideIcon, a as useParams, j as jsxRuntimeExports, L as Link } from "./index-WzxPZzqU.js";
-import { N as Navbar, B as Button } from "./Navbar-DY2ajiLQ.js";
+import { c as createLucideIcon, a as useParams, j as jsxRuntimeExports, L as Link } from "./index-CLz3x6tc.js";
+import { N as Navbar, B as Button } from "./Navbar-qHTgk7Gs.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
