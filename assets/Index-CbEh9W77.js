@@ -1,12 +1,12 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-CNPWJqJ-.js";
-import { B as Button, S as ShoppingCart, N as Navbar } from "./Navbar-BaHS8zXa.js";
-import { w as withPageSize, g as getPageContent } from "./page-DKdY7PVC.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-DozeVVov.js";
+import { B as Button, S as ShoppingCart, N as Navbar } from "./Navbar-BM2I2cQI.js";
+import { w as withPagination, g as getPageContent } from "./page-DEGBjxB5.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
 const onepieceImg = "/anime-figure-market/assets/onepiece-DNe8N-Mi.jpg";
 const BASE_URL = "https://figure-market-core.onrender.com/api";
 async function getFranchises() {
-  const res = await fetch(withPageSize(`${BASE_URL}/v1/franchises`));
+  const res = await fetch(withPagination(`${BASE_URL}/v1/franchises`, 0, 1e3, "name,asc"));
   if (!res.ok) {
     throw new Error("Error fetching franchises");
   }

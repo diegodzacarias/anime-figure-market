@@ -35,8 +35,8 @@ function withPagination(endpoint, page, size, sort = "id,asc") {
 }
 export {
   getPageMeta as a,
-  withPagination as b,
+  withPageSize as b,
   defaultPageMeta as d,
   getPageContent as g,
-  withPageSize as w
+  withPagination as w
 };

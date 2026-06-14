@@ -1,11 +1,11 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-T7cFX9SK.js","assets/index-CNPWJqJ-.js","assets/index-B0rhePVP.css","assets/table-NOiosUeV.js","assets/Navbar-BaHS8zXa.js","assets/apiError-BK8-h-Dd.js","assets/dialog-xWGEG5J1.js","assets/popover-xIKRY6ob.js","assets/page-DKdY7PVC.js"])))=>i.map(i=>d[i]);
-import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-CNPWJqJ-.js";
-import { B as Button, N as Navbar, I as Input } from "./Navbar-BaHS8zXa.js";
-import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as Plus, S as Search, L as LoadingOverlay, f as PageControls, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-NOiosUeV.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-BK8-h-Dd.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-BrEGuJ7p.js";
-import { u as useReferenceData } from "./useReferenceData-DET3Iyyt.js";
-import { d as defaultPageMeta, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-CVkXfv-8.js","assets/index-DozeVVov.js","assets/index-B0rhePVP.css","assets/table-CxSWKMHT.js","assets/Navbar-BM2I2cQI.js","assets/apiError-Ceys5HnJ.js","assets/dialog-Dn-Bfs_n.js","assets/popover-CIzKry3t.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
+import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-DozeVVov.js";
+import { B as Button, N as Navbar, I as Input } from "./Navbar-BM2I2cQI.js";
+import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as Plus, S as Search, L as LoadingOverlay, f as PageControls, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-CxSWKMHT.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Ceys5HnJ.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-CQK2dSI9.js";
+import { u as useReferenceData } from "./useReferenceData-DDuVyixl.js";
+import { d as defaultPageMeta, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
 const getFranchiseName = (figure, franchiseNames) => {
   var _a, _b;
   const franchiseId = figure.franchiseId || ((_a = figure.franchise) == null ? void 0 : _a.id);
@@ -65,7 +65,7 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
-const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-T7cFX9SK.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8]) : void 0));
+const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-CVkXfv-8.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8]) : void 0));
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },
