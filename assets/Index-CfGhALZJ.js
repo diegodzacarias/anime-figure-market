@@ -1,5 +1,5 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-DozeVVov.js";
-import { B as Button, S as ShoppingCart, N as Navbar } from "./Navbar-BM2I2cQI.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-2aJI3EqS.js";
+import { N as Navbar } from "./Navbar-CbVHQfIk.js";
 import { w as withPagination, g as getPageContent } from "./page-DEGBjxB5.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
@@ -77,43 +77,10 @@ const AnimeHero = () => {
     )) })
   ] }) });
 };
-const figures = [
-  { id: 1, name: "Guerrero Berserker - Edición Limitada", price: "$189.99", tag: "Nuevo" },
-  { id: 2, name: "Ninja Legendario - Modo Sabio", price: "$149.99", tag: "Popular" },
-  { id: 3, name: "Capitán Pirata - Gear 5", price: "$219.99", tag: "Pre-orden" },
-  { id: 4, name: "Espadachín del Infierno - Armadura Completa", price: "$299.99", tag: "Exclusivo" }
-];
-const MarketplaceSection = () => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "border-t border-border bg-muted/30 py-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mb-2 text-sm font-semibold uppercase tracking-widest text-secondary", children: "Marketplace" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "mb-8 text-3xl font-bold text-foreground", children: "Figuras Destacadas" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4", children: figures.map((fig) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "group rounded-lg border border-border bg-card p-4 transition-all duration-200 hover:border-primary/40 hover:shadow-card",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-4 flex h-48 items-center justify-center rounded-md bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl opacity-30", children: "🗡️" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase text-primary", children: fig.tag }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "mt-2 text-sm font-medium text-foreground", children: fig.name }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-xs text-muted-foreground", children: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg font-bold text-secondary", children: fig.price }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { size: "sm", variant: "outline", className: "gap-1 border-primary/30 text-foreground hover:bg-primary hover:text-primary-foreground", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "h-3.5 w-3.5" }),
-              "Añadir"
-            ] })
-          ] })
-        ]
-      },
-      fig.id
-    )) })
-  ] }) });
-};
 const Index = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx(AnimeHero, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(MarketplaceSection, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "border-t border-border py-8 text-center text-sm text-muted-foreground", children: "© 2026 AnimeFigures. Todos los derechos reservados." })
   ] });
 };
