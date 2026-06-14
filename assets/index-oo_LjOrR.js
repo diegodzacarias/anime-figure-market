@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-4fGF77Bb.js","assets/page-IXUKuqvC.js","assets/AnimeDetail-DEDJp4tm.js","assets/apiError-BAH6T2KL.js","assets/arrow-left-B6RJGlIO.js","assets/FigureDetail-CEqebPhB.js","assets/FigurePage-DLptE3nR.js","assets/table-C9ojZQ1O.js","assets/trash-2-76Y08BU0.js","assets/useReferenceData-Bik_UvUz.js","assets/FigureAliasPage-DQo9hl8I.js","assets/dialog-CKYgEO9C.js","assets/FigureCombobox-T80Vbw4M.js","assets/popover-DbUqAVMM.js","assets/FigureSourceListingPage-w1S6qvNz.js","assets/FranchisePage-DOTDWyKQ.js","assets/SourcePage-C0FPxF7x.js","assets/CandidateReviewPage-DGsAQXA-.js","assets/index-C2ERdW6m.js","assets/CharacterAdminPages-CWOxnzpt.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-BUbFwxZW.js","assets/Navbar-Ndd0fMCY.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-DYsNXmzt.js","assets/apiError-DXUOAPc5.js","assets/arrow-left-BHQlPW80.js","assets/FigureDetail-rwDL61i4.js","assets/index-CMhUwFSP.js","assets/Combination-CsgKwIIf.js","assets/index-CcKgkoG_.js","assets/check-BXlt0KbV.js","assets/FigurePage-BIT4SCt3.js","assets/table-CIXO_kbA.js","assets/trash-2-BhZfCcOU.js","assets/useReferenceData-C9MRy-IG.js","assets/FigureAliasPage-kLOhqjBc.js","assets/dialog-Du8bVk62.js","assets/FigureCombobox-F6L1tBME.js","assets/popover-CIg7FerU.js","assets/FigureSourceListingPage-uAUp2-fR.js","assets/FranchisePage-GfpypwKM.js","assets/SourcePage-DKZU6xx8.js","assets/CandidateReviewPage-C2obRV_d.js","assets/index-zg2BBTbS.js","assets/CharacterAdminPages-C-b-qVHt.js"])))=>i.map(i=>d[i]);
 var __typeError = (msg) => {
   throw TypeError(msg);
 };
@@ -17367,30 +17367,30 @@ const TooltipContent = reactExports.forwardRef(({ className, sideOffset = 4, ...
   }
 ));
 TooltipContent.displayName = Content2.displayName;
-const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-4fGF77Bb.js"), true ? __vite__mapDeps([0,1]) : void 0));
-const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-DEDJp4tm.js"), true ? __vite__mapDeps([2,1,3,4]) : void 0));
-const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-CEqebPhB.js"), true ? __vite__mapDeps([5,1,3,4]) : void 0));
-const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-BTGURTuZ.js"), true ? [] : void 0));
-const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-DLptE3nR.js"), true ? __vite__mapDeps([6,1,7,3,8,9]) : void 0));
-const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-DQo9hl8I.js"), true ? __vite__mapDeps([10,1,7,3,11,12,13,8,9]) : void 0));
-const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-w1S6qvNz.js"), true ? __vite__mapDeps([14,1,7,3,11,12,13,8,9]) : void 0));
-const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-DOTDWyKQ.js"), true ? __vite__mapDeps([15,1,7,3,11,8]) : void 0));
-const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-C0FPxF7x.js"), true ? __vite__mapDeps([16,1,7,3,11,8,9]) : void 0));
-const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-DGsAQXA-.js"), true ? __vite__mapDeps([17,1,7,3,11,12,13,18,9]) : void 0));
+const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-BUbFwxZW.js"), true ? __vite__mapDeps([0,1,2]) : void 0));
+const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-DYsNXmzt.js"), true ? __vite__mapDeps([3,1,4,2,5]) : void 0));
+const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-rwDL61i4.js"), true ? __vite__mapDeps([6,1,4,7,8,9,10,5]) : void 0));
+const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-DauPGx2i.js"), true ? [] : void 0));
+const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-BIT4SCt3.js"), true ? __vite__mapDeps([11,1,12,8,4,13,14,2]) : void 0));
+const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-kLOhqjBc.js"), true ? __vite__mapDeps([15,1,12,8,4,16,17,18,10,13,14,2]) : void 0));
+const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-uAUp2-fR.js"), true ? __vite__mapDeps([19,1,12,8,4,16,17,18,10,13,14,2]) : void 0));
+const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-GfpypwKM.js"), true ? __vite__mapDeps([20,1,12,8,4,16,13,2]) : void 0));
+const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-DKZU6xx8.js"), true ? __vite__mapDeps([21,1,12,8,4,16,13,14,2]) : void 0));
+const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-C2obRV_d.js"), true ? __vite__mapDeps([22,1,12,8,4,16,17,18,10,7,23,14,2]) : void 0));
 const CharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CWOxnzpt.js"), true ? __vite__mapDeps([19,1,3,7,13,11,18]) : void 0).then((module) => ({ default: module.CharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-C-b-qVHt.js"), true ? __vite__mapDeps([24,1,4,12,8,18,16,23,7,2,10]) : void 0).then((module) => ({ default: module.CharacterPage }))
 );
 const CharacterAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CWOxnzpt.js"), true ? __vite__mapDeps([19,1,3,7,13,11,18]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-C-b-qVHt.js"), true ? __vite__mapDeps([24,1,4,12,8,18,16,23,7,2,10]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
 );
 const CharacterFormPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CWOxnzpt.js"), true ? __vite__mapDeps([19,1,3,7,13,11,18]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-C-b-qVHt.js"), true ? __vite__mapDeps([24,1,4,12,8,18,16,23,7,2,10]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
 );
 const CharacterFormAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CWOxnzpt.js"), true ? __vite__mapDeps([19,1,3,7,13,11,18]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-C-b-qVHt.js"), true ? __vite__mapDeps([24,1,4,12,8,18,16,23,7,2,10]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
 );
 const FigureCharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CWOxnzpt.js"), true ? __vite__mapDeps([19,1,3,7,13,11,18]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-C-b-qVHt.js"), true ? __vite__mapDeps([24,1,4,12,8,18,16,23,7,2,10]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
 );
 const queryClient = new QueryClient();
 const RouteFallback = () => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground", children: "Loading..." });
@@ -17419,38 +17419,40 @@ const App = () => /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { c
 createRoot(document.getElementById("root")).render(/* @__PURE__ */ jsxRuntimeExports.jsx(App, {}));
 export {
   Anchor as A,
+  useSize as B,
   Content as C,
   DismissableLayer as D,
   Link as L,
-  Presence as P,
+  Primitive as P,
   Root2 as R,
   Slot as S,
+  VISUALLY_HIDDEN_STYLES as V,
   X,
   __vitePreload as _,
   useParams as a,
   cn as b,
   createLucideIcon as c,
   cva as d,
-  useLocation as e,
-  createCollection as f,
-  createContextScope as g,
-  createPopperScope as h,
-  useComposedRefs as i,
+  createCollection as e,
+  createContextScope as f,
+  createPopperScope as g,
+  useComposedRefs as h,
+  composeEventHandlers as i,
   jsxRuntimeExports as j,
-  composeEventHandlers as k,
-  Primitive as l,
-  useCallbackRef as m,
-  Arrow as n,
-  composeRefs as o,
-  dispatchDiscreteCustomEvent as p,
-  Portal as q,
+  useLayoutEffect2 as k,
+  reactDomExports as l,
+  Arrow as m,
+  useCallbackRef as n,
+  useControllableState as o,
+  Portal as p,
+  createSlot as q,
   reactExports as r,
-  createSlot as s,
-  useControllableState as t,
+  useLocation as s,
+  Presence as t,
   useNavigate as u,
-  useLayoutEffect2 as v,
-  React as w,
+  composeRefs as v,
+  dispatchDiscreteCustomEvent as w,
   createContext2 as x,
   createSlottable as y,
-  useSize as z
+  React as z
 };

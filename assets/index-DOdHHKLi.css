@@ -1000,6 +1000,9 @@ video {
 .min-h-10 {
   min-height: 2.5rem;
 }
+.min-h-40 {
+  min-height: 10rem;
+}
 .min-h-\[18rem\] {
   min-height: 18rem;
 }

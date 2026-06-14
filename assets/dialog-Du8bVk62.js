@@ -1,5 +1,5 @@
-import { r as reactExports, j as jsxRuntimeExports, b as cn, X } from "./index-DjNhWZNZ.js";
-import { O as Overlay, r as Content, s as Close, t as Title, D as Description, p as Root, q as Portal } from "./table-C9ojZQ1O.js";
+import { r as reactExports, j as jsxRuntimeExports, b as cn, X } from "./index-oo_LjOrR.js";
+import { O as Overlay, o as Content, p as Close, q as Title, D as Description, R as Root, n as Portal } from "./table-CIXO_kbA.js";
 const Dialog = Root;
 const DialogPortal = Portal;
 const DialogOverlay = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(

@@ -1,10 +1,6 @@
-import { r as reactExports, f as createCollection, g as createContextScope, j as jsxRuntimeExports, i as useComposedRefs, t as useControllableState, m as useCallbackRef, l as Primitive, k as composeEventHandlers } from "./index-DjNhWZNZ.js";
-import { o as useId } from "./table-C9ojZQ1O.js";
-var DirectionContext = reactExports.createContext(void 0);
-function useDirection(localDir) {
-  const globalDir = reactExports.useContext(DirectionContext);
-  return localDir || globalDir || "ltr";
-}
+import { e as createCollection, f as createContextScope, r as reactExports, j as jsxRuntimeExports, h as useComposedRefs, o as useControllableState, n as useCallbackRef, P as Primitive, i as composeEventHandlers } from "./index-oo_LjOrR.js";
+import { a as useId } from "./Combination-CsgKwIIf.js";
+import { u as useDirection } from "./index-CMhUwFSP.js";
 var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
 var EVENT_OPTIONS = { bubbles: false, cancelable: true };
 var GROUP_NAME = "RovingFocusGroup";
@@ -217,6 +213,5 @@ var Item = RovingFocusGroupItem;
 export {
   Item as I,
   Root as R,
-  createRovingFocusGroupScope as c,
-  useDirection as u
+  createRovingFocusGroupScope as c
 };
