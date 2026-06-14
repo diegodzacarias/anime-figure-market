@@ -1,5 +1,5 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-C6Dwrnc1.js";
-import { N as Navbar } from "./Navbar-DUywNbM1.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-ZUKQh2n1.js";
+import { N as Navbar } from "./Navbar-CBdly9YN.js";
 import { w as withPagination, g as getPageContent } from "./page-DEGBjxB5.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
@@ -62,14 +62,14 @@ const AnimeHero = () => {
             {
               src: anime.imageUrl || fallbackImages[anime.name],
               alt: anime.name,
-              className: "h-[420px] w-full bg-muted object-contain transition-transform duration-500 group-hover:scale-[1.02]",
+              className: "h-[420px] w-full object-cover transition-transform duration-500 group-hover:scale-110",
               width: 640,
               height: 896
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "anime-card-overlay absolute inset-0 flex flex-col items-center justify-end p-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-foreground", children: anime.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-3 rounded-full bg-primary/20 px-4 py-1 text-xs font-medium text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground", children: "Ver colección →" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-center text-2xl font-extrabold text-primary-foreground drop-shadow-lg", children: anime.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-3 rounded-full bg-background/90 px-4 py-1 text-xs font-semibold text-foreground shadow-card transition-colors group-hover:bg-primary group-hover:text-primary-foreground", children: "Ver colección →" })
           ] })
         ]
       },
