@@ -1,16 +1,7 @@
-import { c as createLucideIcon, a as useParams, r as reactExports, j as jsxRuntimeExports, L as Link } from "./index-CIxedUMY.js";
-import { g as getPageContent, a as getPageMeta, N as Navbar, B as Button } from "./page-dbkTYP82.js";
-import { r as readApiErrorResponse, t as toClientApiError, A as ApiErrorToast, L as LoaderCircle } from "./apiError-IaQ_dzKe.js";
-/**
- * @license lucide-react v0.462.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const ArrowLeft = createLucideIcon("ArrowLeft", [
-  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-  ["path", { d: "M19 12H5", key: "x3x0zl" }]
-]);
+import { a as useParams, r as reactExports, j as jsxRuntimeExports, L as Link } from "./index-BMjHTukZ.js";
+import { g as getPageContent, a as getPageMeta, N as Navbar, B as Button } from "./page-BRWsXvhH.js";
+import { r as readApiErrorResponse, t as toClientApiError, A as ApiErrorToast, L as LoaderCircle } from "./apiError-DnpeQjkq.js";
+import { A as ArrowLeft } from "./arrow-left-DI2nARO3.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_SEARCH_ENDPOINT = `${API_BASE_URL}/v1/figures/search`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
@@ -154,8 +145,9 @@ const AnimeDetail = () => {
         /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "mr-2 h-4 w-4 animate-spin" }),
         "Cargando figuras..."
       ] }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border bg-card p-10 text-center text-muted-foreground", children: "No hay figuras registradas para esta franquicia." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4", children: figures.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "article",
+        Link,
         {
+          to: figure.id ? `/figure/${figure.id}` : "#",
           className: "overflow-hidden rounded-lg border border-border bg-card shadow-card transition-transform duration-200 hover:-translate-y-1",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "aspect-[4/5] overflow-hidden bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
