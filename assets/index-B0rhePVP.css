@@ -1084,6 +1084,9 @@ video {
 .w-\[1px\] {
   width: 1px;
 }
+.w-\[76px\] {
+  width: 76px;
+}
 .w-\[calc\(100vw-2rem\)\] {
   width: calc(100vw - 2rem);
 }

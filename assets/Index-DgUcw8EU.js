@@ -1,5 +1,5 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-oo_LjOrR.js";
-import { B as Button, S as ShoppingCart, N as Navbar } from "./Navbar-Ndd0fMCY.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-CNPWJqJ-.js";
+import { B as Button, S as ShoppingCart, N as Navbar } from "./Navbar-BaHS8zXa.js";
 import { w as withPageSize, g as getPageContent } from "./page-DKdY7PVC.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
