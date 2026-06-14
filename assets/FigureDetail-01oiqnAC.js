@@ -1,18 +1,8 @@
-import { c as createLucideIcon, j as jsxRuntimeExports, b as cn, d as cva, a as useParams, u as useNavigate, r as reactExports, e as usePreferences } from "./index-2aJI3EqS.js";
-import { N as Navbar, B as Button } from "./Navbar-CbVHQfIk.js";
-import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DXx8Hzoz.js";
-import { A as ArrowLeft } from "./arrow-left-DCQv7oOT.js";
-/**
- * @license lucide-react v0.462.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const ExternalLink = createLucideIcon("ExternalLink", [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
-  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
-]);
+import { j as jsxRuntimeExports, c as cn, b as cva, a as useParams, u as useNavigate, r as reactExports, d as usePreferences } from "./index-C6Dwrnc1.js";
+import { N as Navbar, B as Button } from "./Navbar-DUywNbM1.js";
+import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DgkDs6xc.js";
+import { A as ArrowLeft } from "./arrow-left-B8CtBtcp.js";
+import { E as ExternalLink } from "./external-link-BFYWIofh.js";
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
@@ -207,7 +197,13 @@ const FigureDetail = () => {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 text-center", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold uppercase tracking-widest text-primary", children: "Figure" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "mx-auto mt-2 max-w-4xl text-3xl font-bold text-foreground md:text-5xl", children: (figure == null ? void 0 : figure.name) || "Untitled figure" }),
-          (figure == null ? void 0 : figure.status) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: figure.status }) })
+          ((figure == null ? void 0 : figure.status) || (figure == null ? void 0 : figure.sourceReferenceUrl)) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex flex-wrap items-center justify-center gap-2", children: [
+            (figure == null ? void 0 : figure.status) && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: figure.status }),
+            (figure == null ? void 0 : figure.sourceReferenceUrl) && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { asChild: true, variant: "outline", size: "sm", className: "gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: figure.sourceReferenceUrl, target: "_blank", rel: "noreferrer", children: [
+              "Referencia",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "h-3.5 w-3.5" })
+            ] }) })
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(22rem,0.9fr)] lg:items-start", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "overflow-hidden rounded-lg border bg-card shadow-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "aspect-[4/5] bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -215,7 +211,7 @@ const FigureDetail = () => {
             {
               src: imageUrl,
               alt: (figure == null ? void 0 : figure.name) || "Figure image",
-              className: "h-full w-full object-cover",
+              className: "h-full w-full object-contain",
               onError: (event) => {
                 event.currentTarget.src = FALLBACK_IMAGE_URL;
               }

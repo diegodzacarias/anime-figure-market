@@ -1,5 +1,5 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-2aJI3EqS.js";
-import { N as Navbar } from "./Navbar-CbVHQfIk.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-C6Dwrnc1.js";
+import { N as Navbar } from "./Navbar-DUywNbM1.js";
 import { w as withPagination, g as getPageContent } from "./page-DEGBjxB5.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
@@ -62,7 +62,7 @@ const AnimeHero = () => {
             {
               src: anime.imageUrl || fallbackImages[anime.name],
               alt: anime.name,
-              className: "h-[420px] w-full object-cover transition-transform duration-500 group-hover:scale-110",
+              className: "h-[420px] w-full bg-muted object-contain transition-transform duration-500 group-hover:scale-[1.02]",
               width: 640,
               height: 896
             }

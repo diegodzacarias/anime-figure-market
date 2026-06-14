@@ -1,10 +1,11 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-Dvu2Xyao.js","assets/index-2aJI3EqS.js","assets/index-B0rhePVP.css","assets/table-Ckoh9liS.js","assets/Navbar-CbVHQfIk.js","assets/apiError-DXx8Hzoz.js","assets/dialog-tsFiE3yz.js","assets/popover-DX6CjVva.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
-import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-2aJI3EqS.js";
-import { B as Button, N as Navbar, I as Input } from "./Navbar-CbVHQfIk.js";
-import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as Plus, S as Search, L as LoadingOverlay, f as PageControls, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-Ckoh9liS.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DXx8Hzoz.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-CTXpuBeV.js";
-import { u as useReferenceData } from "./useReferenceData-BSeHbkxN.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-Ju7iUW0G.js","assets/index-C6Dwrnc1.js","assets/index-nG-TmI0k.css","assets/table-BC480A2f.js","assets/Navbar-DUywNbM1.js","assets/apiError-DgkDs6xc.js","assets/dialog-CCA9_rej.js","assets/popover-W4VFLaqB.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
+import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-C6Dwrnc1.js";
+import { B as Button, N as Navbar, I as Input } from "./Navbar-DUywNbM1.js";
+import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as Plus, S as Search, L as LoadingOverlay, f as PageControls, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-BC480A2f.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DgkDs6xc.js";
+import { E as ExternalLink } from "./external-link-BFYWIofh.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-B9PUeKhY.js";
+import { u as useReferenceData } from "./useReferenceData-mIRxxZ9l.js";
 import { d as defaultPageMeta, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
 const getFranchiseName = (figure, franchiseNames) => {
   var _a, _b;
@@ -33,10 +34,11 @@ const FigureTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Brand" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "JAN/EAN" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Product Code" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Reference" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 10, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 10, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: figure.id }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.name || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.slug || "-" }),
@@ -44,6 +46,19 @@ const FigureTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getBrandName(figure, brandNames) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.janCode || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.officialProductCode || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.sourceReferenceUrl ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "a",
+        {
+          href: figure.sourceReferenceUrl,
+          target: "_blank",
+          rel: "noreferrer",
+          className: "inline-flex items-center gap-1 text-sm text-primary hover:underline",
+          children: [
+            "Open",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "h-3.5 w-3.5" })
+          ]
+        }
+      ) : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.status || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", variant: "outline", size: "sm", className: "gap-2", onClick: () => onEdit(figure), children: [
@@ -65,7 +80,7 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
-const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-Dvu2Xyao.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8]) : void 0));
+const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-Ju7iUW0G.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8]) : void 0));
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },

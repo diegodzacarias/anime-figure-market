@@ -1,9 +1,9 @@
-import { h as createContextScope, r as reactExports, k as useComposedRefs, j as jsxRuntimeExports, m as Primitive, l as composeEventHandlers, P as Presence, E as useSize, v as useControllableState, b as cn } from "./index-2aJI3EqS.js";
-import { L as LoadingOverlay, P as Plus, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-Ckoh9liS.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-tsFiE3yz.js";
-import { d as usePrevious, C as Check, I as Input, B as Button } from "./Navbar-CbVHQfIk.js";
-import { P as Popover, a as PopoverTrigger, C as ChevronsUpDown, b as PopoverContent, c as Command, d as CommandInput, e as CommandList, f as CommandEmpty, g as CommandGroup, h as CommandItem } from "./popover-DX6CjVva.js";
-import { r as readApiErrorResponse, t as toClientApiError } from "./apiError-DXx8Hzoz.js";
+import { h as createContextScope, r as reactExports, k as useComposedRefs, j as jsxRuntimeExports, m as Primitive, l as composeEventHandlers, P as Presence, E as useSize, v as useControllableState, c as cn } from "./index-C6Dwrnc1.js";
+import { L as LoadingOverlay, P as Plus, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-BC480A2f.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-CCA9_rej.js";
+import { d as usePrevious, C as Check, I as Input, B as Button } from "./Navbar-DUywNbM1.js";
+import { P as Popover, a as PopoverTrigger, C as ChevronsUpDown, b as PopoverContent, c as Command, d as CommandInput, e as CommandList, f as CommandEmpty, g as CommandGroup, h as CommandItem } from "./popover-W4VFLaqB.js";
+import { r as readApiErrorResponse, t as toClientApiError } from "./apiError-DgkDs6xc.js";
 import { w as withPagination, g as getPageContent } from "./page-DEGBjxB5.js";
 var CHECKBOX_NAME = "Checkbox";
 var [createCheckboxContext, createCheckboxScope] = createContextScope(CHECKBOX_NAME);
@@ -956,7 +956,7 @@ const FigureImagesSection = ({
           {
             src: row.imageUrl,
             alt: row.altText || row.figureName || "Figure image",
-            className: "h-full w-full object-cover",
+            className: "h-full w-full object-contain",
             loading: "lazy"
           }
         ) }),
@@ -1054,6 +1054,7 @@ const FigureFormDialog = ({
     material: "",
     janCode: "",
     officialProductCode: "",
+    sourceReferenceUrl: "",
     isLicensed: "true",
     editionSize: "",
     baseCurrencyCode: "USD",
@@ -1073,6 +1074,7 @@ const FigureFormDialog = ({
       material: (figure == null ? void 0 : figure.material) || "",
       janCode: (figure == null ? void 0 : figure.janCode) || "",
       officialProductCode: (figure == null ? void 0 : figure.officialProductCode) || "",
+      sourceReferenceUrl: (figure == null ? void 0 : figure.sourceReferenceUrl) || "",
       isLicensed: ((figure == null ? void 0 : figure.isLicensed) ?? true).toString(),
       editionSize: ((_a = figure == null ? void 0 : figure.editionSize) == null ? void 0 : _a.toString()) || "",
       baseCurrencyCode: (figure == null ? void 0 : figure.baseCurrencyCode) || "USD",
@@ -1122,6 +1124,7 @@ const FigureFormDialog = ({
     if (form.material.trim()) payload.material = form.material.trim();
     if (form.janCode.trim()) payload.janCode = form.janCode.trim();
     if (form.officialProductCode.trim()) payload.officialProductCode = form.officialProductCode.trim();
+    if (form.sourceReferenceUrl.trim()) payload.sourceReferenceUrl = form.sourceReferenceUrl.trim();
     if (form.editionSize) payload.editionSize = Number(form.editionSize);
     if (form.notes.trim()) payload.notes = form.notes.trim();
     await onSubmit(payload);
@@ -1274,6 +1277,21 @@ const FigureFormDialog = ({
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Codigo oficial publicado por el fabricante o marca." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Source Reference URL" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Input,
+            {
+              name: "sourceReferenceUrl",
+              type: "url",
+              maxLength: 1e3,
+              value: form.sourceReferenceUrl,
+              onChange: handleChange,
+              placeholder: "https://..."
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "URL de referencia canonica usada para verificar la informacion principal de la figura." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Edition Size" }),

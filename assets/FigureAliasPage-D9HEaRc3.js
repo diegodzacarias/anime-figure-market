@@ -1,13 +1,13 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index-2aJI3EqS.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-CbVHQfIk.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as Plus, S as Search, f as PageControls, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-Ckoh9liS.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DXx8Hzoz.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-tsFiE3yz.js";
-import { F as FigureCombobox } from "./FigureCombobox-DX06aLdx.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-CTXpuBeV.js";
-import { u as useReferenceData } from "./useReferenceData-BSeHbkxN.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-C6Dwrnc1.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-DUywNbM1.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as Plus, S as Search, f as PageControls, A as AlertDialog, g as AlertDialogContent, h as AlertDialogHeader, i as AlertDialogTitle, j as AlertDialogDescription, k as AlertDialogFooter, l as AlertDialogCancel, m as AlertDialogAction } from "./table-BC480A2f.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DgkDs6xc.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-CCA9_rej.js";
+import { F as FigureCombobox } from "./FigureCombobox-Dl-_8ru9.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-B9PUeKhY.js";
+import { u as useReferenceData } from "./useReferenceData-mIRxxZ9l.js";
 import { d as defaultPageMeta, w as withPagination, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./popover-DX6CjVva.js";
+import "./popover-W4VFLaqB.js";
 const FigureAliasFormDialog = ({
   figureAlias,
   figures,
