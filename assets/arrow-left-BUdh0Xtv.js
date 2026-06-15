@@ -1,4 +1,4 @@
-import { e as createLucideIcon } from "./index-ZUKQh2n1.js";
+import { c as createLucideIcon } from "./index-D60BU_pf.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *

@@ -1,4 +1,4 @@
-import { e as createLucideIcon, r as reactExports, y as useLayoutEffect2, z as React, j as jsxRuntimeExports, c as cn, b as cva, S as Slot$1, n as useCallbackRef$1, k as useComposedRefs, m as Primitive, g as createCollection, h as createContextScope, i as createPopperScope, A as Anchor, l as composeEventHandlers, B as reactDomExports, D as DismissableLayer, C as Content, o as Arrow, V as VISUALLY_HIDDEN_STYLES, s as Portal$1, t as createSlot, v as useControllableState, R as Root2$1, d as usePreferences, L as Link } from "./index-ZUKQh2n1.js";
+import { c as createLucideIcon, r as reactExports, y as useLayoutEffect2, z as React, j as jsxRuntimeExports, e as cn, v as cva, S as Slot$1, m as useCallbackRef$1, i as useComposedRefs, l as Primitive, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, k as composeEventHandlers, B as reactDomExports, D as DismissableLayer, C as Content, n as Arrow, V as VISUALLY_HIDDEN_STYLES, q as Portal$1, s as createSlot, t as useControllableState, R as Root2$1, b as usePreferences, L as Link } from "./index-D60BU_pf.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -2519,15 +2519,26 @@ const Navbar = () => {
               ]
             }
           ),
-          showFigureAdminMenu && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute left-0 top-full mt-3 min-w-48 rounded-lg border border-border bg-card p-2 shadow-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Link,
-            {
-              to: "/figure-admin/candidate-review",
-              className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-              onClick: closeMenus,
-              children: "Candidate Review"
-            }
-          ) })
+          showFigureAdminMenu && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute left-0 top-full mt-3 min-w-48 rounded-lg border border-border bg-card p-2 shadow-card", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/figure-admin/candidate-review",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: closeMenus,
+                children: "Candidate Review"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/figure-admin/alias-generator",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: closeMenus,
+                children: "Alias Generator"
+              }
+            )
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(

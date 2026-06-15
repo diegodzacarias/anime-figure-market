@@ -1,27 +1,9 @@
-import { j as jsxRuntimeExports, c as cn, b as cva, a as useParams, u as useNavigate, r as reactExports, d as usePreferences } from "./index-ZUKQh2n1.js";
-import { N as Navbar, B as Button } from "./Navbar-CBdly9YN.js";
-import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-BsebfxRU.js";
-import { A as ArrowLeft } from "./arrow-left-CzDMEgCh.js";
-import { E as ExternalLink } from "./external-link-BDIrEOjZ.js";
-const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-  {
-    variants: {
-      variant: {
-        default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground"
-      }
-    },
-    defaultVariants: {
-      variant: "default"
-    }
-  }
-);
-function Badge({ className, variant, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn(badgeVariants({ variant }), className), ...props });
-}
+import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-D60BU_pf.js";
+import { N as Navbar, B as Button } from "./Navbar-D34K6YbM.js";
+import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-BEJ0Mm-y.js";
+import { B as Badge } from "./badge-Dp_5K0mJ.js";
+import { A as ArrowLeft } from "./arrow-left-BUdh0Xtv.js";
+import { E as ExternalLink } from "./external-link-BXNG7sTB.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/figure-source-listings`;
