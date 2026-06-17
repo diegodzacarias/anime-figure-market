@@ -1,13 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-CiMj1x9n.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-CA7EN52p.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-CM7PI_uo.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-BoXb6swI.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-JuPfcRPz.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-Duc0He4i.js";
-import { B as Badge } from "./badge-qjHFlAl0.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-Cjh-D4VV.js";
-import { u as useReferenceData } from "./useReferenceData-BKc_O9bS.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-C_Ic0PN1.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-DPZQnmsg.js";
+import { B as Badge } from "./badge-BEEgibb2.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-gHLSZZhO.js";
+import { u as useReferenceData } from "./useReferenceData-DqwLLa2h.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-CLkXcb6o.js";
+import { E as ExternalLink } from "./external-link-CRES0lYZ.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -204,7 +204,6 @@ const ScrapingRunnerPage = () => {
   const [selectedFigure, setSelectedFigure] = reactExports.useState(null);
   const [scrapingQueries, setScrapingQueries] = reactExports.useState([]);
   const [queriesLoading, setQueriesLoading] = reactExports.useState(false);
-  const [queryMax, setQueryMax] = reactExports.useState(5);
   const [running, setRunning] = reactExports.useState(false);
   const [scrapingResult, setScrapingResult] = reactExports.useState(null);
   const [apiError, setApiError] = reactExports.useState(null);
@@ -249,18 +248,18 @@ const ScrapingRunnerPage = () => {
     }
   }, []);
   const fetchScrapingQueries = reactExports.useCallback(
-    async (max = queryMax) => {
+    async () => {
       if (!selectedFigureId) return;
       setQueriesLoading(true);
       try {
-        setScrapingQueries(await getFigureAliasScrapingQueries(selectedFigureId, max));
+        setScrapingQueries(await getFigureAliasScrapingQueries(selectedFigureId));
       } catch (error) {
         setApiError(toApiError(error, "Error loading scraping queries."));
       } finally {
         setQueriesLoading(false);
       }
     },
-    [queryMax, selectedFigureId]
+    [selectedFigureId]
   );
   reactExports.useEffect(() => {
     fetchFigures();
@@ -271,19 +270,12 @@ const ScrapingRunnerPage = () => {
   reactExports.useEffect(() => {
     setScrapingQueries([]);
     setScrapingResult(null);
-    setQueryMax(5);
     if (selectedFigureId) {
-      fetchScrapingQueries(5);
+      fetchScrapingQueries();
     }
   }, [selectedFigureId]);
   const handleSelectFigure = (figure) => {
     setSelectedFigure(figure);
-  };
-  const handleQueryMaxChange = (value) => {
-    setQueryMax(value);
-    if (selectedFigureId) {
-      fetchScrapingQueries(value);
-    }
   };
   const handleRunScraping = async () => {
     if (!selectedFigureId) return;
@@ -498,35 +490,21 @@ const ScrapingRunnerPage = () => {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Scraping Queries" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Queries that the backend will use for this figure." })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-muted-foreground", htmlFor: "scraping-query-max", children: "Max" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "select",
-                  {
-                    id: "scraping-query-max",
-                    value: queryMax,
-                    disabled: queriesLoading || running,
-                    onChange: (event) => handleQueryMaxChange(Number(event.target.value)),
-                    className: "rounded border border-input bg-background px-2 py-1 text-foreground",
-                    children: Array.from({ length: 10 }, (_, index) => index + 1).map((value) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value, children: value }, value))
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  Button,
-                  {
-                    type: "button",
-                    size: "sm",
-                    variant: "outline",
-                    className: "gap-2",
-                    disabled: queriesLoading || running,
-                    onClick: () => fetchScrapingQueries(queryMax),
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "h-3.5 w-3.5" }),
-                      "Refresh"
-                    ]
-                  }
-                )
-              ] })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                Button,
+                {
+                  type: "button",
+                  size: "sm",
+                  variant: "outline",
+                  className: "gap-2",
+                  disabled: queriesLoading || running,
+                  onClick: () => fetchScrapingQueries(),
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "h-3.5 w-3.5" }),
+                    "Refresh"
+                  ]
+                }
+              ) })
             ] }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: queriesLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Loading scraping queries..." }) : scrapingQueries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No scraping queries available." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "space-y-2", children: scrapingQueries.map((query, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "rounded-md border bg-background p-3 text-sm", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-2 font-semibold text-primary", children: [

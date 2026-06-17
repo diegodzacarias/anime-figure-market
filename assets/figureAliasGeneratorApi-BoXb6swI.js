@@ -1,5 +1,5 @@
-import { c as createLucideIcon } from "./index-CiMj1x9n.js";
-import { r as readApiErrorResponse } from "./apiError-JuPfcRPz.js";
+import { c as createLucideIcon } from "./index-CM7PI_uo.js";
+import { r as readApiErrorResponse } from "./apiError-C_Ic0PN1.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -59,7 +59,16 @@ const previewGeneratedFigureAliases = (figureId) => requestJson(
 const generateFigureAliases = (figureId) => requestJson(`${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/generate`, {
   method: "POST"
 });
-const getFigureAliasScrapingQueries = (figureId, max) => requestJson(`${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/scraping-queries?max=${max}`);
+const getFigureAliasScrapingQueries = (figureId, max) => {
+  const params = new URLSearchParams();
+  if (max !== void 0) {
+    params.set("max", max.toString());
+  }
+  const queryString = params.toString();
+  return requestJson(
+    `${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/scraping-queries${queryString ? `?${queryString}` : ""}`
+  );
+};
 export {
   RefreshCw as R,
   getExistingFigureAliases as a,
