@@ -1,13 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-C0aBCfLd.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-aTmxHRlI.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-C3Aa9C9O.js";
-import { B as Badge } from "./badge-DIs9ey1x.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BJNyeMAn.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-BQdOQL7K.js";
-import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-B4Qg1yYx.js";
-import { u as useReferenceData } from "./useReferenceData-aayXtp75.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-Z9BlEeRk.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-C3J_mFSJ.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-Cg9TEdu0.js";
+import { B as Badge } from "./badge-BKm0ufTB.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BM2_cl8L.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-CFCZJc92.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-Bg-aby_V.js";
+import { u as useReferenceData } from "./useReferenceData-leVU33FI.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./index-DrdUDeZK.js";
+import "./index-CrxuRN6j.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -453,18 +453,30 @@ const FigureAliasGeneratorPage = () => {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: generating, message: "Generating aliases...", children: /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "rounded-lg border bg-card p-4", children: !selectedFigure ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-[28rem] items-center justify-center rounded-lg border border-dashed bg-background p-8 text-center text-sm text-muted-foreground", children: "Select a figure to preview aliases, generate aliases, and inspect scraping queries." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 rounded-lg border bg-background p-4 lg:flex-row lg:items-start lg:justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Selected Figure" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-2 text-2xl font-bold text-foreground", children: selectedFigure.name || `Figure ${selectedFigure.id}` }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
-                  "ID ",
-                  selectedFigure.id
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: getFranchiseName(selectedFigure) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: getBrandName(selectedFigure) }),
-                selectedFigure.status && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.status }),
-                selectedFigure.lineName && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.lineName })
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 w-16 shrink-0 overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "img",
+                {
+                  src: getFigureImageUrl(selectedFigure),
+                  alt: selectedFigure.name || "Selected figure image",
+                  className: "h-full w-full object-contain",
+                  loading: "lazy",
+                  onError: (event) => {
+                    event.currentTarget.src = FALLBACK_IMAGE_URL;
+                  }
+                }
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Selected Figure" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-2 line-clamp-2 text-2xl font-bold text-foreground", children: selectedFigure.name || `Figure ${selectedFigure.id}` }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
+                    "ID ",
+                    selectedFigure.id
+                  ] }),
+                  selectedFigure.status && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.status }),
+                  selectedFigure.lineName && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.lineName })
+                ] })
               ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
