@@ -1,13 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-CM7PI_uo.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-BoXb6swI.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-iBp7zQQy.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-DvfHJkMA.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-C_Ic0PN1.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-DPZQnmsg.js";
-import { B as Badge } from "./badge-BEEgibb2.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-gHLSZZhO.js";
-import { u as useReferenceData } from "./useReferenceData-DqwLLa2h.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-Cf9eJdh-.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-VIcLpq0f.js";
+import { B as Badge } from "./badge-BQp5BPMF.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-rS6yQN6C.js";
+import { u as useReferenceData } from "./useReferenceData-sAEr4_l5.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-CRES0lYZ.js";
+import { E as ExternalLink } from "./external-link-egKParWT.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -51,6 +51,7 @@ const CardFooter = reactExports.forwardRef(
 );
 CardFooter.displayName = "CardFooter";
 const FALLBACK_IMAGE_URL = `${"/anime-figure-market/"}placeholder.svg`;
+const SCRAPING_QUERY_LIMIT = 20;
 const getFigureId = (figure) => (figure == null ? void 0 : figure.figureId) || (figure == null ? void 0 : figure.id);
 const getFigureName = (figure) => (figure == null ? void 0 : figure.figureName) || (figure == null ? void 0 : figure.name) || "";
 const getFigureSlug = (figure) => (figure == null ? void 0 : figure.figureSlug) || (figure == null ? void 0 : figure.slug) || "";
@@ -64,6 +65,9 @@ const getBrandName = (figure) => {
 };
 const getAliasCount = (figure) => (figure == null ? void 0 : figure.aliasCount) ?? 0;
 const getGeneratedAliasCount = (figure) => (figure == null ? void 0 : figure.generatedAliasCount) ?? 0;
+const getManualAliasCount = (figure) => (figure == null ? void 0 : figure.manualAliasCount) ?? 0;
+const getImportedAliasCount = (figure) => (figure == null ? void 0 : figure.importedAliasCount) ?? 0;
+const getScrapedAliasCount = (figure) => (figure == null ? void 0 : figure.scrapedAliasCount) ?? 0;
 const figureHasAliases = (figure) => (figure == null ? void 0 : figure.hasAliases) ?? getAliasCount(figure) > 0;
 const figureHasGeneratedAliases = (figure) => (figure == null ? void 0 : figure.hasGeneratedAliases) ?? getGeneratedAliasCount(figure) > 0;
 const getFigureImageUrl = (figure) => (figure == null ? void 0 : figure.primaryImageUrl) || FALLBACK_IMAGE_URL;
@@ -252,7 +256,7 @@ const ScrapingRunnerPage = () => {
       if (!selectedFigureId) return;
       setQueriesLoading(true);
       try {
-        setScrapingQueries(await getFigureAliasScrapingQueries(selectedFigureId));
+        setScrapingQueries(await getFigureAliasScrapingQueries(selectedFigureId, SCRAPING_QUERY_LIMIT));
       } catch (error) {
         setApiError(toApiError(error, "Error loading scraping queries."));
       } finally {
@@ -464,6 +468,18 @@ const ScrapingRunnerPage = () => {
                       getGeneratedAliasCount(selectedFigure),
                       " generated"
                     ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
+                      getManualAliasCount(selectedFigure),
+                      " manual"
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
+                      getImportedAliasCount(selectedFigure),
+                      " imported"
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
+                      getScrapedAliasCount(selectedFigure),
+                      " scraped"
+                    ] }),
                     selectedFigure.mayNeedRegeneration && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: "Needs regeneration" })
                   ] })
                 ] })
@@ -487,8 +503,12 @@ const ScrapingRunnerPage = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(CardHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3 md:flex-row md:items-center md:justify-between", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Scraping Queries" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Queries that the backend will use for this figure." })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Queries that will be used for scraping" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(CardDescription, { children: [
+                  "The backend builds these from figure name, product codes, JAN code, saved aliases, and generated aliases. Requesting up to ",
+                  SCRAPING_QUERY_LIMIT,
+                  " total queries."
+                ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 Button,

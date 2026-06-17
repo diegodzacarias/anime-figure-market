@@ -1,10 +1,10 @@
-import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-CM7PI_uo.js";
-import { N as Navbar, B as Button } from "./Navbar-DPZQnmsg.js";
-import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-C_Ic0PN1.js";
-import { B as Badge } from "./badge-BEEgibb2.js";
+import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-iBp7zQQy.js";
+import { N as Navbar, B as Button } from "./Navbar-VIcLpq0f.js";
+import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Cf9eJdh-.js";
+import { B as Badge } from "./badge-BQp5BPMF.js";
 import { f as formatDateTime } from "./date-DI8K_e3d.js";
-import { A as ArrowLeft } from "./arrow-left-DQEYgr2b.js";
-import { E as ExternalLink } from "./external-link-CRES0lYZ.js";
+import { A as ArrowLeft } from "./arrow-left-KmJQ9q8s.js";
+import { E as ExternalLink } from "./external-link-egKParWT.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/figure-source-listings`;
