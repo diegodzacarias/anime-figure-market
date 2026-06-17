@@ -1,4 +1,4 @@
-import { d as useLocation, r as reactExports, j as jsxRuntimeExports } from "./index-BBtVfQu2.js";
+import { d as useLocation, r as reactExports, j as jsxRuntimeExports } from "./index-DgSoNkx-.js";
 const NotFound = () => {
   const location = useLocation();
   reactExports.useEffect(() => {

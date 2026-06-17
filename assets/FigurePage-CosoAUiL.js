@@ -1,13 +1,15 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-9OvpChfF.js","assets/index-BBtVfQu2.js","assets/index-CQ7OzDOq.css","assets/alert-dialog-Cq0kKi_G.js","assets/Navbar-BMQL-z9P.js","assets/dialog-CIFynVfA.js","assets/popover-7WmtZAUv.js","assets/table-Dui9h94M.js","assets/apiError-B8hFs4iN.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
-import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-BBtVfQu2.js";
-import { B as Button, N as Navbar, I as Input } from "./Navbar-BMQL-z9P.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-Cq0kKi_G.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-B8hFs4iN.js";
-import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, L as LoadingOverlay, P as PageControls } from "./table-Dui9h94M.js";
-import { E as ExternalLink } from "./external-link-fdDJQwfa.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-JY7JXY-3.js";
-import { u as useReferenceData } from "./useReferenceData-D_WT5ltM.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-CZDz5JXN.js","assets/index-DgSoNkx-.js","assets/index-CfyIS05d.css","assets/alert-dialog-hG9nbazE.js","assets/Navbar-Bn5NoM40.js","assets/dialog-Dp0II0Xv.js","assets/popover-BIkPfzgd.js","assets/table-C2_OchEm.js","assets/apiError-s-ZUEyF3.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
+import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-DgSoNkx-.js";
+import { B as Button, N as Navbar, I as Input } from "./Navbar-Bn5NoM40.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-hG9nbazE.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-s-ZUEyF3.js";
+import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, L as LoadingOverlay, P as PageControls } from "./table-C2_OchEm.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BStERt7Q.js";
+import { E as ExternalLink } from "./external-link-C_tc2Tyn.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-_of38kj8.js";
+import { u as useReferenceData } from "./useReferenceData-DussYFGM.js";
 import { d as defaultPageMeta, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
+const FALLBACK_IMAGE_URL = `${"/anime-figure-market/"}placeholder.svg`;
 const getFranchiseName = (figure, franchiseNames) => {
   var _a, _b;
   const franchiseId = figure.franchiseId || ((_a = figure.franchise) == null ? void 0 : _a.id);
@@ -17,6 +19,38 @@ const getBrandName = (figure, brandNames) => {
   var _a, _b;
   const brandId = figure.brandId || ((_a = figure.brand) == null ? void 0 : _a.id);
   return ((_b = figure.brand) == null ? void 0 : _b.name) || (brandId ? brandNames[brandId] : "") || "-";
+};
+const FigureThumbnail = ({ figure }) => {
+  const imageUrl = figure.primaryImageUrl || FALLBACK_IMAGE_URL;
+  const altText = figure.name || "Figure image";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(HoverCard, { openDelay: 150, closeDelay: 80, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(HoverCardTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-14 cursor-zoom-in overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "img",
+      {
+        src: imageUrl,
+        alt: altText,
+        className: "h-full w-full object-contain",
+        loading: "lazy",
+        onError: (event) => {
+          event.currentTarget.src = FALLBACK_IMAGE_URL;
+        }
+      }
+    ) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(HoverCardContent, { side: "right", align: "center", className: "w-72 p-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "aspect-[4/5] overflow-hidden rounded-md bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "img",
+        {
+          src: imageUrl,
+          alt: altText,
+          className: "h-full w-full object-contain",
+          onError: (event) => {
+            event.currentTarget.src = FALLBACK_IMAGE_URL;
+          }
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 line-clamp-2 text-xs font-medium text-popover-foreground", children: figure.name || `Figure ${figure.id || ""}`.trim() })
+    ] })
+  ] });
 };
 const FigureTable = ({
   figures,
@@ -29,6 +63,7 @@ const FigureTable = ({
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-24", children: "Image" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Name" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Slug" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Franchise" }),
@@ -39,8 +74,9 @@ const FigureTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 10, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 10, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 11, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 11, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures.map((figure) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: figure.id }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FigureThumbnail, { figure }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.name || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.slug || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getFranchiseName(figure, franchiseNames) }),
@@ -81,7 +117,7 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
-const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-9OvpChfF.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]) : void 0));
+const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-CZDz5JXN.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]) : void 0));
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },
