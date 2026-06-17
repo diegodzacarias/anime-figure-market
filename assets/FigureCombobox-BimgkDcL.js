@@ -1,6 +1,6 @@
-import { r as reactExports, j as jsxRuntimeExports, e as cn } from "./index-bomGFy8_.js";
-import { B as Button, C as Check } from "./Navbar-CHRU5QDy.js";
-import { P as Popover, a as PopoverTrigger, C as ChevronsUpDown, b as PopoverContent, c as Command, d as CommandInput, e as CommandList, f as CommandEmpty, g as CommandGroup, h as CommandItem } from "./popover-BY4q5kMS.js";
+import { r as reactExports, j as jsxRuntimeExports, e as cn } from "./index-a92pIL1T.js";
+import { B as Button, C as Check } from "./Navbar-8fWVEPER.js";
+import { P as Popover, a as PopoverTrigger, C as ChevronsUpDown, b as PopoverContent, c as Command, d as CommandInput, e as CommandList, f as CommandEmpty, g as CommandGroup, h as CommandItem } from "./popover-BVprIdht.js";
 const FigureCombobox = ({
   figures,
   value,
@@ -18,9 +18,9 @@ const FigureCombobox = ({
         variant: "outline",
         role: "combobox",
         disabled,
-        className: "min-h-10 w-full justify-between whitespace-normal text-left font-normal",
+        className: "h-auto min-h-10 w-full items-start justify-between whitespace-normal py-2 text-left font-normal",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "line-clamp-2", children: selectedFigure ? selectedFigure.name : loading ? "Loading figures..." : "Select a figure" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-normal break-words leading-snug", children: selectedFigure ? selectedFigure.name : loading ? "Loading figures..." : "Select a figure" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronsUpDown, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
         ]
       }

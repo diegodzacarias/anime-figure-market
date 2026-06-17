@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-BuA9Neeg.js","assets/Navbar-CHRU5QDy.js","assets/franchiseApi-C5E79V3y.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-WNuRecTm.js","assets/apiError-DUb83F6W.js","assets/arrow-left-BFVLZwWw.js","assets/FigureDetail-COmnt3JW.js","assets/badge-WMzuczLJ.js","assets/external-link-BVm0nK6s.js","assets/FigurePage-D8NDIlGD.js","assets/alert-dialog-DvToPUSS.js","assets/table-CvDQBhTi.js","assets/hover-card-DgGltEoa.js","assets/trash-2-C7HlwVsN.js","assets/useReferenceData-BrZrKMFx.js","assets/FigureAliasPage-BUQvHCzY.js","assets/dialog-D9r7HRHL.js","assets/FigureCombobox-BwCiMJNb.js","assets/popover-BY4q5kMS.js","assets/FigureSourceListingPage-Dyk20cdm.js","assets/FranchisePage-f1l4hvLp.js","assets/SourcePage-Ea_puKJ3.js","assets/CandidateReviewPage-BaR9hakj.js","assets/index-YnyY87gj.js","assets/FigureAliasGeneratorPage-CMEY79_L.js","assets/tabs-C1dH9M57.js","assets/CharacterAdminPages-CLZiYq1d.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-Bh5fNY51.js","assets/Navbar-8fWVEPER.js","assets/franchiseApi-C5E79V3y.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-Bz3HSxhI.js","assets/apiError-cgU09gen.js","assets/arrow-left-CYbn1GB6.js","assets/FigureDetail-FaipT8ws.js","assets/badge-BZzy8p-S.js","assets/external-link-DEdsaSnp.js","assets/FigurePage-DKpvDyte.js","assets/alert-dialog-DXuHpl0B.js","assets/table-V4XCHHpH.js","assets/hover-card-CmdnG9Ik.js","assets/trash-2-B-RLTdHq.js","assets/useReferenceData-dSUBT3Kw.js","assets/FigureAliasPage-DR-Y7bER.js","assets/dialog-BQjwNj-y.js","assets/FigureCombobox-BimgkDcL.js","assets/popover-BVprIdht.js","assets/FigureSourceListingPage-CpusgxfK.js","assets/FranchisePage-BUp5vIm9.js","assets/SourcePage-CUAnRhz4.js","assets/CandidateReviewPage-ZX2QoI_u.js","assets/index-Dn-rOa75.js","assets/FigureAliasGeneratorPage-BpFyW3qR.js","assets/tabs-DM-gIGkH.js","assets/CharacterAdminPages-Cyzjkokr.js"])))=>i.map(i=>d[i]);
 var __typeError = (msg) => {
   throw TypeError(msg);
 };
@@ -17424,31 +17424,31 @@ const usePreferences = () => {
   }
   return context;
 };
-const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-BuA9Neeg.js"), true ? __vite__mapDeps([0,1,2,3]) : void 0));
-const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-WNuRecTm.js"), true ? __vite__mapDeps([4,1,5,3,6]) : void 0));
-const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-COmnt3JW.js"), true ? __vite__mapDeps([7,1,5,8,6,9]) : void 0));
-const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-BffJRfhF.js"), true ? [] : void 0));
-const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-D8NDIlGD.js"), true ? __vite__mapDeps([10,1,11,5,12,13,9,14,15,3]) : void 0));
-const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-BUQvHCzY.js"), true ? __vite__mapDeps([16,1,11,5,12,17,18,19,14,15,3]) : void 0));
-const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-Dyk20cdm.js"), true ? __vite__mapDeps([20,1,11,5,12,17,18,19,8,14,15,3]) : void 0));
-const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-f1l4hvLp.js"), true ? __vite__mapDeps([21,1,11,5,12,17,14,3]) : void 0));
-const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-Ea_puKJ3.js"), true ? __vite__mapDeps([22,1,11,5,12,17,14,15,3]) : void 0));
-const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-BaR9hakj.js"), true ? __vite__mapDeps([23,1,11,5,12,17,18,19,24,15,3]) : void 0));
-const FigureAliasGeneratorPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasGeneratorPage-CMEY79_L.js"), true ? __vite__mapDeps([25,5,1,2,3,8,13,12,26,24,15]) : void 0));
+const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-Bh5fNY51.js"), true ? __vite__mapDeps([0,1,2,3]) : void 0));
+const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-Bz3HSxhI.js"), true ? __vite__mapDeps([4,1,5,3,6]) : void 0));
+const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-FaipT8ws.js"), true ? __vite__mapDeps([7,1,5,8,6,9]) : void 0));
+const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-HFMThvq7.js"), true ? [] : void 0));
+const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-DKpvDyte.js"), true ? __vite__mapDeps([10,1,11,5,12,13,9,14,15,3]) : void 0));
+const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-DR-Y7bER.js"), true ? __vite__mapDeps([16,1,11,5,12,17,18,19,14,15,3]) : void 0));
+const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-CpusgxfK.js"), true ? __vite__mapDeps([20,1,11,5,12,17,18,19,8,14,15,3]) : void 0));
+const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-BUp5vIm9.js"), true ? __vite__mapDeps([21,1,11,5,12,17,14,3]) : void 0));
+const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-CUAnRhz4.js"), true ? __vite__mapDeps([22,1,11,5,12,17,14,15,3]) : void 0));
+const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-ZX2QoI_u.js"), true ? __vite__mapDeps([23,1,11,5,12,17,18,19,24,15,3]) : void 0));
+const FigureAliasGeneratorPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasGeneratorPage-BpFyW3qR.js"), true ? __vite__mapDeps([25,5,1,2,3,8,13,12,26,24,15]) : void 0));
 const CharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CLZiYq1d.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-Cyzjkokr.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterPage }))
 );
 const CharacterAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CLZiYq1d.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-Cyzjkokr.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
 );
 const CharacterFormPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CLZiYq1d.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-Cyzjkokr.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
 );
 const CharacterFormAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CLZiYq1d.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-Cyzjkokr.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
 );
 const FigureCharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CLZiYq1d.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-Cyzjkokr.js"), true ? __vite__mapDeps([27,1,5,11,19,17,12,26,24,3]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
 );
 const queryClient = new QueryClient();
 const RouteFallback = () => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground", children: "Loading..." });

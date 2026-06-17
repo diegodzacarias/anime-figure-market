@@ -1,14 +1,14 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-bomGFy8_.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-DUb83F6W.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-a92pIL1T.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-cgU09gen.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-CHRU5QDy.js";
-import { B as Badge } from "./badge-WMzuczLJ.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-DgGltEoa.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-CvDQBhTi.js";
-import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-C1dH9M57.js";
-import { u as useReferenceData } from "./useReferenceData-BrZrKMFx.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-8fWVEPER.js";
+import { B as Badge } from "./badge-BZzy8p-S.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-CmdnG9Ik.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-V4XCHHpH.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-DM-gIGkH.js";
+import { u as useReferenceData } from "./useReferenceData-dSUBT3Kw.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./index-YnyY87gj.js";
+import "./index-Dn-rOa75.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -596,7 +596,7 @@ const FigureAliasGeneratorPage = () => {
         /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: generating, message: "Generating aliases...", children: /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "rounded-lg border bg-card p-4", children: !selectedFigure ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-[28rem] items-center justify-center rounded-lg border border-dashed bg-background p-8 text-center text-sm text-muted-foreground", children: "Select a figure to preview aliases, generate aliases, and inspect scraping queries." }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4 rounded-lg border bg-background p-4 lg:flex-row lg:items-start lg:justify-between", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 gap-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 w-16 shrink-0 overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-28 w-24 shrink-0 overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "img",
                 {
                   src: getFigureImageUrl(selectedFigure),
@@ -610,7 +610,7 @@ const FigureAliasGeneratorPage = () => {
               ) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Selected Figure" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-2 line-clamp-2 text-2xl font-bold text-foreground", children: getFigureName(selectedFigure) || `Figure ${selectedFigureId}` }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-2 whitespace-normal break-words text-2xl font-bold text-foreground", children: getFigureName(selectedFigure) || `Figure ${selectedFigureId}` }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
                     "ID ",
