@@ -1,15 +1,15 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index--lY90XBx.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-CTIHIH99.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-y7kEst_B.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-F8tf5X5V.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-Xk_W--H8.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-iUVY670c.js";
-import { F as FigureCombobox } from "./FigureCombobox-Ca8ZKAIJ.js";
-import { B as Badge } from "./badge-D-LUi7PM.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-Btuoaaz-.js";
-import { u as useReferenceData } from "./useReferenceData-CXN95kSf.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-BZ361lfW.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-C_5ZBa66.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-CNKpegpR.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-CtI4HLoG.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-BLQJaAQq.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BDAZDZ5t.js";
+import { F as FigureCombobox } from "./FigureCombobox-Dikqc12p.js";
+import { B as Badge } from "./badge-B2OmNmb4.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-B1BUuLuh.js";
+import { u as useReferenceData } from "./useReferenceData-CjNpx4Fm.js";
 import { d as defaultPageMeta, w as withPagination, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./popover-qI3cvVCt.js";
+import "./popover-BksNH8IU.js";
 const getCurrentDateTimeValue = () => {
   const now = /* @__PURE__ */ new Date();
   const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 6e4);
@@ -35,7 +35,7 @@ const FigureSourceListingFormDialog = ({
     sourceItemId: "",
     sourceTitle: "",
     sourceUrl: "",
-    loadMethod: "MANUAL",
+    loadMethod: "",
     price: "",
     currencyCode: "USD",
     preorderDate: "",
@@ -55,7 +55,7 @@ const FigureSourceListingFormDialog = ({
       sourceItemId: (listing == null ? void 0 : listing.sourceItemId) || "",
       sourceTitle: (listing == null ? void 0 : listing.sourceTitle) || "",
       sourceUrl: (listing == null ? void 0 : listing.sourceUrl) || "",
-      loadMethod: (listing == null ? void 0 : listing.loadMethod) || "MANUAL",
+      loadMethod: (listing == null ? void 0 : listing.loadMethod) || "",
       price: ((_c = listing == null ? void 0 : listing.price) == null ? void 0 : _c.toString()) || "",
       currencyCode: (listing == null ? void 0 : listing.currencyCode) || "USD",
       preorderDate: (listing == null ? void 0 : listing.preorderDate) || "",
@@ -81,9 +81,9 @@ const FigureSourceListingFormDialog = ({
       sourceId: Number(form.sourceId),
       sourceTitle: form.sourceTitle.trim(),
       currencyCode: form.currencyCode,
-      loadMethod: form.loadMethod || "MANUAL",
       capturedAt: form.capturedAt
     };
+    if (form.loadMethod) payload.loadMethod = form.loadMethod;
     if (form.sourceItemId.trim()) payload.sourceItemId = form.sourceItemId.trim();
     if (form.sourceUrl.trim()) payload.sourceUrl = form.sourceUrl.trim();
     if (form.price) payload.price = Number(form.price);
@@ -182,7 +182,7 @@ const FigureSourceListingFormDialog = ({
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Load Method" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "select",
             {
               name: "loadMethod",
@@ -190,10 +190,13 @@ const FigureSourceListingFormDialog = ({
               onChange: handleChange,
               className: selectClass,
               disabled: true,
-              children: loadMethods.map((method) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: method.value, children: method.label }, method.value))
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: "", children: "-" }),
+                loadMethods.map((method) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: method.value, children: method.label }, method.value))
+              ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Metodo de carga. Los registros creados desde esta pantalla se guardan como MANUAL." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Metodo de carga informado por el backend." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Price" }),
