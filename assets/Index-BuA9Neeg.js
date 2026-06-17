@@ -1,18 +1,10 @@
-import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-Z9BlEeRk.js";
-import { N as Navbar } from "./Navbar-Cg9TEdu0.js";
-import { w as withPagination, g as getPageContent } from "./page-DEGBjxB5.js";
+import { u as useNavigate, r as reactExports, j as jsxRuntimeExports } from "./index-bomGFy8_.js";
+import { N as Navbar } from "./Navbar-CHRU5QDy.js";
+import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
+import "./page-DKdY7PVC.js";
 const berserkImg = "/anime-figure-market/assets/berserk-XUP7V0Hn.jpg";
 const narutoImg = "/anime-figure-market/assets/naruto-DacTZOzb.jpg";
 const onepieceImg = "/anime-figure-market/assets/onepiece-DNe8N-Mi.jpg";
-const BASE_URL = "https://figure-market-core.onrender.com/api";
-async function getFranchises() {
-  const res = await fetch(withPagination(`${BASE_URL}/v1/franchises`, 0, 1e3, "name,asc"));
-  if (!res.ok) {
-    throw new Error("Error fetching franchises");
-  }
-  const data = await res.json();
-  return getPageContent(data);
-}
 const fallbackImages = {
   Berserk: berserkImg,
   Naruto: narutoImg,

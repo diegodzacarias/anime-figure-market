@@ -1,13 +1,14 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-Z9BlEeRk.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-C3J_mFSJ.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-Cg9TEdu0.js";
-import { B as Badge } from "./badge-BKm0ufTB.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BM2_cl8L.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-CFCZJc92.js";
-import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-Bg-aby_V.js";
-import { u as useReferenceData } from "./useReferenceData-leVU33FI.js";
-import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./index-CrxuRN6j.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-bomGFy8_.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-DUb83F6W.js";
+import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-CHRU5QDy.js";
+import { B as Badge } from "./badge-WMzuczLJ.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-DgGltEoa.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-CvDQBhTi.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-C1dH9M57.js";
+import { u as useReferenceData } from "./useReferenceData-BrZrKMFx.js";
+import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
+import "./index-YnyY87gj.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -59,8 +60,8 @@ const WandSparkles = createLucideIcon("WandSparkles", [
   ["path", { d: "M11 3H9", key: "1obp7u" }]
 ]);
 const BASE_URL = "https://figure-market-core.onrender.com/api";
-const FIGURES_SEARCH_ENDPOINT = `${BASE_URL}/v1/figures/search`;
 const FIGURE_ALIASES_ENDPOINT = `${BASE_URL}/figure-aliases`;
+const FIGURE_ALIAS_GENERATOR_FIGURES_ENDPOINT = `${FIGURE_ALIASES_ENDPOINT}/generator/figures`;
 const requestJson = async (url, init) => {
   const response = await fetch(url, init);
   if (!response.ok) {
@@ -68,17 +69,32 @@ const requestJson = async (url, init) => {
   }
   return response.json();
 };
-const getFiguresForAliasGenerator = (page, size, query) => {
+const getFiguresForAliasGenerator = (page, size, query, filters = {}) => {
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
-    sort: "name,asc"
+    sort: "figureName,asc"
   });
   if (query.trim()) {
     params.set("q", query.trim());
   }
+  if (filters.franchiseId) {
+    params.set("franchiseId", filters.franchiseId);
+  }
+  if (filters.status) {
+    params.set("status", filters.status);
+  }
+  if (filters.hasAliases !== void 0) {
+    params.set("hasAliases", String(filters.hasAliases));
+  }
+  if (filters.hasGeneratedAliases !== void 0) {
+    params.set("hasGeneratedAliases", String(filters.hasGeneratedAliases));
+  }
+  if (filters.mayNeedRegeneration !== void 0) {
+    params.set("mayNeedRegeneration", String(filters.mayNeedRegeneration));
+  }
   return requestJson(
-    `${FIGURES_SEARCH_ENDPOINT}?${params.toString()}`
+    `${FIGURE_ALIAS_GENERATOR_FIGURES_ENDPOINT}?${params.toString()}`
   );
 };
 const getExistingFigureAliases = (figureId, page = 0, size = 20) => requestJson(
@@ -92,14 +108,21 @@ const generateFigureAliases = (figureId) => requestJson(`${FIGURE_ALIASES_ENDPOI
 });
 const getFigureAliasScrapingQueries = (figureId, max) => requestJson(`${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/scraping-queries?max=${max}`);
 const FALLBACK_IMAGE_URL = `${"/anime-figure-market/"}placeholder.svg`;
+const getFigureId = (figure) => (figure == null ? void 0 : figure.figureId) || (figure == null ? void 0 : figure.id);
+const getFigureName = (figure) => (figure == null ? void 0 : figure.figureName) || (figure == null ? void 0 : figure.name) || "";
+const getFigureSlug = (figure) => figure.figureSlug || figure.slug || "";
 const getFranchiseName = (figure) => {
   var _a;
-  return ((_a = figure.franchise) == null ? void 0 : _a.name) || figure.franchiseId || "-";
+  return figure.franchiseName || ((_a = figure.franchise) == null ? void 0 : _a.name) || figure.franchiseId || "-";
 };
 const getBrandName = (figure) => {
   var _a;
-  return ((_a = figure.brand) == null ? void 0 : _a.name) || figure.brandId || "-";
+  return figure.brandName || ((_a = figure.brand) == null ? void 0 : _a.name) || figure.brandId || "-";
 };
+const getAliasCount = (figure) => figure.aliasCount ?? 0;
+const getGeneratedAliasCount = (figure) => figure.generatedAliasCount ?? 0;
+const figureHasAliases = (figure) => figure.hasAliases ?? getAliasCount(figure) > 0;
+const figureHasGeneratedAliases = (figure) => figure.hasGeneratedAliases ?? getGeneratedAliasCount(figure) > 0;
 const toApiError = (error, fallbackMessage) => {
   if (error && typeof error === "object" && "message" in error && "status" in error) {
     return error;
@@ -110,7 +133,7 @@ const formatValue = (value) => value === void 0 || value === null || value === "
 const normalizeUiText = (value) => String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
 const looksLikeFixedQueryAlias = (alias, figure) => {
   const source = String(alias.generationSource || "").toUpperCase();
-  return source.includes("JAN") || source.includes("OFFICIAL_PRODUCT_CODE") || normalizeUiText(alias.alias) === normalizeUiText(figure == null ? void 0 : figure.name);
+  return source.includes("JAN") || source.includes("OFFICIAL_PRODUCT_CODE") || normalizeUiText(alias.alias) === normalizeUiText(getFigureName(figure));
 };
 const getOptionLabel = (options, value) => {
   var _a;
@@ -120,7 +143,7 @@ const getOptionLabel = (options, value) => {
 const getFigureImageUrl = (figure) => figure.primaryImageUrl || FALLBACK_IMAGE_URL;
 const FigureThumbnail = ({ figure }) => {
   const imageUrl = getFigureImageUrl(figure);
-  const altText = figure.name || "Figure image";
+  const altText = getFigureName(figure) || "Figure image";
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(HoverCard, { openDelay: 150, closeDelay: 80, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(HoverCardTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-14 w-11 cursor-zoom-in overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       "img",
@@ -146,7 +169,7 @@ const FigureThumbnail = ({ figure }) => {
           }
         }
       ) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 line-clamp-2 text-xs font-medium text-popover-foreground", children: figure.name || `Figure ${figure.id || ""}`.trim() })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 line-clamp-2 text-xs font-medium text-popover-foreground", children: getFigureName(figure) || `Figure ${getFigureId(figure) || ""}`.trim() })
     ] })
   ] });
 };
@@ -229,10 +252,27 @@ const GenerationSummary = ({ result }) => {
     (result.savedCount ?? 0) === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 rounded-md border border-dashed bg-background p-3 text-sm text-muted-foreground", children: "No new aliases were saved." })
   ] });
 };
+const buildGeneratorFilters = (franchiseId, status, aliasState) => {
+  const filters = {};
+  if (franchiseId) filters.franchiseId = franchiseId;
+  if (status) filters.status = status;
+  if (aliasState === "hasAliases") filters.hasAliases = true;
+  if (aliasState === "noAliases") filters.hasAliases = false;
+  if (aliasState === "hasGeneratedAliases") filters.hasGeneratedAliases = true;
+  if (aliasState === "noGeneratedAliases") filters.hasGeneratedAliases = false;
+  if (aliasState === "needsRegeneration") filters.mayNeedRegeneration = true;
+  if (aliasState === "upToDate") filters.mayNeedRegeneration = false;
+  return filters;
+};
 const FigureAliasGeneratorPage = () => {
   const [figures, setFigures] = reactExports.useState([]);
+  const [franchises, setFranchises] = reactExports.useState([]);
   const [loadingFigures, setLoadingFigures] = reactExports.useState(true);
+  const [loadingFranchises, setLoadingFranchises] = reactExports.useState(true);
   const [search, setSearch] = reactExports.useState("");
+  const [franchiseFilter, setFranchiseFilter] = reactExports.useState("");
+  const [statusFilter, setStatusFilter] = reactExports.useState("");
+  const [aliasStateFilter, setAliasStateFilter] = reactExports.useState("");
   const [page, setPage] = reactExports.useState(0);
   const [pageSize, setPageSize] = reactExports.useState(20);
   const [pageMeta, setPageMeta] = reactExports.useState(defaultPageMeta);
@@ -250,11 +290,16 @@ const FigureAliasGeneratorPage = () => {
   const [apiError, setApiError] = reactExports.useState(null);
   const [activeTab, setActiveTab] = reactExports.useState("generated");
   const { referenceData } = useReferenceData();
-  const selectedFigureId = selectedFigure == null ? void 0 : selectedFigure.id;
+  const selectedFigureId = getFigureId(selectedFigure);
   const fetchFigures = reactExports.useCallback(async () => {
     setLoadingFigures(true);
     try {
-      const data = await getFiguresForAliasGenerator(page, pageSize, search);
+      const data = await getFiguresForAliasGenerator(
+        page,
+        pageSize,
+        search,
+        buildGeneratorFilters(franchiseFilter, statusFilter, aliasStateFilter)
+      );
       setFigures(getPageContent(data));
       setPageMeta(getPageMeta(data, pageSize));
     } catch (error) {
@@ -262,7 +307,17 @@ const FigureAliasGeneratorPage = () => {
     } finally {
       setLoadingFigures(false);
     }
-  }, [page, pageSize, search]);
+  }, [aliasStateFilter, franchiseFilter, page, pageSize, search, statusFilter]);
+  const fetchFranchises = reactExports.useCallback(async () => {
+    setLoadingFranchises(true);
+    try {
+      setFranchises(await getFranchises());
+    } catch (error) {
+      setApiError(toApiError(error, "Error loading franchises."));
+    } finally {
+      setLoadingFranchises(false);
+    }
+  }, []);
   const fetchExistingAliases = reactExports.useCallback(async () => {
     if (!selectedFigureId) return;
     setLoadingExistingAliases(true);
@@ -311,6 +366,9 @@ const FigureAliasGeneratorPage = () => {
     fetchFigures();
   }, [fetchFigures]);
   reactExports.useEffect(() => {
+    fetchFranchises();
+  }, [fetchFranchises]);
+  reactExports.useEffect(() => {
     setExistingAliases([]);
     setPreviewResult(null);
     setGenerationResult(null);
@@ -342,11 +400,24 @@ const FigureAliasGeneratorPage = () => {
       const result = await generateFigureAliases(selectedFigureId);
       setGenerationResult(result);
       setScrapingQueries(result.scrapingQueries || []);
+      setSelectedFigure((current) => {
+        if (!current || getFigureId(current) !== selectedFigureId) return current;
+        const savedCount = result.savedCount ?? 0;
+        return {
+          ...current,
+          aliasCount: (current.aliasCount ?? 0) + savedCount,
+          generatedAliasCount: (current.generatedAliasCount ?? 0) + savedCount,
+          hasAliases: true,
+          hasGeneratedAliases: true,
+          mayNeedRegeneration: false
+        };
+      });
       setSuccessMessage("Aliases generated successfully.");
       await Promise.all([
         fetchExistingAliases(),
         fetchScrapingQueries(queryMax),
-        fetchGeneratedPreview(false)
+        fetchGeneratedPreview(false),
+        fetchFigures()
       ]);
       setActiveTab("existing");
     } catch (error) {
@@ -395,6 +466,59 @@ const FigureAliasGeneratorPage = () => {
                 }
               )
             ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-2 sm:grid-cols-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: franchiseFilter,
+                  disabled: loadingFranchises,
+                  onChange: (event) => {
+                    setFranchiseFilter(event.target.value);
+                    setPage(0);
+                  },
+                  className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: loadingFranchises ? "Loading franchises..." : "All franchises" }),
+                    franchises.map((franchise) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: franchise.id, children: franchise.name }, franchise.id))
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: statusFilter,
+                  onChange: (event) => {
+                    setStatusFilter(event.target.value);
+                    setPage(0);
+                  },
+                  className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All statuses" }),
+                    referenceData.figureStatuses.map((status) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: status.value, children: status.label }, status.value))
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: aliasStateFilter,
+                  onChange: (event) => {
+                    setAliasStateFilter(event.target.value);
+                    setPage(0);
+                  },
+                  className: "rounded border border-input bg-background p-2 text-sm text-foreground",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "All alias states" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "noAliases", children: "No aliases" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "hasAliases", children: "Has aliases" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "noGeneratedAliases", children: "No generated aliases" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "hasGeneratedAliases", children: "Has generated aliases" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "needsRegeneration", children: "Needs regeneration" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "upToDate", children: "Up to date" })
+                  ]
+                }
+              )
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground", children: [
               figures.length,
               " shown - ",
@@ -407,31 +531,49 @@ const FigureAliasGeneratorPage = () => {
               /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-16", children: "ID" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "Image" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Figure" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Aliases" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "State" })
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loadingFigures ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 4, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 4, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures.map((figure) => {
-              const selected = (selectedFigure == null ? void 0 : selectedFigure.id) === figure.id;
+            /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loadingFigures ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 5, className: "h-28 text-center text-muted-foreground", children: "Loading figures..." }) }) : figures.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 5, className: "h-28 text-center text-muted-foreground", children: "No figures found." }) }) : figures.map((figure) => {
+              const figureId = getFigureId(figure);
+              const selected = selectedFigureId === figureId;
+              const generatedCount = getGeneratedAliasCount(figure);
+              const aliasCount = getAliasCount(figure);
               return /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 TableRow,
                 {
                   className: `cursor-pointer ${selected ? "bg-muted" : ""}`,
                   onClick: () => handleSelectFigure(figure),
                   children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: figure.id }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: figureId }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FigureThumbnail, { figure }) }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "line-clamp-2 font-medium text-foreground", children: figure.name || "-" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "line-clamp-2 font-medium text-foreground", children: getFigureName(figure) || "-" }),
                       /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-muted-foreground", children: [
                         getFranchiseName(figure),
                         " / ",
                         getBrandName(figure)
                       ] }),
+                      getFigureSlug(figure) && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 line-clamp-1 text-xs text-muted-foreground", children: getFigureSlug(figure) }),
                       figure.lineName && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-xs text-muted-foreground", children: figure.lineName })
                     ] }) }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: figure.status ? /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: figure.status }) : "-" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-1", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: figureHasAliases(figure) ? "secondary" : "outline", children: [
+                        aliasCount,
+                        " total"
+                      ] }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: figureHasGeneratedAliases(figure) ? "default" : "outline", children: [
+                        generatedCount,
+                        " generated"
+                      ] })
+                    ] }) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-1", children: [
+                      figure.status && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: figure.status }),
+                      figure.mayNeedRegeneration ? /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: "Needs regen" }) : figureHasGeneratedAliases(figure) && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: "Up to date" })
+                    ] }) })
                   ]
                 },
-                figure.id
+                figureId
               );
             }) })
           ] }) }),
@@ -458,7 +600,7 @@ const FigureAliasGeneratorPage = () => {
                 "img",
                 {
                   src: getFigureImageUrl(selectedFigure),
-                  alt: selectedFigure.name || "Selected figure image",
+                  alt: getFigureName(selectedFigure) || "Selected figure image",
                   className: "h-full w-full object-contain",
                   loading: "lazy",
                   onError: (event) => {
@@ -468,14 +610,23 @@ const FigureAliasGeneratorPage = () => {
               ) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Selected Figure" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-2 line-clamp-2 text-2xl font-bold text-foreground", children: selectedFigure.name || `Figure ${selectedFigure.id}` }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-2 line-clamp-2 text-2xl font-bold text-foreground", children: getFigureName(selectedFigure) || `Figure ${selectedFigureId}` }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "outline", children: [
                     "ID ",
-                    selectedFigure.id
+                    selectedFigureId
                   ] }),
                   selectedFigure.status && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.status }),
-                  selectedFigure.lineName && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.lineName })
+                  selectedFigure.lineName && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: selectedFigure.lineName }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "secondary", children: [
+                    getAliasCount(selectedFigure),
+                    " aliases"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: figureHasGeneratedAliases(selectedFigure) ? "default" : "outline", children: [
+                    getGeneratedAliasCount(selectedFigure),
+                    " generated"
+                  ] }),
+                  selectedFigure.mayNeedRegeneration && /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: "Needs regeneration" })
                 ] })
               ] })
             ] }),
