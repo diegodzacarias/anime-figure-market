@@ -1,15 +1,15 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index-CGScGpod.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-BfRh8bxN.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-CPDROlPw.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-CvI_gsDQ.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-CYBeRAme.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BmYo3TA1.js";
-import { F as FigureCombobox } from "./FigureCombobox-C8I4g1eH.js";
-import { B as Badge } from "./badge-_23L-F9Y.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-BOT9yLgD.js";
-import { u as useReferenceData } from "./useReferenceData-B29bFfvU.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index--lY90XBx.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-CTIHIH99.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-y7kEst_B.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-F8tf5X5V.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-Xk_W--H8.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-iUVY670c.js";
+import { F as FigureCombobox } from "./FigureCombobox-Ca8ZKAIJ.js";
+import { B as Badge } from "./badge-D-LUi7PM.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-Btuoaaz-.js";
+import { u as useReferenceData } from "./useReferenceData-CXN95kSf.js";
 import { d as defaultPageMeta, w as withPagination, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./popover-BGV9oJK2.js";
+import "./popover-qI3cvVCt.js";
 const getCurrentDateTimeValue = () => {
   const now = /* @__PURE__ */ new Date();
   const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 6e4);
@@ -22,6 +22,7 @@ const FigureSourceListingFormDialog = ({
   sources,
   currencyCodes,
   listingStatuses,
+  loadMethods,
   open,
   saving,
   loadingOptions,
@@ -34,6 +35,7 @@ const FigureSourceListingFormDialog = ({
     sourceItemId: "",
     sourceTitle: "",
     sourceUrl: "",
+    loadMethod: "MANUAL",
     price: "",
     currencyCode: "USD",
     preorderDate: "",
@@ -53,6 +55,7 @@ const FigureSourceListingFormDialog = ({
       sourceItemId: (listing == null ? void 0 : listing.sourceItemId) || "",
       sourceTitle: (listing == null ? void 0 : listing.sourceTitle) || "",
       sourceUrl: (listing == null ? void 0 : listing.sourceUrl) || "",
+      loadMethod: (listing == null ? void 0 : listing.loadMethod) || "MANUAL",
       price: ((_c = listing == null ? void 0 : listing.price) == null ? void 0 : _c.toString()) || "",
       currencyCode: (listing == null ? void 0 : listing.currencyCode) || "USD",
       preorderDate: (listing == null ? void 0 : listing.preorderDate) || "",
@@ -78,6 +81,7 @@ const FigureSourceListingFormDialog = ({
       sourceId: Number(form.sourceId),
       sourceTitle: form.sourceTitle.trim(),
       currencyCode: form.currencyCode,
+      loadMethod: form.loadMethod || "MANUAL",
       capturedAt: form.capturedAt
     };
     if (form.sourceItemId.trim()) payload.sourceItemId = form.sourceItemId.trim();
@@ -175,6 +179,21 @@ const FigureSourceListingFormDialog = ({
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Source URL" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { name: "sourceUrl", type: "url", maxLength: 1e3, value: form.sourceUrl, onChange: handleChange }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "URL directa del listing en la fuente." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Load Method" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "select",
+            {
+              name: "loadMethod",
+              value: form.loadMethod,
+              onChange: handleChange,
+              className: selectClass,
+              disabled: true,
+              children: loadMethods.map((method) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { className: optionClass, value: method.value, children: method.label }, method.value))
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: helperClass, children: "Metodo de carga. Los registros creados desde esta pantalla se guardan como MANUAL." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: labelClass, children: "Price" }),
@@ -304,6 +323,12 @@ const fallbackListingStatuses = [
   { value: "SOLD_OUT", label: "Sold Out" },
   { value: "ARCHIVED", label: "Archived" },
   { value: "UNKNOWN", label: "Unknown" }
+];
+const fallbackLoadMethods = [
+  { value: "MANUAL", label: "Manual" },
+  { value: "SCRAPED", label: "Scraped" },
+  { value: "GENERATED", label: "Generated" },
+  { value: "IMPORTED", label: "Imported" }
 ];
 const FigureSourceListingPage = () => {
   const [listings, setListings] = reactExports.useState([]);
@@ -511,6 +536,7 @@ const FigureSourceListingPage = () => {
         loadingOptions: loadingOptions || loadingReferenceData,
         currencyCodes: referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes,
         listingStatuses: referenceData.figureSourceListingStatuses.length > 0 ? referenceData.figureSourceListingStatuses : fallbackListingStatuses,
+        loadMethods: referenceData.loadMethods.length > 0 ? referenceData.loadMethods : fallbackLoadMethods,
         onOpenChange: setDialogOpen,
         onSubmit: handleSubmit
       }
