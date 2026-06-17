@@ -1,10 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-DgSoNkx-.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-s-ZUEyF3.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-Bn5NoM40.js";
-import { B as Badge } from "./badge-B5TvgG3w.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BStERt7Q.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-C2_OchEm.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-C0aBCfLd.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-aTmxHRlI.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-C3Aa9C9O.js";
+import { B as Badge } from "./badge-DIs9ey1x.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BJNyeMAn.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-BQdOQL7K.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-B4Qg1yYx.js";
+import { u as useReferenceData } from "./useReferenceData-aayXtp75.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
+import "./index-DrdUDeZK.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -104,6 +107,16 @@ const toApiError = (error, fallbackMessage) => {
   return toClientApiError(error, fallbackMessage);
 };
 const formatValue = (value) => value === void 0 || value === null || value === "" ? "-" : value;
+const normalizeUiText = (value) => String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+const looksLikeFixedQueryAlias = (alias, figure) => {
+  const source = String(alias.generationSource || "").toUpperCase();
+  return source.includes("JAN") || source.includes("OFFICIAL_PRODUCT_CODE") || normalizeUiText(alias.alias) === normalizeUiText(figure == null ? void 0 : figure.name);
+};
+const getOptionLabel = (options, value) => {
+  var _a;
+  const normalizedValue = value === void 0 || value === null ? "" : String(value);
+  return ((_a = options.find((option) => option.value === normalizedValue)) == null ? void 0 : _a.label) || formatValue(value);
+};
 const getFigureImageUrl = (figure) => figure.primaryImageUrl || FALLBACK_IMAGE_URL;
 const FigureThumbnail = ({ figure }) => {
   const imageUrl = getFigureImageUrl(figure);
@@ -149,7 +162,12 @@ const methodVariant = (method) => {
   if (normalized === "MANUAL") return "secondary";
   return "outline";
 };
-const PreviewAliasesTable = ({ aliases, loading }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+const PreviewAliasesTable = ({
+  aliases,
+  loading,
+  priorityOptions,
+  sourceOptions
+}) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Alias" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Normalized" }),
@@ -161,13 +179,19 @@ const PreviewAliasesTable = ({ aliases, loading }) => /* @__PURE__ */ jsxRuntime
   /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 6, className: "h-24 text-center text-muted-foreground", children: "Loading preview..." }) }) : aliases.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 6, className: "h-24 text-center text-muted-foreground", children: "No preview generated yet." }) }) : aliases.map((alias, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: formatValue(alias.alias) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.aliasNormalized) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant(alias.priority), children: formatValue(alias.priority) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.generationSource) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant(alias.priority), children: getOptionLabel(priorityOptions, alias.priority) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: getOptionLabel(sourceOptions, alias.generationSource) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-sm whitespace-normal", children: formatValue(alias.reason) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.alreadyExists ? /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: "Already exists" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", children: "New candidate" }) })
   ] }, `${alias.alias}-${index}`)) })
 ] }) });
-const ExistingAliasesTable = ({ aliases, loading }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+const ExistingAliasesTable = ({
+  aliases,
+  loading,
+  loadMethodOptions,
+  priorityOptions,
+  sourceOptions
+}) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Alias" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Normalized" }),
@@ -181,11 +205,11 @@ const ExistingAliasesTable = ({ aliases, loading }) => /* @__PURE__ */ jsxRuntim
   /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 8, className: "h-24 text-center text-muted-foreground", children: "Loading aliases..." }) }) : aliases.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 8, className: "h-24 text-center text-muted-foreground", children: "No aliases found for this figure." }) }) : aliases.map((alias) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: formatValue(alias.alias) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.aliasNormalized) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: methodVariant(alias.loadMethod), children: formatValue(alias.loadMethod) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant(alias.generationPriority), children: formatValue(alias.generationPriority) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.generationSource) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: methodVariant(alias.loadMethod), children: getOptionLabel(loadMethodOptions, alias.loadMethod) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant(alias.generationPriority), children: getOptionLabel(priorityOptions, alias.generationPriority) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: getOptionLabel(sourceOptions, alias.generationSource) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-sm whitespace-normal", children: formatValue(alias.generationReason) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.sourceId) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.sourceName || formatValue(alias.sourceId) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.createdAt) })
   ] }, alias.id || alias.alias)) })
 ] }) });
@@ -197,10 +221,13 @@ const GenerationSummary = ({ result }) => {
     ["Skipped existing", result.skippedExistingCount ?? 0],
     ["Scraping queries", result.scrapingQueryCount ?? 0]
   ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-3 rounded-lg border bg-muted/30 p-4 sm:grid-cols-2 lg:grid-cols-4", children: items.map(([label, value]) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: label }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-2xl font-bold text-foreground", children: value })
-  ] }, label)) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-3 sm:grid-cols-2 lg:grid-cols-4", children: items.map(([label, value]) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: label }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-2xl font-bold text-foreground", children: value })
+    ] }, label)) }),
+    (result.savedCount ?? 0) === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 rounded-md border border-dashed bg-background p-3 text-sm text-muted-foreground", children: "No new aliases were saved." })
+  ] });
 };
 const FigureAliasGeneratorPage = () => {
   const [figures, setFigures] = reactExports.useState([]);
@@ -221,6 +248,8 @@ const FigureAliasGeneratorPage = () => {
   const [queryMax, setQueryMax] = reactExports.useState(5);
   const [successMessage, setSuccessMessage] = reactExports.useState("");
   const [apiError, setApiError] = reactExports.useState(null);
+  const [activeTab, setActiveTab] = reactExports.useState("generated");
+  const { referenceData } = useReferenceData();
   const selectedFigureId = selectedFigure == null ? void 0 : selectedFigure.id;
   const fetchFigures = reactExports.useCallback(async () => {
     setLoadingFigures(true);
@@ -257,6 +286,27 @@ const FigureAliasGeneratorPage = () => {
       setQueriesLoading(false);
     }
   }, [queryMax, selectedFigureId]);
+  const fetchGeneratedPreview = reactExports.useCallback(
+    async (showLoading = true) => {
+      if (!selectedFigureId) return null;
+      if (showLoading) {
+        setPreviewLoading(true);
+      }
+      try {
+        const result = await previewGeneratedFigureAliases(selectedFigureId);
+        setPreviewResult(result);
+        return result;
+      } catch (error) {
+        setApiError(toApiError(error, "Error previewing aliases."));
+        return null;
+      } finally {
+        if (showLoading) {
+          setPreviewLoading(false);
+        }
+      }
+    },
+    [selectedFigureId]
+  );
   reactExports.useEffect(() => {
     fetchFigures();
   }, [fetchFigures]);
@@ -267,8 +317,10 @@ const FigureAliasGeneratorPage = () => {
     setScrapingQueries([]);
     setQueryMax(5);
     setSuccessMessage("");
+    setActiveTab("generated");
     if (selectedFigureId) {
       fetchExistingAliases();
+      fetchScrapingQueries(5);
     }
   }, [selectedFigureId]);
   const handleSelectFigure = (figure) => {
@@ -278,13 +330,9 @@ const FigureAliasGeneratorPage = () => {
     if (!selectedFigureId) return;
     setPreviewLoading(true);
     setSuccessMessage("");
-    try {
-      setPreviewResult(await previewGeneratedFigureAliases(selectedFigureId));
-    } catch (error) {
-      setApiError(toApiError(error, "Error previewing aliases."));
-    } finally {
-      setPreviewLoading(false);
-    }
+    setActiveTab("generated");
+    await fetchGeneratedPreview(false);
+    setPreviewLoading(false);
   };
   const handleGenerateAliases = async () => {
     if (!selectedFigureId) return;
@@ -293,10 +341,14 @@ const FigureAliasGeneratorPage = () => {
     try {
       const result = await generateFigureAliases(selectedFigureId);
       setGenerationResult(result);
-      setPreviewResult(null);
       setScrapingQueries(result.scrapingQueries || []);
       setSuccessMessage("Aliases generated successfully.");
-      await fetchExistingAliases();
+      await Promise.all([
+        fetchExistingAliases(),
+        fetchScrapingQueries(queryMax),
+        fetchGeneratedPreview(false)
+      ]);
+      setActiveTab("existing");
     } catch (error) {
       setApiError(toApiError(error, "Error generating aliases."));
     } finally {
@@ -305,13 +357,17 @@ const FigureAliasGeneratorPage = () => {
   };
   const handleQueryMaxChange = (value) => {
     setQueryMax(value);
-    if (generationResult) {
+    if (selectedFigureId) {
       fetchScrapingQueries(value);
     }
   };
   const previewAliases = reactExports.useMemo(
     () => (previewResult == null ? void 0 : previewResult.generatedAliases) || [],
     [previewResult]
+  );
+  const hasUnexpectedGeneratedAliases = reactExports.useMemo(
+    () => previewAliases.some((alias) => looksLikeFixedQueryAlias(alias, selectedFigure)),
+    [previewAliases, selectedFigure]
   );
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
@@ -422,7 +478,7 @@ const FigureAliasGeneratorPage = () => {
                   onClick: handlePreviewAliases,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "h-4 w-4" }),
-                    "Preview aliases"
+                    "Preview generated aliases"
                   ]
                 }
               ),
@@ -435,7 +491,7 @@ const FigureAliasGeneratorPage = () => {
                   onClick: handleGenerateAliases,
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(WandSparkles, { className: "h-4 w-4" }),
-                    "Generate aliases"
+                    "Generate and save aliases"
                   ]
                 }
               ),
@@ -446,10 +502,30 @@ const FigureAliasGeneratorPage = () => {
                   variant: "ghost",
                   className: "gap-2",
                   disabled: loadingExistingAliases || generating,
-                  onClick: fetchExistingAliases,
+                  onClick: () => {
+                    setActiveTab("existing");
+                    fetchExistingAliases();
+                  },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "h-4 w-4" }),
                     "Refresh existing aliases"
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                Button,
+                {
+                  type: "button",
+                  variant: "ghost",
+                  className: "gap-2",
+                  disabled: queriesLoading || generating,
+                  onClick: () => {
+                    setActiveTab("queries");
+                    fetchScrapingQueries(queryMax);
+                  },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "h-4 w-4" }),
+                    "Refresh scraping queries"
                   ]
                 }
               )
@@ -457,48 +533,88 @@ const FigureAliasGeneratorPage = () => {
           ] }),
           successMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm font-medium text-foreground", children: successMessage }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(GenerationSummary, { result: generationResult }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Preview generated aliases" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "These aliases are generated by the backend but are not persisted until Generate aliases is used." })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Tabs, { value: activeTab, onValueChange: setActiveTab, className: "space-y-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(TabsList, { className: "grid h-auto w-full grid-cols-1 md:grid-cols-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "generated", children: "Generated Aliases" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "existing", children: "Existing Aliases" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "queries", children: "Scraping Queries" })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(PreviewAliasesTable, { aliases: previewAliases, loading: previewLoading })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Existing aliases" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Persisted aliases currently linked to the selected figure." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ExistingAliasesTable, { aliases: existingAliases, loading: loadingExistingAliases })
-          ] }),
-          generationResult && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(TabsContent, { value: "generated", className: "space-y-3", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Scraping queries" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Queries available after generating aliases for this figure." })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Generated Aliases" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Structured candidates that can be saved as aliases. Fixed queries like Figure name, JAN, and official product code belong in Scraping Queries." })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-muted-foreground", htmlFor: "query-max", children: "Max" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "select",
-                  {
-                    id: "query-max",
-                    value: queryMax,
-                    disabled: queriesLoading || generating,
-                    onChange: (event) => handleQueryMaxChange(Number(event.target.value)),
-                    className: "rounded border border-input bg-background px-2 py-1 text-foreground",
-                    children: Array.from({ length: 10 }, (_, index) => index + 1).map((value) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value, children: value }, value))
-                  }
-                )
-              ] })
+              hasUnexpectedGeneratedAliases && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive", children: "Some generated aliases look like fixed scraping queries. This may indicate the backend returned deprecated alias candidates." }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                PreviewAliasesTable,
+                {
+                  aliases: previewAliases,
+                  loading: previewLoading,
+                  priorityOptions: referenceData.figureAliasGenerationPriorities,
+                  sourceOptions: referenceData.figureAliasGenerationSources
+                }
+              )
             ] }),
-            queriesLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Loading scraping queries..." }) : scrapingQueries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No scraping queries available." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "space-y-2", children: scrapingQueries.map((query, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "rounded-md border bg-background p-3 text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-2 font-semibold text-primary", children: [
-                index + 1,
-                "."
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(TabsContent, { value: "existing", className: "space-y-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Existing Aliases" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Persisted aliases currently linked to the selected figure." })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-foreground", children: query })
-            ] }, `${query}-${index}`)) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                ExistingAliasesTable,
+                {
+                  aliases: existingAliases,
+                  loading: loadingExistingAliases,
+                  loadMethodOptions: referenceData.loadMethods,
+                  priorityOptions: referenceData.figureAliasGenerationPriorities,
+                  sourceOptions: referenceData.figureAliasGenerationSources
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "queries", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Scraping Queries" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Final ordered queries used by scraping." })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-muted-foreground", htmlFor: "query-max", children: "Max" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "select",
+                    {
+                      id: "query-max",
+                      value: queryMax,
+                      disabled: queriesLoading || generating,
+                      onChange: (event) => handleQueryMaxChange(Number(event.target.value)),
+                      className: "rounded border border-input bg-background px-2 py-1 text-foreground",
+                      children: Array.from({ length: 10 }, (_, index) => index + 1).map((value) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value, children: value }, value))
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    Button,
+                    {
+                      type: "button",
+                      size: "sm",
+                      variant: "outline",
+                      className: "gap-2",
+                      disabled: queriesLoading || generating,
+                      onClick: () => fetchScrapingQueries(queryMax),
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "h-3.5 w-3.5" }),
+                        "Refresh"
+                      ]
+                    }
+                  )
+                ] })
+              ] }),
+              queriesLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Loading scraping queries..." }) : scrapingQueries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No scraping queries available." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "space-y-2", children: scrapingQueries.map((query, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "rounded-md border bg-background p-3 text-sm", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-2 font-semibold text-primary", children: [
+                  index + 1,
+                  "."
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-foreground", children: query })
+              ] }, `${query}-${index}`)) })
+            ] }) })
           ] })
         ] }) }) })
       ] })

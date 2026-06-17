@@ -1,14 +1,14 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index-DgSoNkx-.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-Bn5NoM40.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-hG9nbazE.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-s-ZUEyF3.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-C2_OchEm.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-Dp0II0Xv.js";
-import { F as FigureCombobox } from "./FigureCombobox-Bx1UYgxq.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-_of38kj8.js";
-import { u as useReferenceData } from "./useReferenceData-DussYFGM.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-C0aBCfLd.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-C3Aa9C9O.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-BtpR4LKj.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-aTmxHRlI.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-BQdOQL7K.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BCubhie3.js";
+import { F as FigureCombobox } from "./FigureCombobox-BCZtCClE.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-DhhubJ4N.js";
+import { u as useReferenceData } from "./useReferenceData-aayXtp75.js";
 import { d as defaultPageMeta, w as withPagination, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./popover-BIkPfzgd.js";
+import "./popover-wMAXgghV.js";
 const FigureAliasFormDialog = ({
   figureAlias,
   figures,

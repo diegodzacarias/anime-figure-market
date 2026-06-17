@@ -1,13 +1,13 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-CZDz5JXN.js","assets/index-DgSoNkx-.js","assets/index-CfyIS05d.css","assets/alert-dialog-hG9nbazE.js","assets/Navbar-Bn5NoM40.js","assets/dialog-Dp0II0Xv.js","assets/popover-BIkPfzgd.js","assets/table-C2_OchEm.js","assets/apiError-s-ZUEyF3.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
-import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-DgSoNkx-.js";
-import { B as Button, N as Navbar, I as Input } from "./Navbar-Bn5NoM40.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-hG9nbazE.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-s-ZUEyF3.js";
-import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, L as LoadingOverlay, P as PageControls } from "./table-C2_OchEm.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BStERt7Q.js";
-import { E as ExternalLink } from "./external-link-C_tc2Tyn.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-_of38kj8.js";
-import { u as useReferenceData } from "./useReferenceData-DussYFGM.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-ZUgJGLpI.js","assets/index-C0aBCfLd.js","assets/index-CfyIS05d.css","assets/alert-dialog-BtpR4LKj.js","assets/Navbar-C3Aa9C9O.js","assets/dialog-BCubhie3.js","assets/popover-wMAXgghV.js","assets/table-BQdOQL7K.js","assets/apiError-aTmxHRlI.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
+import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-C0aBCfLd.js";
+import { B as Button, N as Navbar, I as Input } from "./Navbar-C3Aa9C9O.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-BtpR4LKj.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-aTmxHRlI.js";
+import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, L as LoadingOverlay, P as PageControls } from "./table-BQdOQL7K.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BJNyeMAn.js";
+import { E as ExternalLink } from "./external-link-DkEOIFRx.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-DhhubJ4N.js";
+import { u as useReferenceData } from "./useReferenceData-aayXtp75.js";
 import { d as defaultPageMeta, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
 const FALLBACK_IMAGE_URL = `${"/anime-figure-market/"}placeholder.svg`;
 const getFranchiseName = (figure, franchiseNames) => {
@@ -117,7 +117,7 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
-const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-CZDz5JXN.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]) : void 0));
+const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-ZUgJGLpI.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]) : void 0));
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },

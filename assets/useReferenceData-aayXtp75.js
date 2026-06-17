@@ -1,4 +1,4 @@
-import { r as reactExports } from "./index-DgSoNkx-.js";
+import { r as reactExports } from "./index-C0aBCfLd.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL}/v1/reference-data`;
 const emptyReferenceData = {
@@ -6,6 +6,8 @@ const emptyReferenceData = {
   figureStatuses: [],
   figureSourceListingStatuses: [],
   loadMethods: [],
+  figureAliasGenerationPriorities: [],
+  figureAliasGenerationSources: [],
   sourcePriorities: [],
   sourceTypes: [],
   scrapedListingCandidateStatuses: [],
