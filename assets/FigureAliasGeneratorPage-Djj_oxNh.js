@@ -1,15 +1,16 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-CT2nwKFb.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-Di8V3ZAJ.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-CiMj1x9n.js";
+import { g as getFiguresForAliasGenerator, a as getExistingFigureAliases, b as getFigureAliasScrapingQueries, p as previewGeneratedFigureAliases, R as RefreshCw, c as generateFigureAliases } from "./figureAliasGeneratorApi-CA7EN52p.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-BeoMViP7.js";
-import { B as Badge } from "./badge-W7KcK2Tt.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-C_AZuSaw.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-9cAZDeEa.js";
-import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-HJ8fTD1N.js";
-import { u as useReferenceData } from "./useReferenceData-Cu96o69c.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-Duc0He4i.js";
+import { A as ApiErrorToast, t as toClientApiError } from "./apiError-JuPfcRPz.js";
+import { B as Badge } from "./badge-qjHFlAl0.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-BGIo0OUn.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-Cjh-D4VV.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-CySxwpD_.js";
+import { u as useReferenceData } from "./useReferenceData-BKc_O9bS.js";
 import { f as formatDateTime } from "./date-DI8K_e3d.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./index-C5DPCGsc.js";
+import "./index-SLAf7UBx.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -25,18 +26,6 @@ const Eye = createLucideIcon("Eye", [
     }
   ],
   ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
-]);
-/**
- * @license lucide-react v0.462.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const RefreshCw = createLucideIcon("RefreshCw", [
-  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-  ["path", { d: "M8 16H3v5", key: "1cv678" }]
 ]);
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -60,54 +49,6 @@ const WandSparkles = createLucideIcon("WandSparkles", [
   ["path", { d: "M21 16h-4", key: "1cnmox" }],
   ["path", { d: "M11 3H9", key: "1obp7u" }]
 ]);
-const BASE_URL = "https://figure-market-core.onrender.com/api";
-const FIGURE_ALIASES_ENDPOINT = `${BASE_URL}/figure-aliases`;
-const FIGURE_ALIAS_GENERATOR_FIGURES_ENDPOINT = `${FIGURE_ALIASES_ENDPOINT}/generator/figures`;
-const requestJson = async (url, init) => {
-  const response = await fetch(url, init);
-  if (!response.ok) {
-    throw await readApiErrorResponse(response, "Backend request failed.");
-  }
-  return response.json();
-};
-const getFiguresForAliasGenerator = (page, size, query, filters = {}) => {
-  const params = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-    sort: "figureName,asc"
-  });
-  if (query.trim()) {
-    params.set("q", query.trim());
-  }
-  if (filters.franchiseId) {
-    params.set("franchiseId", filters.franchiseId);
-  }
-  if (filters.status) {
-    params.set("status", filters.status);
-  }
-  if (filters.hasAliases !== void 0) {
-    params.set("hasAliases", String(filters.hasAliases));
-  }
-  if (filters.hasGeneratedAliases !== void 0) {
-    params.set("hasGeneratedAliases", String(filters.hasGeneratedAliases));
-  }
-  if (filters.mayNeedRegeneration !== void 0) {
-    params.set("mayNeedRegeneration", String(filters.mayNeedRegeneration));
-  }
-  return requestJson(
-    `${FIGURE_ALIAS_GENERATOR_FIGURES_ENDPOINT}?${params.toString()}`
-  );
-};
-const getExistingFigureAliases = (figureId, page = 0, size = 20) => requestJson(
-  `${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}?page=${page}&size=${size}`
-);
-const previewGeneratedFigureAliases = (figureId) => requestJson(
-  `${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/preview-generated`
-);
-const generateFigureAliases = (figureId) => requestJson(`${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/generate`, {
-  method: "POST"
-});
-const getFigureAliasScrapingQueries = (figureId, max) => requestJson(`${FIGURE_ALIASES_ENDPOINT}/figure/${figureId}/scraping-queries?max=${max}`);
 const FALLBACK_IMAGE_URL = `${"/anime-figure-market/"}placeholder.svg`;
 const getFigureId = (figure) => (figure == null ? void 0 : figure.figureId) || (figure == null ? void 0 : figure.id);
 const getFigureName = (figure) => (figure == null ? void 0 : figure.figureName) || (figure == null ? void 0 : figure.name) || "";

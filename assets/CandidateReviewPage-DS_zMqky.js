@@ -1,15 +1,16 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, P as Presence, i as useComposedRefs, k as composeEventHandlers, D as DismissableLayer, C as Content, l as Primitive, m as useCallbackRef, n as Arrow, o as composeRefs, p as dispatchDiscreteCustomEvent, q as Portal$1, s as createSlot, R as Root2$1, t as useControllableState } from "./index-CT2nwKFb.js";
-import { I as Input, B as Button, h as hideOthers, u as useFocusGuards, F as FocusScope, R as ReactRemoveScroll, a as useDirection, b as useId, C as Check, N as Navbar } from "./Navbar-BeoMViP7.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DrMOen-h.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Di8V3ZAJ.js";
-import { L as LoadingOverlay, C as ChevronRight, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-9cAZDeEa.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DIGY1zNA.js";
-import { F as FigureCombobox } from "./FigureCombobox-DduDktdO.js";
-import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-C5DPCGsc.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, P as Presence, i as useComposedRefs, k as composeEventHandlers, D as DismissableLayer, C as Content, l as Primitive, m as useCallbackRef, n as Arrow, o as composeRefs, p as dispatchDiscreteCustomEvent, q as Portal$1, s as createSlot, R as Root2$1, t as useControllableState, v as useSearchParams } from "./index-CiMj1x9n.js";
+import { I as Input, B as Button, h as hideOthers, u as useFocusGuards, F as FocusScope, R as ReactRemoveScroll, a as useDirection, b as useId, C as Check, N as Navbar } from "./Navbar-Duc0He4i.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DvaA0Lyt.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-JuPfcRPz.js";
+import { B as Badge } from "./badge-qjHFlAl0.js";
+import { L as LoadingOverlay, C as ChevronRight, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-Cjh-D4VV.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DuwuHGXG.js";
+import { F as FigureCombobox } from "./FigureCombobox-DapeyksS.js";
+import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-SLAf7UBx.js";
 import { f as formatDateTime } from "./date-DI8K_e3d.js";
-import { u as useReferenceData } from "./useReferenceData-Cu96o69c.js";
+import { u as useReferenceData } from "./useReferenceData-BKc_O9bS.js";
 import { d as defaultPageMeta, b as withPagination, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./popover-B2U5V7JF.js";
+import "./popover-CNqEE2HN.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -1550,6 +1551,11 @@ const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const CANDIDATES_ENDPOINT = `${API_BASE_URL}/v1/scraping/candidates`;
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+const buildCandidatesEndpoint = (figureIdFilter) => {
+  if (!figureIdFilter) return CANDIDATES_ENDPOINT;
+  const separator = CANDIDATES_ENDPOINT.includes("?") ? "&" : "?";
+  return `${CANDIDATES_ENDPOINT}${separator}figureId=${encodeURIComponent(figureIdFilter)}`;
+};
 const fallbackCurrencyCodes = [
   { value: "USD", label: "Usd", symbol: "$" },
   { value: "JPY", label: "Jpy", symbol: "JPY" }
@@ -1571,6 +1577,8 @@ const fallbackMatchDecisions = [
   { value: "DISCARD", label: "Discard" }
 ];
 const CandidateReviewPage = () => {
+  const [searchParams] = useSearchParams();
+  const figureIdFilter = searchParams.get("figureId") || "";
   const [candidates, setCandidates] = reactExports.useState([]);
   const [figures, setFigures] = reactExports.useState([]);
   const [sources, setSources] = reactExports.useState([]);
@@ -1598,7 +1606,7 @@ const CandidateReviewPage = () => {
     }
     try {
       const [candidatesResponse, figuresResponse, sourcesResponse] = await Promise.all([
-        fetch(withPagination(CANDIDATES_ENDPOINT, page, pageSize)),
+        fetch(withPagination(buildCandidatesEndpoint(figureIdFilter), page, pageSize)),
         fetch(withPageSize(FIGURES_ENDPOINT)),
         fetch(withPageSize(SOURCES_ENDPOINT))
       ]);
@@ -1632,18 +1640,20 @@ const CandidateReviewPage = () => {
   };
   reactExports.useEffect(() => {
     fetchData();
-  }, [page, pageSize]);
+  }, [figureIdFilter, page, pageSize]);
   reactExports.useEffect(() => {
     setPage(0);
-  }, [search]);
+  }, [figureIdFilter, search]);
   const filteredCandidates = reactExports.useMemo(() => {
+    const figureFilteredCandidates = figureIdFilter ? candidates.filter((candidate) => String(candidate.figureId || "") === figureIdFilter) : candidates;
     const query = search.trim().toLowerCase();
-    if (!query) return candidates;
-    return candidates.filter(
+    if (!query) return figureFilteredCandidates;
+    return figureFilteredCandidates.filter(
       (candidate) => {
-        var _a;
+        var _a, _b;
         return [
           (_a = candidate.id) == null ? void 0 : _a.toString(),
+          (_b = candidate.figureId) == null ? void 0 : _b.toString(),
           candidate.figureName,
           candidate.figureSlug,
           candidate.sourceName,
@@ -1659,7 +1669,7 @@ const CandidateReviewPage = () => {
         ].filter(Boolean).some((value) => value == null ? void 0 : value.toLowerCase().includes(query));
       }
     );
-  }, [candidates, search]);
+  }, [candidates, figureIdFilter, search]);
   const openCreateDialog = () => {
     setSelectedCandidate(null);
     setDialogOpen(true);
@@ -1767,6 +1777,10 @@ const CandidateReviewPage = () => {
           " shown - ",
           pageMeta.totalElements,
           " total records"
+        ] }),
+        figureIdFilter && /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { variant: "secondary", className: "w-fit", children: [
+          "Figure ID ",
+          figureIdFilter
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: mutating, message: "Updating candidates...", className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(

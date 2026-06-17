@@ -1,4 +1,4 @@
-import { j as jsxRuntimeExports, e as cn, v as cva } from "./index-CT2nwKFb.js";
+import { j as jsxRuntimeExports, e as cn, w as cva } from "./index-CiMj1x9n.js";
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {

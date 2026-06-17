@@ -867,6 +867,12 @@ video {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
 .block {
   display: block;
 }
@@ -1114,6 +1120,10 @@ video {
 .w-auto {
   width: auto;
 }
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
 .w-full {
   width: 100%;
 }
@@ -1166,6 +1176,9 @@ video {
 .max-w-max {
   max-width: -moz-max-content;
   max-width: max-content;
+}
+.max-w-md {
+  max-width: 28rem;
 }
 .max-w-sm {
   max-width: 24rem;
@@ -1396,6 +1409,9 @@ video {
 .whitespace-nowrap {
   white-space: nowrap;
 }
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
 .break-words {
   overflow-wrap: break-word;
 }
@@ -1488,6 +1504,9 @@ video {
 .border-primary\/30 {
   border-color: hsl(var(--primary) / 0.3);
 }
+.border-secondary\/40 {
+  border-color: hsl(var(--secondary) / 0.4);
+}
 .border-sidebar-border {
   border-color: hsl(var(--sidebar-border));
 }
@@ -1559,6 +1578,9 @@ video {
 }
 .bg-secondary {
   background-color: hsl(var(--secondary));
+}
+.bg-secondary\/10 {
+  background-color: hsl(var(--secondary) / 0.1);
 }
 .bg-sidebar {
   background-color: hsl(var(--sidebar-background));
@@ -2079,6 +2101,9 @@ video {
 }
 .ease-linear {
   animation-timing-function: linear;
+}
+.running {
+  animation-play-state: running;
 }
 .shadow-card {
     box-shadow: var(--shadow-card);
@@ -3310,6 +3335,10 @@ video {
     flex-direction: column;
   }
 
+  .md\:items-start {
+    align-items: flex-start;
+  }
+
   .md\:items-end {
     align-items: flex-end;
   }
@@ -3390,6 +3419,10 @@ video {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
   .lg\:grid-cols-\[minmax\(0\2c 0\.95fr\)_minmax\(22rem\2c 0\.9fr\)\] {
     grid-template-columns: minmax(0,0.95fr) minmax(22rem,0.9fr);
   }
@@ -3408,6 +3441,10 @@ video {
 }
 
 @media (min-width: 1280px) {
+
+  .xl\:grid-cols-\[minmax\(24rem\2c 0\.85fr\)_minmax\(0\2c 1\.45fr\)\] {
+    grid-template-columns: minmax(24rem,0.85fr) minmax(0,1.45fr);
+  }
 
   .xl\:grid-cols-\[minmax\(24rem\2c 0\.9fr\)_minmax\(0\2c 1\.35fr\)\] {
     grid-template-columns: minmax(24rem,0.9fr) minmax(0,1.35fr);

@@ -1,4 +1,4 @@
-import { c as createLucideIcon, r as reactExports, y as useLayoutEffect2, z as React, j as jsxRuntimeExports, e as cn, v as cva, S as Slot$1, m as useCallbackRef$1, i as useComposedRefs, l as Primitive, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, k as composeEventHandlers, B as reactDomExports, D as DismissableLayer, C as Content, n as Arrow, V as VISUALLY_HIDDEN_STYLES, q as Portal$1, s as createSlot, t as useControllableState, R as Root2$1, b as usePreferences, L as Link } from "./index-CT2nwKFb.js";
+import { c as createLucideIcon, r as reactExports, z as useLayoutEffect2, B as React, j as jsxRuntimeExports, e as cn, w as cva, S as Slot$1, m as useCallbackRef$1, i as useComposedRefs, l as Primitive, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, k as composeEventHandlers, E as reactDomExports, D as DismissableLayer, C as Content, n as Arrow, V as VISUALLY_HIDDEN_STYLES, q as Portal$1, s as createSlot, t as useControllableState, R as Root2$1, b as usePreferences, L as Link } from "./index-CiMj1x9n.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -2536,6 +2536,15 @@ const Navbar = () => {
                 className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
                 onClick: closeMenus,
                 children: "Alias Generator"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Link,
+              {
+                to: "/figure-admin/scraping-runner",
+                className: "block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                onClick: closeMenus,
+                children: "Scraping Runner"
               }
             )
           ] })
