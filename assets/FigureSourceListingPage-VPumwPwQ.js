@@ -1,14 +1,15 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index-D60BU_pf.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-D34K6YbM.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-D9LZIIbt.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-BEJ0Mm-y.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-D7RkKV79.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DjnlVszf.js";
-import { F as FigureCombobox } from "./FigureCombobox-CNwJOC-A.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-Clp82IsY.js";
-import { u as useReferenceData } from "./useReferenceData-FxlehvyQ.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-CGScGpod.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-BfRh8bxN.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-CPDROlPw.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-CvI_gsDQ.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-CYBeRAme.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BmYo3TA1.js";
+import { F as FigureCombobox } from "./FigureCombobox-C8I4g1eH.js";
+import { B as Badge } from "./badge-_23L-F9Y.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-BOT9yLgD.js";
+import { u as useReferenceData } from "./useReferenceData-B29bFfvU.js";
 import { d as defaultPageMeta, w as withPagination, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import "./popover-G49PPMz6.js";
+import "./popover-BGV9oJK2.js";
 const getCurrentDateTimeValue = () => {
   const now = /* @__PURE__ */ new Date();
   const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 6e4);
@@ -244,6 +245,12 @@ const FigureSourceListingFormDialog = ({
     ] })
   ] }) });
 };
+const loadMethodVariant = (loadMethod) => {
+  const normalized = String(loadMethod || "").toUpperCase();
+  if (normalized === "SCRAPED" || normalized === "GENERATED") return "default";
+  if (normalized === "MANUAL") return "secondary";
+  return "outline";
+};
 const FigureSourceListingTable = ({
   listings,
   loading,
@@ -255,16 +262,18 @@ const FigureSourceListingTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Figure" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Source" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Load Method" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Title" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Price" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Available" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 8, className: "h-28 text-center text-muted-foreground", children: "Loading source listings..." }) }) : listings.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 8, className: "h-28 text-center text-muted-foreground", children: "No source listings found." }) }) : listings.map((listing) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "Loading source listings..." }) }) : listings.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "No source listings found." }) }) : listings.map((listing) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: listing.id }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.figureName || listing.figureId || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.sourceName || listing.sourceId || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.loadMethod ? /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: loadMethodVariant(listing.loadMethod), children: listing.loadMethod }) : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-xs truncate", children: listing.sourceTitle || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.price ? `${listing.price} ${listing.currencyCode || ""}` : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.listingStatus || "-" }),
@@ -374,7 +383,8 @@ const FigureSourceListingPage = () => {
           listing.sourceTitle,
           listing.sourceUrl,
           listing.currencyCode,
-          listing.listingStatus
+          listing.listingStatus,
+          listing.loadMethod
         ].filter(Boolean).some((value) => value == null ? void 0 : value.toLowerCase().includes(query));
       }
     );
