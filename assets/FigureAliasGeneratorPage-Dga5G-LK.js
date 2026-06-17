@@ -1,14 +1,15 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-a92pIL1T.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-cgU09gen.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-CT2nwKFb.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-Di8V3ZAJ.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-8fWVEPER.js";
-import { B as Badge } from "./badge-BZzy8p-S.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-CmdnG9Ik.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-V4XCHHpH.js";
-import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-DM-gIGkH.js";
-import { u as useReferenceData } from "./useReferenceData-dSUBT3Kw.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-BeoMViP7.js";
+import { B as Badge } from "./badge-W7KcK2Tt.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-C_AZuSaw.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-9cAZDeEa.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-HJ8fTD1N.js";
+import { u as useReferenceData } from "./useReferenceData-Cu96o69c.js";
+import { f as formatDateTime } from "./date-DI8K_e3d.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./index-Dn-rOa75.js";
+import "./index-C5DPCGsc.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -233,7 +234,7 @@ const ExistingAliasesTable = ({
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", children: getOptionLabel(sourceOptions, alias.generationSource) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-sm whitespace-normal", children: formatValue(alias.generationReason) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: alias.sourceName || formatValue(alias.sourceId) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(alias.createdAt) })
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(alias.createdAt) })
   ] }, alias.id || alias.alias)) })
 ] }) });
 const GenerationSummary = ({ result }) => {

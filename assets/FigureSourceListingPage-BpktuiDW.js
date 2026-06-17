@@ -1,15 +1,16 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index-a92pIL1T.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-8fWVEPER.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DXuHpl0B.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-cgU09gen.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-V4XCHHpH.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BQjwNj-y.js";
-import { F as FigureCombobox } from "./FigureCombobox-BimgkDcL.js";
-import { B as Badge } from "./badge-BZzy8p-S.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-B-RLTdHq.js";
-import { u as useReferenceData } from "./useReferenceData-dSUBT3Kw.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-CT2nwKFb.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-BeoMViP7.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DrMOen-h.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Di8V3ZAJ.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-9cAZDeEa.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DIGY1zNA.js";
+import { F as FigureCombobox } from "./FigureCombobox-DduDktdO.js";
+import { B as Badge } from "./badge-W7KcK2Tt.js";
+import { f as formatDateTime } from "./date-DI8K_e3d.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-Bc2mrcNc.js";
+import { u as useReferenceData } from "./useReferenceData-Cu96o69c.js";
 import { d as defaultPageMeta, b as withPagination, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./popover-BVprIdht.js";
+import "./popover-B2U5V7JF.js";
 const getCurrentDateTimeValue = () => {
   const now = /* @__PURE__ */ new Date();
   const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 6e4);
@@ -279,7 +280,7 @@ const FigureSourceListingTable = ({
   onEdit,
   onDelete
 }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Figure" }),
@@ -288,10 +289,13 @@ const FigureSourceListingTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Title" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Price" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Preorder" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Release Est." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Captured" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Available" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-48 text-right", children: "Actions" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "Loading source listings..." }) }) : listings.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 9, className: "h-28 text-center text-muted-foreground", children: "No source listings found." }) }) : listings.map((listing) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 12, className: "h-28 text-center text-muted-foreground", children: "Loading source listings..." }) }) : listings.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 12, className: "h-28 text-center text-muted-foreground", children: "No source listings found." }) }) : listings.map((listing) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: listing.id }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.figureName || listing.figureId || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.sourceName || listing.sourceId || "-" }),
@@ -299,6 +303,9 @@ const FigureSourceListingTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-xs truncate", children: listing.sourceTitle || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.price ? `${listing.price} ${listing.currencyCode || ""}` : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.listingStatus || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(listing.preorderDate) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(listing.estimatedReleaseDate) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(listing.capturedAt) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.isAvailable === void 0 || listing.isAvailable === null ? "Unknown" : listing.isAvailable ? "Yes" : "No" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-end gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { type: "button", variant: "outline", size: "sm", className: "gap-2", onClick: () => onEdit(listing), children: [
@@ -311,7 +318,7 @@ const FigureSourceListingTable = ({
         ] })
       ] }) })
     ] }, listing.id)) })
-  ] }) });
+  ] }) }) });
 };
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;

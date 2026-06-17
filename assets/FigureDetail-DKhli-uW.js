@@ -1,9 +1,10 @@
-import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-a92pIL1T.js";
-import { N as Navbar, B as Button } from "./Navbar-8fWVEPER.js";
-import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-cgU09gen.js";
-import { B as Badge } from "./badge-BZzy8p-S.js";
-import { A as ArrowLeft } from "./arrow-left-CYbn1GB6.js";
-import { E as ExternalLink } from "./external-link-DEdsaSnp.js";
+import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-CT2nwKFb.js";
+import { N as Navbar, B as Button } from "./Navbar-BeoMViP7.js";
+import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Di8V3ZAJ.js";
+import { B as Badge } from "./badge-W7KcK2Tt.js";
+import { f as formatDateTime } from "./date-DI8K_e3d.js";
+import { A as ArrowLeft } from "./arrow-left-qhsS8H_V.js";
+import { E as ExternalLink } from "./external-link-D29j_yCV.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/figure-source-listings`;
@@ -47,7 +48,19 @@ const SourceListingCard = ({ listing, compact = false }) => /* @__PURE__ */ jsxR
       listing.exchangeRateSource
     ] }),
     !compact && listing.editionText && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: listing.editionText }),
-    !compact && listing.releaseText && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: listing.releaseText })
+    !compact && listing.releaseText && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: listing.releaseText }),
+    !compact && listing.preorderDate && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+      "Preorder: ",
+      formatDateTime(listing.preorderDate)
+    ] }),
+    !compact && listing.estimatedReleaseDate && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+      "Release est.: ",
+      formatDateTime(listing.estimatedReleaseDate)
+    ] }),
+    !compact && listing.capturedAt && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+      "Captured: ",
+      formatDateTime(listing.capturedAt)
+    ] })
   ] }),
   listing.sourceUrl && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { asChild: true, variant: "outline", size: "sm", className: "gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: listing.sourceUrl, target: "_blank", rel: "noreferrer", children: [
     "Abrir source",

@@ -1,14 +1,15 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, P as Presence, i as useComposedRefs, k as composeEventHandlers, D as DismissableLayer, C as Content, l as Primitive, m as useCallbackRef, n as Arrow, o as composeRefs, p as dispatchDiscreteCustomEvent, q as Portal$1, s as createSlot, R as Root2$1, t as useControllableState } from "./index-a92pIL1T.js";
-import { I as Input, B as Button, h as hideOthers, u as useFocusGuards, F as FocusScope, R as ReactRemoveScroll, a as useDirection, b as useId, C as Check, N as Navbar } from "./Navbar-8fWVEPER.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DXuHpl0B.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-cgU09gen.js";
-import { L as LoadingOverlay, C as ChevronRight, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-V4XCHHpH.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BQjwNj-y.js";
-import { F as FigureCombobox } from "./FigureCombobox-BimgkDcL.js";
-import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-Dn-rOa75.js";
-import { u as useReferenceData } from "./useReferenceData-dSUBT3Kw.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, P as Presence, i as useComposedRefs, k as composeEventHandlers, D as DismissableLayer, C as Content, l as Primitive, m as useCallbackRef, n as Arrow, o as composeRefs, p as dispatchDiscreteCustomEvent, q as Portal$1, s as createSlot, R as Root2$1, t as useControllableState } from "./index-CT2nwKFb.js";
+import { I as Input, B as Button, h as hideOthers, u as useFocusGuards, F as FocusScope, R as ReactRemoveScroll, a as useDirection, b as useId, C as Check, N as Navbar } from "./Navbar-BeoMViP7.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DrMOen-h.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Di8V3ZAJ.js";
+import { L as LoadingOverlay, C as ChevronRight, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-9cAZDeEa.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DIGY1zNA.js";
+import { F as FigureCombobox } from "./FigureCombobox-DduDktdO.js";
+import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-C5DPCGsc.js";
+import { f as formatDateTime } from "./date-DI8K_e3d.js";
+import { u as useReferenceData } from "./useReferenceData-Cu96o69c.js";
 import { d as defaultPageMeta, b as withPagination, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./popover-BVprIdht.js";
+import "./popover-B2U5V7JF.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -1494,9 +1495,11 @@ const CandidateReviewTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Price" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Score" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Captured" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Reviewed" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-24 text-right", children: "Actions" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 8, className: "h-28 text-center text-muted-foreground", children: "Loading candidates..." }) }) : candidates.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 8, className: "h-28 text-center text-muted-foreground", children: "No candidates found." }) }) : candidates.map((candidate) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 10, className: "h-28 text-center text-muted-foreground", children: "Loading candidates..." }) }) : candidates.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(TableRow, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { colSpan: 10, className: "h-28 text-center text-muted-foreground", children: "No candidates found." }) }) : candidates.map((candidate) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: candidate.id }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(TableCell, { className: "min-w-56", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-medium", children: candidate.figureName || candidate.figureId || "-" }),
@@ -1522,6 +1525,8 @@ const CandidateReviewTable = ({
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.price ? `${candidate.price} ${candidate.currencyCode || ""}` : "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.matchScore ?? "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.status || "-" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(candidate.capturedAt) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(candidate.reviewedAt) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DropdownMenu, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "icon", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Ellipsis, { className: "h-4 w-4" }) }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(DropdownMenuContent, { align: "end", children: [
