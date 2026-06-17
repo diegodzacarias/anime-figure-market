@@ -1,12 +1,12 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-De1QPEFX.js","assets/index-CNRUozvF.js","assets/index-CQ7OzDOq.css","assets/alert-dialog-H8uEiHo-.js","assets/Navbar-bwugTws1.js","assets/dialog-DvSi6BSY.js","assets/popover-CFX2TqUi.js","assets/table-B7v18Txu.js","assets/apiError-D7FNJZbp.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
-import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-CNRUozvF.js";
-import { B as Button, N as Navbar, I as Input } from "./Navbar-bwugTws1.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-H8uEiHo-.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-D7FNJZbp.js";
-import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, L as LoadingOverlay, P as PageControls } from "./table-B7v18Txu.js";
-import { E as ExternalLink } from "./external-link-BNouFQsi.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-DqgsJzBi.js";
-import { u as useReferenceData } from "./useReferenceData-CkuaXHEB.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/FigureFormDialog-9OvpChfF.js","assets/index-BBtVfQu2.js","assets/index-CQ7OzDOq.css","assets/alert-dialog-Cq0kKi_G.js","assets/Navbar-BMQL-z9P.js","assets/dialog-CIFynVfA.js","assets/popover-7WmtZAUv.js","assets/table-Dui9h94M.js","assets/apiError-B8hFs4iN.js","assets/page-DEGBjxB5.js"])))=>i.map(i=>d[i]);
+import { j as jsxRuntimeExports, r as reactExports, _ as __vitePreload } from "./index-BBtVfQu2.js";
+import { B as Button, N as Navbar, I as Input } from "./Navbar-BMQL-z9P.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-Cq0kKi_G.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-B8hFs4iN.js";
+import { T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, L as LoadingOverlay, P as PageControls } from "./table-Dui9h94M.js";
+import { E as ExternalLink } from "./external-link-fdDJQwfa.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-JY7JXY-3.js";
+import { u as useReferenceData } from "./useReferenceData-D_WT5ltM.js";
 import { d as defaultPageMeta, b as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
 const getFranchiseName = (figure, franchiseNames) => {
   var _a, _b;
@@ -81,7 +81,7 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
-const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-De1QPEFX.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]) : void 0));
+const FigureFormDialog = reactExports.lazy(() => __vitePreload(() => import("./FigureFormDialog-9OvpChfF.js"), true ? __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]) : void 0));
 const brands = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },

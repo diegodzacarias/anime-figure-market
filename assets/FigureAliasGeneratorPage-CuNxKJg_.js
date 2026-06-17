@@ -1,8 +1,8 @@
-import { c as createLucideIcon, g as createContextScope, h as createPopperScope, r as reactExports, j as jsxRuntimeExports, A as Anchor, l as Primitive, k as composeEventHandlers, P as Presence, i as useComposedRefs, D as DismissableLayer, C as Content, n as Arrow, t as useControllableState, R as Root2$1, e as cn } from "./index-CNRUozvF.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-D7FNJZbp.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-bwugTws1.js";
-import { B as Badge } from "./badge-DRnCMkjZ.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-B7v18Txu.js";
+import { c as createLucideIcon, g as createContextScope, h as createPopperScope, r as reactExports, j as jsxRuntimeExports, A as Anchor, l as Primitive, k as composeEventHandlers, P as Presence, i as useComposedRefs, D as DismissableLayer, C as Content, n as Arrow, t as useControllableState, R as Root2$1, e as cn } from "./index-BBtVfQu2.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-B8hFs4iN.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-BMQL-z9P.js";
+import { B as Badge } from "./badge-CguKk6zO.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-Dui9h94M.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
 /**
  * @license lucide-react v0.462.0 - ISC
@@ -487,11 +487,11 @@ const FigureAliasGeneratorPage = () => {
       setLoadingExistingAliases(false);
     }
   }, [selectedFigureId]);
-  const fetchScrapingQueries = reactExports.useCallback(async () => {
+  const fetchScrapingQueries = reactExports.useCallback(async (max = queryMax) => {
     if (!selectedFigureId) return;
     setQueriesLoading(true);
     try {
-      setScrapingQueries(await getFigureAliasScrapingQueries(selectedFigureId, queryMax));
+      setScrapingQueries(await getFigureAliasScrapingQueries(selectedFigureId, max));
     } catch (error) {
       setApiError(toApiError(error, "Error loading scraping queries."));
     } finally {
@@ -506,14 +506,12 @@ const FigureAliasGeneratorPage = () => {
     setPreviewResult(null);
     setGenerationResult(null);
     setScrapingQueries([]);
+    setQueryMax(5);
     setSuccessMessage("");
     if (selectedFigureId) {
       fetchExistingAliases();
     }
   }, [selectedFigureId]);
-  reactExports.useEffect(() => {
-    if (selectedFigureId) fetchScrapingQueries();
-  }, [queryMax, selectedFigureId]);
   const handleSelectFigure = (figure) => {
     setSelectedFigure(figure);
   };
@@ -537,13 +535,19 @@ const FigureAliasGeneratorPage = () => {
       const result = await generateFigureAliases(selectedFigureId);
       setGenerationResult(result);
       setPreviewResult(null);
+      setScrapingQueries(result.scrapingQueries || []);
       setSuccessMessage("Aliases generated successfully.");
       await fetchExistingAliases();
-      await fetchScrapingQueries();
     } catch (error) {
       setApiError(toApiError(error, "Error generating aliases."));
     } finally {
       setGenerating(false);
+    }
+  };
+  const handleQueryMaxChange = (value) => {
+    setQueryMax(value);
+    if (generationResult) {
+      fetchScrapingQueries(value);
     }
   };
   const previewAliases = reactExports.useMemo(
@@ -694,35 +698,6 @@ const FigureAliasGeneratorPage = () => {
           ] }),
           successMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm font-medium text-foreground", children: successMessage }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(GenerationSummary, { result: generationResult }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Scraping queries" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Queries used by scraping to search this figure in external sources." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-muted-foreground", htmlFor: "query-max", children: "Max" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "select",
-                  {
-                    id: "query-max",
-                    value: queryMax,
-                    disabled: queriesLoading || generating,
-                    onChange: (event) => setQueryMax(Number(event.target.value)),
-                    className: "rounded border border-input bg-background px-2 py-1 text-foreground",
-                    children: Array.from({ length: 10 }, (_, index) => index + 1).map((value) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value, children: value }, value))
-                  }
-                )
-              ] })
-            ] }),
-            queriesLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Loading scraping queries..." }) : scrapingQueries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No scraping queries available." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "space-y-2", children: scrapingQueries.map((query, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "rounded-md border bg-background p-3 text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-2 font-semibold text-primary", children: [
-                index + 1,
-                "."
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-foreground", children: query })
-            ] }, `${query}-${index}`)) })
-          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Preview generated aliases" }),
@@ -736,6 +711,35 @@ const FigureAliasGeneratorPage = () => {
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Persisted aliases currently linked to the selected figure." })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(ExistingAliasesTable, { aliases: existingAliases, loading: loadingExistingAliases })
+          ] }),
+          generationResult && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg border bg-muted/30 p-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground", children: "Scraping queries" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Queries available after generating aliases for this figure." })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-muted-foreground", htmlFor: "query-max", children: "Max" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "select",
+                  {
+                    id: "query-max",
+                    value: queryMax,
+                    disabled: queriesLoading || generating,
+                    onChange: (event) => handleQueryMaxChange(Number(event.target.value)),
+                    className: "rounded border border-input bg-background px-2 py-1 text-foreground",
+                    children: Array.from({ length: 10 }, (_, index) => index + 1).map((value) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value, children: value }, value))
+                  }
+                )
+              ] })
+            ] }),
+            queriesLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "Loading scraping queries..." }) : scrapingQueries.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No scraping queries available." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ol", { className: "space-y-2", children: scrapingQueries.map((query, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "rounded-md border bg-background p-3 text-sm", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-2 font-semibold text-primary", children: [
+                index + 1,
+                "."
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-foreground", children: query })
+            ] }, `${query}-${index}`)) })
           ] })
         ] }) }) })
       ] })
