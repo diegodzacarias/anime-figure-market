@@ -1,9 +1,9 @@
-import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-BZ361lfW.js";
-import { N as Navbar, B as Button } from "./Navbar-C_5ZBa66.js";
-import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-CtI4HLoG.js";
-import { B as Badge } from "./badge-B2OmNmb4.js";
-import { A as ArrowLeft } from "./arrow-left-DLblLaE7.js";
-import { E as ExternalLink } from "./external-link-CwlRQju6.js";
+import { a as useParams, u as useNavigate, r as reactExports, b as usePreferences, j as jsxRuntimeExports } from "./index-CNRUozvF.js";
+import { N as Navbar, B as Button } from "./Navbar-bwugTws1.js";
+import { A as ApiErrorToast, L as LoaderCircle, r as readApiErrorResponse, t as toClientApiError } from "./apiError-D7FNJZbp.js";
+import { B as Badge } from "./badge-DRnCMkjZ.js";
+import { A as ArrowLeft } from "./arrow-left-Cm5Q0yRW.js";
+import { E as ExternalLink } from "./external-link-BNouFQsi.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/figure-source-listings`;
@@ -99,16 +99,18 @@ const FigureDetail = () => {
       setFigure(null);
       setImageUrl(FALLBACK_IMAGE_URL);
       try {
-        const [figureResponse, imageResponse] = await Promise.all([
-          fetch(`${FIGURES_ENDPOINT}/${figureId}`),
-          fetch(`${FIGURES_ENDPOINT}/${figureId}/images/primary`)
-        ]);
+        const figureResponse = await fetch(`${FIGURES_ENDPOINT}/${figureId}`);
         if (!figureResponse.ok) {
           setApiError(await readApiErrorResponse(figureResponse, "Error loading figure."));
           return;
         }
         const nextFigure = await figureResponse.json();
         setFigure(nextFigure);
+        if (nextFigure.primaryImageUrl) {
+          setImageUrl(nextFigure.primaryImageUrl);
+          return;
+        }
+        const imageResponse = await fetch(`${FIGURES_ENDPOINT}/${figureId}/images/primary`);
         if (imageResponse.ok) {
           const imageData = await imageResponse.json();
           setImageUrl(imageData.imageUrl || FALLBACK_IMAGE_URL);

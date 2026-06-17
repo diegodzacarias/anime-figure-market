@@ -1,4 +1,4 @@
-import { r as reactExports } from "./index-BZ361lfW.js";
+import { r as reactExports } from "./index-CNRUozvF.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL}/v1/reference-data`;
 const emptyReferenceData = {

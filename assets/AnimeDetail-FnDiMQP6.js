@@ -1,8 +1,8 @@
-import { a as useParams, r as reactExports, j as jsxRuntimeExports, L as Link } from "./index-BZ361lfW.js";
-import { N as Navbar, B as Button } from "./Navbar-C_5ZBa66.js";
-import { r as readApiErrorResponse, t as toClientApiError, A as ApiErrorToast, L as LoaderCircle } from "./apiError-CtI4HLoG.js";
+import { a as useParams, r as reactExports, j as jsxRuntimeExports, L as Link } from "./index-CNRUozvF.js";
+import { N as Navbar, B as Button } from "./Navbar-bwugTws1.js";
+import { r as readApiErrorResponse, t as toClientApiError, A as ApiErrorToast, L as LoaderCircle } from "./apiError-D7FNJZbp.js";
 import { g as getPageContent, a as getPageMeta } from "./page-DEGBjxB5.js";
-import { A as ArrowLeft } from "./arrow-left-DLblLaE7.js";
+import { A as ArrowLeft } from "./arrow-left-Cm5Q0yRW.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_SEARCH_ENDPOINT = `${API_BASE_URL}/v1/figures/search`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
@@ -34,7 +34,7 @@ const AnimeDetail = () => {
   const sentinelRef = reactExports.useRef(null);
   const loadingRef = reactExports.useRef(false);
   const fetchPrimaryImages = reactExports.useCallback(async (nextFigures) => {
-    const figuresWithIds = nextFigures.filter((figure) => figure.id);
+    const figuresWithIds = nextFigures.filter((figure) => figure.id && !figure.primaryImageUrl);
     if (figuresWithIds.length === 0) return;
     const entries = await Promise.all(
       figuresWithIds.map(async (figure) => {
@@ -154,7 +154,7 @@ const AnimeDetail = () => {
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "aspect-[4/5] overflow-hidden bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "img",
               {
-                src: figure.id ? imageUrls[figure.id] || FALLBACK_IMAGE_URL : FALLBACK_IMAGE_URL,
+                src: figure.primaryImageUrl || (figure.id ? imageUrls[figure.id] || FALLBACK_IMAGE_URL : FALLBACK_IMAGE_URL),
                 alt: figure.name || "Figure image",
                 className: "h-full w-full object-contain",
                 loading: "lazy",
