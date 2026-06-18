@@ -1,13 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-CPEOJgG6.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-DuxgG7U1.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-DwefzumF.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-2GrEh959.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-Cq2EJZkP.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-9fNHvRrU.js";
-import { B as Badge } from "./badge-DZSDDN3y.js";
-import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-FQ2urzbL.js";
-import { u as useReferenceData } from "./useReferenceData-DJ-euHkA.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-DCkcZcGa.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-BzYxyuvL.js";
+import { B as Badge } from "./badge-Ds0a6Wtj.js";
+import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-DpPTT4Px.js";
+import { u as useReferenceData } from "./useReferenceData-CvIVeAIZ.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-CM3VZSsX.js";
+import { E as ExternalLink } from "./external-link-CS7oGSrz.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -213,7 +213,6 @@ const ScrapingRunnerPage = () => {
   const [apiError, setApiError] = reactExports.useState(null);
   const { referenceData } = useReferenceData();
   const selectedFigureId = getFigureId(selectedFigure);
-  const candidateCount = Number((scrapingResult == null ? void 0 : scrapingResult.candidateCount) ?? 0);
   const queryResults = reactExports.useMemo(
     () => asArray(scrapingResult == null ? void 0 : scrapingResult.queryResults),
     [scrapingResult]
@@ -224,6 +223,10 @@ const ScrapingRunnerPage = () => {
   );
   const matches = reactExports.useMemo(() => asArray(scrapingResult == null ? void 0 : scrapingResult.matches), [scrapingResult]);
   const rawResults = reactExports.useMemo(() => asArray(scrapingResult == null ? void 0 : scrapingResult.results), [scrapingResult]);
+  const rawCandidateCount = (scrapingResult == null ? void 0 : scrapingResult.candidateCount) ?? candidateMatches.length;
+  const parsedCandidateCount = Number(rawCandidateCount);
+  const candidateCount = Number.isFinite(parsedCandidateCount) ? parsedCandidateCount : 0;
+  const minimumScoreText = (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== void 0 && (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== null ? ` de ${scrapingResult.minimumCandidateScore}` : "";
   const fetchFigures = reactExports.useCallback(async () => {
     setLoadingFigures(true);
     try {
@@ -555,6 +558,16 @@ const ScrapingRunnerPage = () => {
                 ] }) })
               ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(CardContent, { className: "space-y-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "div",
+                  {
+                    className: `rounded-md border p-4 text-sm ${candidateCount === 0 ? "border-secondary/40 bg-secondary/10 text-foreground" : "border-primary/30 bg-primary/10 text-foreground"}`,
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Scraping finalizado." }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-muted-foreground", children: candidateCount === 0 ? `Ningun candidato paso el umbral minimo${minimumScoreText}.` : `${candidateCount} candidato${candidateCount === 1 ? "" : "s"} paso${candidateCount === 1 ? "" : "n"} el umbral minimo${minimumScoreText}.` })
+                    ]
+                  }
+                ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-2 lg:grid-cols-6", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: "Figure" }),

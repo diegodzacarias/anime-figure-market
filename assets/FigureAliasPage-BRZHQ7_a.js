@@ -1,15 +1,15 @@
-import { r as reactExports, j as jsxRuntimeExports } from "./index-CPEOJgG6.js";
-import { I as Input, B as Button, N as Navbar } from "./Navbar-9fNHvRrU.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-D2ppruEr.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Cq2EJZkP.js";
-import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-FQ2urzbL.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-B5SQY8hX.js";
-import { F as FigureCombobox } from "./FigureCombobox-BvNyjEYc.js";
+import { r as reactExports, j as jsxRuntimeExports } from "./index-DwefzumF.js";
+import { I as Input, B as Button, N as Navbar } from "./Navbar-BzYxyuvL.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-DHheZ6qW.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-DCkcZcGa.js";
+import { L as LoadingOverlay, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-DpPTT4Px.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-DyTAGH1n.js";
+import { F as FigureCombobox } from "./FigureCombobox-CXaZXs3U.js";
 import { f as formatDateTime } from "./date-DI8K_e3d.js";
-import { P as Pencil, T as Trash2 } from "./trash-2-DAgtuF4Y.js";
-import { u as useReferenceData } from "./useReferenceData-DJ-euHkA.js";
+import { P as Pencil, T as Trash2 } from "./trash-2-C7J7kqNB.js";
+import { u as useReferenceData } from "./useReferenceData-CvIVeAIZ.js";
 import { d as defaultPageMeta, b as withPagination, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./popover-R4m0C0_A.js";
+import "./popover-muhXFgRT.js";
 const FigureAliasFormDialog = ({
   figureAlias,
   figures,
