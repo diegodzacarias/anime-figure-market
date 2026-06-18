@@ -1,13 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-DitAraeo.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-CWZxN8K2.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-CPEOJgG6.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-DuxgG7U1.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-BZOQmSU3.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-DSVoedxv.js";
-import { B as Badge } from "./badge-EleAnLxT.js";
-import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-DITeg9k-.js";
-import { u as useReferenceData } from "./useReferenceData-BEQUdUfl.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-Cq2EJZkP.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-9fNHvRrU.js";
+import { B as Badge } from "./badge-DZSDDN3y.js";
+import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-FQ2urzbL.js";
+import { u as useReferenceData } from "./useReferenceData-DJ-euHkA.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-Dnc6Xw95.js";
+import { E as ExternalLink } from "./external-link-CM3VZSsX.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *

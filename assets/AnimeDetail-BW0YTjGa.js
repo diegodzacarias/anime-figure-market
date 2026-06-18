@@ -1,8 +1,8 @@
-import { a as useParams, r as reactExports, j as jsxRuntimeExports, L as Link } from "./index-DitAraeo.js";
-import { N as Navbar, B as Button } from "./Navbar-DSVoedxv.js";
-import { r as readApiErrorResponse, t as toClientApiError, A as ApiErrorToast, L as LoaderCircle } from "./apiError-BZOQmSU3.js";
+import { a as useParams, r as reactExports, j as jsxRuntimeExports, L as Link } from "./index-CPEOJgG6.js";
+import { N as Navbar, B as Button } from "./Navbar-9fNHvRrU.js";
+import { r as readApiErrorResponse, t as toClientApiError, A as ApiErrorToast, L as LoaderCircle } from "./apiError-Cq2EJZkP.js";
 import { g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { A as ArrowLeft } from "./arrow-left-oOFrNY7i.js";
+import { A as ArrowLeft } from "./arrow-left-COE4V-bD.js";
 const API_BASE_URL = "https://figure-market-core.onrender.com/api";
 const FIGURES_SEARCH_ENDPOINT = `${API_BASE_URL}/v1/figures/search`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;

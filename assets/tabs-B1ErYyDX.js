@@ -1,6 +1,6 @@
-import { g as createContextScope, r as reactExports, t as useControllableState, j as jsxRuntimeExports, l as Primitive, k as composeEventHandlers, P as Presence, e as cn } from "./index-DitAraeo.js";
-import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-BsruMIu4.js";
-import { a as useDirection, b as useId } from "./Navbar-DSVoedxv.js";
+import { g as createContextScope, r as reactExports, t as useControllableState, j as jsxRuntimeExports, l as Primitive, k as composeEventHandlers, P as Presence, e as cn } from "./index-CPEOJgG6.js";
+import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-BpwdTLWK.js";
+import { a as useDirection, b as useId } from "./Navbar-9fNHvRrU.js";
 var TABS_NAME = "Tabs";
 var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [
   createRovingFocusGroupScope

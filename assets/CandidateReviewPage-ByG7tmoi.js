@@ -1,17 +1,17 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, P as Presence, i as useComposedRefs, k as composeEventHandlers, D as DismissableLayer, C as Content, l as Primitive, m as useCallbackRef, n as Arrow, o as composeRefs, p as dispatchDiscreteCustomEvent, q as Portal$1, s as createSlot, R as Root2$1, t as useControllableState, v as useSearchParams } from "./index-DitAraeo.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, f as createCollection, g as createContextScope, h as createPopperScope, A as Anchor, P as Presence, i as useComposedRefs, k as composeEventHandlers, D as DismissableLayer, C as Content, l as Primitive, m as useCallbackRef, n as Arrow, o as composeRefs, p as dispatchDiscreteCustomEvent, q as Portal$1, s as createSlot, R as Root2$1, t as useControllableState, v as useSearchParams } from "./index-CPEOJgG6.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { I as Input, B as Button, h as hideOthers, u as useFocusGuards, F as FocusScope, R as ReactRemoveScroll, a as useDirection, b as useId, C as Check, N as Navbar } from "./Navbar-DSVoedxv.js";
-import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-h7mGVC-a.js";
-import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-BZOQmSU3.js";
-import { B as Badge } from "./badge-EleAnLxT.js";
-import { L as LoadingOverlay, C as ChevronRight, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-DITeg9k-.js";
-import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-BXoyTsSC.js";
-import { F as FigureCombobox } from "./FigureCombobox-BgmhMx2Y.js";
-import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-BsruMIu4.js";
+import { I as Input, B as Button, h as hideOthers, u as useFocusGuards, F as FocusScope, R as ReactRemoveScroll, a as useDirection, b as useId, C as Check, N as Navbar } from "./Navbar-9fNHvRrU.js";
+import { P as Plus, A as AlertDialog, a as AlertDialogContent, b as AlertDialogHeader, c as AlertDialogTitle, d as AlertDialogDescription, e as AlertDialogFooter, f as AlertDialogCancel, g as AlertDialogAction } from "./alert-dialog-D2ppruEr.js";
+import { A as ApiErrorToast, r as readApiErrorResponse, t as toClientApiError } from "./apiError-Cq2EJZkP.js";
+import { B as Badge } from "./badge-DZSDDN3y.js";
+import { L as LoadingOverlay, C as ChevronRight, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, S as Search, P as PageControls } from "./table-FQ2urzbL.js";
+import { D as Dialog, a as DialogContent, b as DialogHeader, c as DialogTitle, d as DialogDescription, e as DialogFooter } from "./dialog-B5SQY8hX.js";
+import { F as FigureCombobox } from "./FigureCombobox-BvNyjEYc.js";
+import { c as createRovingFocusGroupScope, R as Root, I as Item } from "./index-BpwdTLWK.js";
 import { f as formatDateTime } from "./date-DI8K_e3d.js";
-import { u as useReferenceData } from "./useReferenceData-BEQUdUfl.js";
+import { u as useReferenceData } from "./useReferenceData-DJ-euHkA.js";
 import { d as defaultPageMeta, b as withPagination, w as withPageSize, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./popover-CWtfY4Rp.js";
+import "./popover-R4m0C0_A.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -1492,10 +1492,10 @@ const CandidateReviewTable = ({
     /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Figure" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Match Score" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Source" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Title" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Price" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Match Score" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Captured" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Reviewed" }),
@@ -1507,6 +1507,7 @@ const CandidateReviewTable = ({
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-medium", children: candidate.figureName || candidate.figureId || "-" }),
         candidate.figureSlug && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-muted-foreground", children: candidate.figureSlug })
       ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.matchScore ?? "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(TableCell, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: candidate.sourceName || candidate.sourceId || "-" }),
         candidate.sourceCode && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-muted-foreground", children: candidate.sourceCode })
@@ -1525,7 +1526,6 @@ const CandidateReviewTable = ({
         )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.price ? `${candidate.price} ${candidate.currencyCode || ""}` : "-" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.matchScore ?? "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.status || "-" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(candidate.capturedAt) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(candidate.reviewedAt) }),
