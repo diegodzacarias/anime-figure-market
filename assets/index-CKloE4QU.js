@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-QFkSd5u9.js","assets/Navbar-BzYxyuvL.js","assets/franchiseApi-C5E79V3y.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-CGhOtsDq.js","assets/apiError-DCkcZcGa.js","assets/arrow-left-XTZ6GHpH.js","assets/FigureDetail-BNvt-4XW.js","assets/badge-Ds0a6Wtj.js","assets/date-DI8K_e3d.js","assets/external-link-CS7oGSrz.js","assets/FigurePage-QCMJM8Ns.js","assets/alert-dialog-DHheZ6qW.js","assets/table-DpPTT4Px.js","assets/hover-card-CBSNked5.js","assets/trash-2-C7J7kqNB.js","assets/useReferenceData-CvIVeAIZ.js","assets/FigureAliasPage-BRZHQ7_a.js","assets/dialog-DyTAGH1n.js","assets/FigureCombobox-CXaZXs3U.js","assets/popover-muhXFgRT.js","assets/FigureSourceListingPage-CGilKhuN.js","assets/FranchisePage-DbVB0W5E.js","assets/SourcePage-D_40tvXs.js","assets/CandidateReviewPage-BlQfJSYV.js","assets/index-CS-NUC7u.js","assets/FigureAliasGeneratorPage-Bca3190i.js","assets/figureAliasGeneratorApi-2GrEh959.js","assets/tabs-PYFYetBX.js","assets/ScrapingRunnerPage-BikYip8X.js","assets/CharacterAdminPages-CCGvTRF4.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-nsTWvt0p.js","assets/Navbar-BKhLnNKO.js","assets/franchiseApi-C5E79V3y.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-vFDSL1JA.js","assets/apiError-_r9mqNT-.js","assets/arrow-left-ahqcpI_r.js","assets/FigureDetail-E2J6LsYS.js","assets/badge-Bw7yhXA3.js","assets/date-DI8K_e3d.js","assets/external-link-CwE80SgL.js","assets/FigurePage-HyxllZZC.js","assets/alert-dialog-L-kzhJJq.js","assets/table-DePUlX6h.js","assets/hover-card-Bdn4bR6V.js","assets/trash-2-VHPyco3z.js","assets/useReferenceData-DhEzY-Pd.js","assets/FigureAliasPage-JbTkuIF_.js","assets/dialog-CzKWie8g.js","assets/FigureCombobox-YXyEc5ZG.js","assets/popover-DYkyqX7k.js","assets/FigureSourceListingPage-CP1ecLnZ.js","assets/FranchisePage-CesH01On.js","assets/SourcePage-8PC1JLOb.js","assets/CandidateReviewPage-D3d8NFZy.js","assets/index-Df4RnUg4.js","assets/FigureAliasGeneratorPage-CVN9WRKc.js","assets/figureAliasGeneratorApi-Fi_x8N0G.js","assets/tabs-DNwlFDYf.js","assets/ScrapingRunnerPage-fzd7ifo3.js","assets/CharacterAdminPages-DGEDhyhb.js"])))=>i.map(i=>d[i]);
 var __typeError = (msg) => {
   throw TypeError(msg);
 };
@@ -17464,32 +17464,32 @@ const usePreferences = () => {
   }
   return context;
 };
-const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-QFkSd5u9.js"), true ? __vite__mapDeps([0,1,2,3]) : void 0));
-const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-CGhOtsDq.js"), true ? __vite__mapDeps([4,1,5,3,6]) : void 0));
-const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-BNvt-4XW.js"), true ? __vite__mapDeps([7,1,5,8,9,6,10]) : void 0));
-const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-DhOFC73B.js"), true ? [] : void 0));
-const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-QCMJM8Ns.js"), true ? __vite__mapDeps([11,1,12,5,13,14,10,15,16,3]) : void 0));
-const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-BRZHQ7_a.js"), true ? __vite__mapDeps([17,1,12,5,13,18,19,20,9,15,16,3]) : void 0));
-const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-CGilKhuN.js"), true ? __vite__mapDeps([21,1,12,5,13,18,19,20,8,9,15,16,3]) : void 0));
-const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-DbVB0W5E.js"), true ? __vite__mapDeps([22,1,12,5,13,18,15,3]) : void 0));
-const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-D_40tvXs.js"), true ? __vite__mapDeps([23,1,12,5,13,18,15,16,3]) : void 0));
-const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-BlQfJSYV.js"), true ? __vite__mapDeps([24,2,3,1,12,5,8,13,18,19,20,25,9,16]) : void 0));
-const FigureAliasGeneratorPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasGeneratorPage-Bca3190i.js"), true ? __vite__mapDeps([26,27,5,1,2,3,8,14,13,28,25,16,9]) : void 0));
-const ScrapingRunnerPage = reactExports.lazy(() => __vitePreload(() => import("./ScrapingRunnerPage-BikYip8X.js"), true ? __vite__mapDeps([29,27,5,1,2,3,8,13,16,10]) : void 0));
+const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-nsTWvt0p.js"), true ? __vite__mapDeps([0,1,2,3]) : void 0));
+const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-vFDSL1JA.js"), true ? __vite__mapDeps([4,1,5,3,6]) : void 0));
+const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-E2J6LsYS.js"), true ? __vite__mapDeps([7,1,5,8,9,6,10]) : void 0));
+const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-rMANrM6G.js"), true ? [] : void 0));
+const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-HyxllZZC.js"), true ? __vite__mapDeps([11,1,12,5,13,14,10,15,16,3]) : void 0));
+const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-JbTkuIF_.js"), true ? __vite__mapDeps([17,1,12,5,13,18,19,20,9,15,16,3]) : void 0));
+const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-CP1ecLnZ.js"), true ? __vite__mapDeps([21,1,12,5,13,18,19,20,8,9,15,16,3]) : void 0));
+const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-CesH01On.js"), true ? __vite__mapDeps([22,1,12,5,13,18,15,3]) : void 0));
+const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-8PC1JLOb.js"), true ? __vite__mapDeps([23,1,12,5,13,18,15,16,3]) : void 0));
+const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-D3d8NFZy.js"), true ? __vite__mapDeps([24,2,3,1,12,5,8,13,18,19,20,25,9,16]) : void 0));
+const FigureAliasGeneratorPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasGeneratorPage-CVN9WRKc.js"), true ? __vite__mapDeps([26,27,5,1,2,3,8,14,13,28,25,16,9]) : void 0));
+const ScrapingRunnerPage = reactExports.lazy(() => __vitePreload(() => import("./ScrapingRunnerPage-fzd7ifo3.js"), true ? __vite__mapDeps([29,27,5,1,2,3,8,13,16,10]) : void 0));
 const CharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CCGvTRF4.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterPage }))
 );
 const CharacterAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CCGvTRF4.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
 );
 const CharacterFormPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CCGvTRF4.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
 );
 const CharacterFormAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CCGvTRF4.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
 );
 const FigureCharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-CCGvTRF4.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
 );
 const queryClient = new QueryClient();
 const RouteFallback = () => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground", children: "Loading..." });
