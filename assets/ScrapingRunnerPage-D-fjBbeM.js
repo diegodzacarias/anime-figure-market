@@ -1,13 +1,23 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link, w as ue } from "./index-B0hEIL8K.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-BdGxqLtW.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link, w as ue } from "./index-C4_zL1aQ.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-C1j7PhsD.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-BScghw6T.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-CAXhwL3E.js";
-import { B as Badge } from "./badge-D5dcFGHm.js";
-import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-fKvRVVTJ.js";
-import { u as useReferenceData } from "./useReferenceData-DLMNbU1-.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-B-1rQiDR.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-BbcLdRqB.js";
+import { B as Badge } from "./badge-BAEO5d11.js";
+import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-D8QkOZAx.js";
+import { u as useReferenceData } from "./useReferenceData-BKZd7PJE.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-DpcdmD3a.js";
+import { E as ExternalLink } from "./external-link-DyeqO_Ty.js";
+/**
+ * @license lucide-react v0.462.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Copy = createLucideIcon("Copy", [
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+]);
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -300,6 +310,10 @@ const ScrapingRunnerPage = () => {
   );
   const candidateCount = getCandidateCountFromResult(scrapingResult, candidateMatches);
   const minimumScoreText = (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== void 0 && (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== null ? ` de ${scrapingResult.minimumCandidateScore}` : "";
+  const rawScrapingJson = reactExports.useMemo(
+    () => scrapingResult ? JSON.stringify(scrapingResult, null, 2) : "",
+    [scrapingResult]
+  );
   const fetchFigures = reactExports.useCallback(async () => {
     setLoadingFigures(true);
     try {
@@ -373,6 +387,15 @@ const ScrapingRunnerPage = () => {
       setApiError(toApiError(error, "Error running Nin-Nin Game scraping."));
     } finally {
       setRunning(false);
+    }
+  };
+  const handleCopyRawJson = async () => {
+    if (!rawScrapingJson) return;
+    try {
+      await navigator.clipboard.writeText(rawScrapingJson);
+      ue.success("JSON copiado");
+    } catch {
+      ue.error("No se pudo copiar el JSON");
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
@@ -705,13 +728,29 @@ const ScrapingRunnerPage = () => {
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(CardHeader, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Raw JSON" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Full backend response for troubleshooting." })
-              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CardHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3 md:flex-row md:items-start md:justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Raw JSON" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Full backend response for troubleshooting." })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  Button,
+                  {
+                    type: "button",
+                    size: "sm",
+                    variant: "outline",
+                    className: "gap-2",
+                    onClick: handleCopyRawJson,
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-3.5 w-3.5" }),
+                      "Copy JSON"
+                    ]
+                  }
+                )
+              ] }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("details", { className: "rounded-lg border bg-background p-4", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("summary", { className: "cursor-pointer text-sm font-medium text-foreground", children: "Show raw response" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-muted p-4 text-xs text-muted-foreground", children: JSON.stringify(scrapingResult, null, 2) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-muted p-4 text-xs text-muted-foreground", children: rawScrapingJson })
               ] }) })
             ] })
           ] })
