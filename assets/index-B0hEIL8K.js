@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-nsTWvt0p.js","assets/Navbar-BKhLnNKO.js","assets/franchiseApi-C5E79V3y.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-vFDSL1JA.js","assets/apiError-_r9mqNT-.js","assets/arrow-left-ahqcpI_r.js","assets/FigureDetail-E2J6LsYS.js","assets/badge-Bw7yhXA3.js","assets/date-DI8K_e3d.js","assets/external-link-CwE80SgL.js","assets/FigurePage-HyxllZZC.js","assets/alert-dialog-L-kzhJJq.js","assets/table-DePUlX6h.js","assets/hover-card-Bdn4bR6V.js","assets/trash-2-VHPyco3z.js","assets/useReferenceData-DhEzY-Pd.js","assets/FigureAliasPage-JbTkuIF_.js","assets/dialog-CzKWie8g.js","assets/FigureCombobox-YXyEc5ZG.js","assets/popover-DYkyqX7k.js","assets/FigureSourceListingPage-CP1ecLnZ.js","assets/FranchisePage-CesH01On.js","assets/SourcePage-8PC1JLOb.js","assets/CandidateReviewPage-D3d8NFZy.js","assets/index-Df4RnUg4.js","assets/FigureAliasGeneratorPage-CVN9WRKc.js","assets/figureAliasGeneratorApi-Fi_x8N0G.js","assets/tabs-DNwlFDYf.js","assets/ScrapingRunnerPage-fzd7ifo3.js","assets/CharacterAdminPages-DGEDhyhb.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Index-Zs-A6QGw.js","assets/Navbar-CAXhwL3E.js","assets/franchiseApi-C5E79V3y.js","assets/page-DKdY7PVC.js","assets/AnimeDetail-B5rjBBhO.js","assets/apiError-BScghw6T.js","assets/arrow-left-2EJBSUa8.js","assets/FigureDetail-CflK33Ge.js","assets/badge-D5dcFGHm.js","assets/date-DI8K_e3d.js","assets/external-link-DpcdmD3a.js","assets/FigurePage-B6lttS0s.js","assets/alert-dialog-bQaVVG0x.js","assets/table-fKvRVVTJ.js","assets/hover-card-DSfc3AIn.js","assets/trash-2-CFxcPi6D.js","assets/useReferenceData-DLMNbU1-.js","assets/FigureAliasPage-BAx6PclO.js","assets/dialog-BKmETQlB.js","assets/FigureCombobox-SMKqRH1l.js","assets/popover-DGu35z28.js","assets/FigureSourceListingPage-BtZn11N3.js","assets/FranchisePage-Cn41sBhp.js","assets/SourcePage-DQDwz2yI.js","assets/CandidateReviewPage-LdcePEOi.js","assets/index-D5S-1fvb.js","assets/FigureAliasGeneratorPage-zAkhUCXf.js","assets/figureAliasGeneratorApi-BdGxqLtW.js","assets/tabs-CDLVE_es.js","assets/ScrapingRunnerPage-CLMLoMjn.js","assets/CharacterAdminPages-B0jFGxlV.js"])))=>i.map(i=>d[i]);
 var __typeError = (msg) => {
   throw TypeError(msg);
 };
@@ -2069,7 +2069,7 @@ function re(a) {
   se$1(a, 0);
 }
 function te$1(a) {
-  var b = ue(a);
+  var b = ue$1(a);
   if (Wa(b)) return a;
 }
 function ve$1(a, b) {
@@ -2453,8 +2453,8 @@ function hd(a, b, c, d, e) {
             x2 = "onMouseEnter";
             w2 = "mouse";
             if ("pointerout" === a || "pointerover" === a) t2 = Td, F2 = "onPointerLeave", x2 = "onPointerEnter", w2 = "pointer";
-            J2 = null == k3 ? h2 : ue(k3);
-            u2 = null == n2 ? h2 : ue(n2);
+            J2 = null == k3 ? h2 : ue$1(k3);
+            u2 = null == n2 ? h2 : ue$1(n2);
             h2 = new t2(F2, w2 + "leave", k3, c, e2);
             h2.target = J2;
             h2.relatedTarget = u2;
@@ -2484,7 +2484,7 @@ function hd(a, b, c, d, e) {
         }
       }
       a: {
-        h2 = d2 ? ue(d2) : window;
+        h2 = d2 ? ue$1(d2) : window;
         k3 = h2.nodeName && h2.nodeName.toLowerCase();
         if ("select" === k3 || "input" === k3 && "file" === h2.type) var na = ve$1;
         else if (me$1(h2)) if (we$1) na = Fe;
@@ -2500,7 +2500,7 @@ function hd(a, b, c, d, e) {
         xa && xa(a, h2, d2);
         "focusout" === a && (xa = h2._wrapperState) && xa.controlled && "number" === h2.type && cb(h2, "number", h2.value);
       }
-      xa = d2 ? ue(d2) : window;
+      xa = d2 ? ue$1(d2) : window;
       switch (a) {
         case "focusin":
           if (me$1(xa) || "true" === xa.contentEditable) Qe = xa, Re = d2, Se = null;
@@ -2659,7 +2659,7 @@ function Cb(a) {
   a = a[Of] || a[uf];
   return !a || 5 !== a.tag && 6 !== a.tag && 13 !== a.tag && 3 !== a.tag ? null : a;
 }
-function ue(a) {
+function ue$1(a) {
   if (5 === a.tag || 6 === a.tag) return a.stateNode;
   throw Error(p(33));
 }
@@ -6943,7 +6943,7 @@ yb = function(a, b, c) {
 };
 Gb = Qk;
 Hb = Rk;
-var sl = { usingClientEntryPoint: false, Events: [Cb, ue, Db, Eb, Fb, Qk] }, tl = { findFiberByHostInstance: Wc, bundleType: 0, version: "18.3.1", rendererPackageName: "react-dom" };
+var sl = { usingClientEntryPoint: false, Events: [Cb, ue$1, Db, Eb, Fb, Qk] }, tl = { findFiberByHostInstance: Wc, bundleType: 0, version: "18.3.1", rendererPackageName: "react-dom" };
 var ul = { bundleType: tl.bundleType, version: tl.version, rendererPackageName: tl.rendererPackageName, rendererConfig: tl.rendererConfig, overrideHookState: null, overrideHookStateDeletePath: null, overrideHookStateRenamePath: null, overrideProps: null, overridePropsDeletePath: null, overridePropsRenamePath: null, setErrorHandler: null, setSuspenseHandler: null, scheduleUpdate: null, currentDispatcherRef: ua.ReactCurrentDispatcher, findHostInstanceByFiber: function(a) {
   a = Zb(a);
   return null === a ? null : a.stateNode;
@@ -10447,8 +10447,7 @@ var bt = 1, yt = class {
 }, v = new yt(), ne = (n2, e) => {
   let t2 = (e == null ? void 0 : e.id) || bt++;
   return v.addToast({ title: n2, ...e, id: t2 }), t2;
-}, ie = (n2) => n2 && typeof n2 == "object" && "ok" in n2 && typeof n2.ok == "boolean" && "status" in n2 && typeof n2.status == "number", le = ne, ce = () => v.toasts, de = () => v.getActiveToasts();
-Object.assign(le, { success: v.success, info: v.info, warning: v.warning, error: v.error, custom: v.custom, message: v.message, promise: v.promise, dismiss: v.dismiss, loading: v.loading }, { getHistory: ce, getToasts: de });
+}, ie = (n2) => n2 && typeof n2 == "object" && "ok" in n2 && typeof n2.ok == "boolean" && "status" in n2 && typeof n2.status == "number", le = ne, ce = () => v.toasts, de = () => v.getActiveToasts(), ue = Object.assign(le, { success: v.success, info: v.info, warning: v.warning, error: v.error, custom: v.custom, message: v.message, promise: v.promise, dismiss: v.dismiss, loading: v.loading }, { getHistory: ce, getToasts: de });
 function wt(n2, { insertAt: e } = {}) {
   if (typeof document == "undefined") return;
   let t2 = document.head || document.getElementsByTagName("head")[0], a = document.createElement("style");
@@ -17464,32 +17463,32 @@ const usePreferences = () => {
   }
   return context;
 };
-const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-nsTWvt0p.js"), true ? __vite__mapDeps([0,1,2,3]) : void 0));
-const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-vFDSL1JA.js"), true ? __vite__mapDeps([4,1,5,3,6]) : void 0));
-const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-E2J6LsYS.js"), true ? __vite__mapDeps([7,1,5,8,9,6,10]) : void 0));
-const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-rMANrM6G.js"), true ? [] : void 0));
-const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-HyxllZZC.js"), true ? __vite__mapDeps([11,1,12,5,13,14,10,15,16,3]) : void 0));
-const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-JbTkuIF_.js"), true ? __vite__mapDeps([17,1,12,5,13,18,19,20,9,15,16,3]) : void 0));
-const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-CP1ecLnZ.js"), true ? __vite__mapDeps([21,1,12,5,13,18,19,20,8,9,15,16,3]) : void 0));
-const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-CesH01On.js"), true ? __vite__mapDeps([22,1,12,5,13,18,15,3]) : void 0));
-const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-8PC1JLOb.js"), true ? __vite__mapDeps([23,1,12,5,13,18,15,16,3]) : void 0));
-const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-D3d8NFZy.js"), true ? __vite__mapDeps([24,2,3,1,12,5,8,13,18,19,20,25,9,16]) : void 0));
-const FigureAliasGeneratorPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasGeneratorPage-CVN9WRKc.js"), true ? __vite__mapDeps([26,27,5,1,2,3,8,14,13,28,25,16,9]) : void 0));
-const ScrapingRunnerPage = reactExports.lazy(() => __vitePreload(() => import("./ScrapingRunnerPage-fzd7ifo3.js"), true ? __vite__mapDeps([29,27,5,1,2,3,8,13,16,10]) : void 0));
+const Index = reactExports.lazy(() => __vitePreload(() => import("./Index-Zs-A6QGw.js"), true ? __vite__mapDeps([0,1,2,3]) : void 0));
+const AnimeDetail = reactExports.lazy(() => __vitePreload(() => import("./AnimeDetail-B5rjBBhO.js"), true ? __vite__mapDeps([4,1,5,3,6]) : void 0));
+const FigureDetail = reactExports.lazy(() => __vitePreload(() => import("./FigureDetail-CflK33Ge.js"), true ? __vite__mapDeps([7,1,5,8,9,6,10]) : void 0));
+const NotFound = reactExports.lazy(() => __vitePreload(() => import("./NotFound-C5LZ5GDz.js"), true ? [] : void 0));
+const FigurePage = reactExports.lazy(() => __vitePreload(() => import("./FigurePage-B6lttS0s.js"), true ? __vite__mapDeps([11,1,12,5,13,14,10,15,16,3]) : void 0));
+const FigureAliasPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasPage-BAx6PclO.js"), true ? __vite__mapDeps([17,1,12,5,13,18,19,20,9,15,16,3]) : void 0));
+const FigureSourceListingPage = reactExports.lazy(() => __vitePreload(() => import("./FigureSourceListingPage-BtZn11N3.js"), true ? __vite__mapDeps([21,1,12,5,13,18,19,20,8,9,15,16,3]) : void 0));
+const FranchisePage = reactExports.lazy(() => __vitePreload(() => import("./FranchisePage-Cn41sBhp.js"), true ? __vite__mapDeps([22,1,12,5,13,18,15,3]) : void 0));
+const SourcePage = reactExports.lazy(() => __vitePreload(() => import("./SourcePage-DQDwz2yI.js"), true ? __vite__mapDeps([23,1,12,5,13,18,15,16,3]) : void 0));
+const CandidateReviewPage = reactExports.lazy(() => __vitePreload(() => import("./CandidateReviewPage-LdcePEOi.js"), true ? __vite__mapDeps([24,2,3,1,12,5,8,13,18,19,20,25,9,16]) : void 0));
+const FigureAliasGeneratorPage = reactExports.lazy(() => __vitePreload(() => import("./FigureAliasGeneratorPage-zAkhUCXf.js"), true ? __vite__mapDeps([26,27,5,1,2,3,8,14,13,28,25,16,9]) : void 0));
+const ScrapingRunnerPage = reactExports.lazy(() => __vitePreload(() => import("./ScrapingRunnerPage-CLMLoMjn.js"), true ? __vite__mapDeps([29,27,5,1,2,3,8,13,16,10]) : void 0));
 const CharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-B0jFGxlV.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterPage }))
 );
 const CharacterAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-B0jFGxlV.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterAliasPage }))
 );
 const CharacterFormPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-B0jFGxlV.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormPage }))
 );
 const CharacterFormAliasPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-B0jFGxlV.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.CharacterFormAliasPage }))
 );
 const FigureCharacterPage = reactExports.lazy(
-  () => __vitePreload(() => import("./CharacterAdminPages-DGEDhyhb.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
+  () => __vitePreload(() => import("./CharacterAdminPages-B0jFGxlV.js"), true ? __vite__mapDeps([30,1,5,12,20,18,13,28,25,3]) : void 0).then((module) => ({ default: module.FigureCharacterPage }))
 );
 const queryClient = new QueryClient();
 const RouteFallback = () => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground", children: "Loading..." });
@@ -17520,11 +17519,12 @@ const App = () => /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { c
 createRoot(document.getElementById("root")).render(/* @__PURE__ */ jsxRuntimeExports.jsx(App, {}));
 export {
   Anchor as A,
-  React as B,
+  useLayoutEffect2 as B,
   Content as C,
   DismissableLayer as D,
-  reactDomExports as E,
-  useSize as F,
+  React as E,
+  reactDomExports as F,
+  useSize as G,
   Link as L,
   Presence as P,
   Root2 as R,
@@ -17554,8 +17554,8 @@ export {
   useControllableState as t,
   useNavigate as u,
   useSearchParams as v,
-  cva as w,
-  createContext2 as x,
-  createSlottable as y,
-  useLayoutEffect2 as z
+  ue as w,
+  cva as x,
+  createContext2 as y,
+  createSlottable as z
 };

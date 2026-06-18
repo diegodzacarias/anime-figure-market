@@ -1,13 +1,13 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link } from "./index-CKloE4QU.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-Fi_x8N0G.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link, w as ue } from "./index-B0hEIL8K.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-BdGxqLtW.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-_r9mqNT-.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-BKhLnNKO.js";
-import { B as Badge } from "./badge-Bw7yhXA3.js";
-import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-DePUlX6h.js";
-import { u as useReferenceData } from "./useReferenceData-DhEzY-Pd.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-BScghw6T.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-CAXhwL3E.js";
+import { B as Badge } from "./badge-D5dcFGHm.js";
+import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-fKvRVVTJ.js";
+import { u as useReferenceData } from "./useReferenceData-DLMNbU1-.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-CwE80SgL.js";
+import { E as ExternalLink } from "./external-link-DpcdmD3a.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -78,11 +78,60 @@ const formatValue = (value) => {
   return String(value);
 };
 const formatCount = (value) => typeof value === "number" || typeof value === "string" ? value : "-";
-const asArray = (value) => Array.isArray(value) ? value : [];
-const getMatchTitle = (match) => match.title || match.sourceTitle || match.name || "-";
+const getResponseArray = (response, keys) => {
+  if (!response) return [];
+  for (const key of keys) {
+    const value = response[key];
+    if (Array.isArray(value)) return value;
+  }
+  return [];
+};
+const firstDisplayValue = (...values) => values.find((value) => value !== void 0 && value !== null && value !== "");
+const firstString = (...values) => {
+  const value = firstDisplayValue(...values);
+  if (value === void 0) return "";
+  return String(value);
+};
+const getMatchTitle = (match) => {
+  var _a;
+  return firstString(match.title, match.sourceTitle, match.name, (_a = match.listing) == null ? void 0 : _a.title) || "-";
+};
+const getMatchPrice = (match) => {
+  var _a;
+  return firstDisplayValue(match.price, (_a = match.listing) == null ? void 0 : _a.price);
+};
+const getMatchCurrencyCode = (match) => {
+  var _a;
+  return firstString(match.currencyCode, (_a = match.listing) == null ? void 0 : _a.currencyCode);
+};
+const getMatchAvailability = (match) => {
+  var _a, _b;
+  return firstDisplayValue(
+    match.availability,
+    (_a = match.listing) == null ? void 0 : _a.availability,
+    (_b = match.listing) == null ? void 0 : _b.rawAvailabilityText
+  );
+};
 const getMatchScore = (match) => match.score ?? match.matchScore ?? "-";
 const getMatchDecision = (match) => match.decision || match.matchDecision || "-";
-const getMatchUrl = (match) => match.url || match.sourceUrl || "";
+const getMatchUrl = (match) => {
+  var _a;
+  return firstString(match.url, match.sourceUrl, (_a = match.listing) == null ? void 0 : _a.url);
+};
+const getMatchProductCode = (match) => {
+  var _a, _b;
+  return firstDisplayValue(match.productCode, (_a = match.listing) == null ? void 0 : _a.productCode, (_b = match.listing) == null ? void 0 : _b.sourceItemId);
+};
+const getMatchJanCode = (match) => {
+  var _a;
+  return firstDisplayValue(match.janCode, (_a = match.listing) == null ? void 0 : _a.janCode);
+};
+const getCandidateCountFromResult = (result, resultCandidateMatches = getResponseArray(result, ["candidateMatches"])) => {
+  const rawCandidateCount = (result == null ? void 0 : result.candidateCount) ?? resultCandidateMatches.length;
+  const parsedCandidateCount = Number(rawCandidateCount);
+  return Number.isFinite(parsedCandidateCount) ? parsedCandidateCount : 0;
+};
+const buildCompletionDescription = (candidateCount, minimumScoreText) => candidateCount === 0 ? `Ningun candidato paso el umbral minimo${minimumScoreText}.` : `${candidateCount} candidato${candidateCount === 1 ? "" : "s"} paso${candidateCount === 1 ? "" : "n"} el umbral minimo${minimumScoreText}.`;
 const buildGeneratorFilters = (franchiseId, status, aliasState) => {
   const filters = {};
   if (franchiseId) filters.franchiseId = franchiseId;
@@ -161,19 +210,19 @@ const MatchesTable = ({ title, description, matches }) => /* @__PURE__ */ jsxRun
       const url = getMatchUrl(match);
       return /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-md whitespace-normal font-medium", children: getMatchTitle(match) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: match.price !== void 0 && match.price !== null ? `${match.price} ${match.currencyCode || ""}`.trim() : "-" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(match.availability) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: getMatchPrice(match) !== void 0 ? `${getMatchPrice(match)} ${getMatchCurrencyCode(match)}`.trim() : "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(getMatchAvailability(match)) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatValue(getMatchScore(match)) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: confidenceVariant(match.confidence), children: formatValue(match.confidence) }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: decisionVariant(getMatchDecision(match)), children: formatValue(getMatchDecision(match)) }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1 text-xs text-muted-foreground", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             "Product: ",
-            formatValue(match.productCode)
+            formatValue(getMatchProductCode(match))
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             "JAN: ",
-            formatValue(match.janCode)
+            formatValue(getMatchJanCode(match))
           ] })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: url ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -202,7 +251,7 @@ const ScrapingCompletionNotice = ({
     className: `rounded-md border p-4 text-sm ${candidateCount === 0 ? "border-secondary/40 bg-secondary/10 text-foreground" : "border-primary/30 bg-primary/10 text-foreground"}`,
     children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Scraping finalizado." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-muted-foreground", children: candidateCount === 0 ? `Ningun candidato paso el umbral minimo${minimumScoreText}.` : `${candidateCount} candidato${candidateCount === 1 ? "" : "s"} paso${candidateCount === 1 ? "" : "n"} el umbral minimo${minimumScoreText}.` })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-muted-foreground", children: buildCompletionDescription(candidateCount, minimumScoreText) })
     ]
   }
 );
@@ -227,18 +276,29 @@ const ScrapingRunnerPage = () => {
   const { referenceData } = useReferenceData();
   const selectedFigureId = getFigureId(selectedFigure);
   const queryResults = reactExports.useMemo(
-    () => asArray(scrapingResult == null ? void 0 : scrapingResult.queryResults),
+    () => getResponseArray(scrapingResult, ["queryResults"]),
     [scrapingResult]
   );
   const candidateMatches = reactExports.useMemo(
-    () => asArray(scrapingResult == null ? void 0 : scrapingResult.candidateMatches),
+    () => getResponseArray(scrapingResult, ["candidateMatches"]),
     [scrapingResult]
   );
-  const matches = reactExports.useMemo(() => asArray(scrapingResult == null ? void 0 : scrapingResult.matches), [scrapingResult]);
-  const rawResults = reactExports.useMemo(() => asArray(scrapingResult == null ? void 0 : scrapingResult.results), [scrapingResult]);
-  const rawCandidateCount = (scrapingResult == null ? void 0 : scrapingResult.candidateCount) ?? candidateMatches.length;
-  const parsedCandidateCount = Number(rawCandidateCount);
-  const candidateCount = Number.isFinite(parsedCandidateCount) ? parsedCandidateCount : 0;
+  const matches = reactExports.useMemo(
+    () => getResponseArray(scrapingResult, [
+      "matches",
+      "weightedMatches",
+      "allWeightedMatches",
+      "allMatches",
+      "matchResults",
+      "matchedResults"
+    ]),
+    [scrapingResult]
+  );
+  const rawResults = reactExports.useMemo(
+    () => getResponseArray(scrapingResult, ["results", "rawResults", "scrapedResults"]),
+    [scrapingResult]
+  );
+  const candidateCount = getCandidateCountFromResult(scrapingResult, candidateMatches);
   const minimumScoreText = (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== void 0 && (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== null ? ` de ${scrapingResult.minimumCandidateScore}` : "";
   const fetchFigures = reactExports.useCallback(async () => {
     setLoadingFigures(true);
@@ -302,7 +362,13 @@ const ScrapingRunnerPage = () => {
     setRunning(true);
     setApiError(null);
     try {
-      setScrapingResult(await runNinNinGameScraping(selectedFigureId));
+      const result = await runNinNinGameScraping(selectedFigureId);
+      const resultCandidateCount = getCandidateCountFromResult(result);
+      const resultMinimumScoreText = result.minimumCandidateScore !== void 0 && result.minimumCandidateScore !== null ? ` de ${result.minimumCandidateScore}` : "";
+      setScrapingResult(result);
+      ue.success("Scraping finalizado", {
+        description: buildCompletionDescription(resultCandidateCount, resultMinimumScoreText)
+      });
     } catch (error) {
       setApiError(toApiError(error, "Error running Nin-Nin Game scraping."));
     } finally {
