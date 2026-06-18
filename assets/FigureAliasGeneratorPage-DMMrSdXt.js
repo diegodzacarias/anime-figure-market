@@ -1,16 +1,16 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-C4_zL1aQ.js";
-import { g as getFiguresForAliasGenerator, a as getExistingFigureAliases, b as getFigureAliasScrapingQueries, p as previewGeneratedFigureAliases, R as RefreshCw, c as generateFigureAliases } from "./figureAliasGeneratorApi-C1j7PhsD.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports } from "./index-Cps238iD.js";
+import { g as getFiguresForAliasGenerator, a as getExistingFigureAliases, b as getFigureAliasScrapingQueries, p as previewGeneratedFigureAliases, R as RefreshCw, c as generateFigureAliases } from "./figureAliasGeneratorApi-2ErlrwKa.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-BbcLdRqB.js";
-import { A as ApiErrorToast, t as toClientApiError } from "./apiError-B-1rQiDR.js";
-import { B as Badge } from "./badge-BAEO5d11.js";
-import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-B84zTSP4.js";
-import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-D8QkOZAx.js";
-import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-CjoNs7gx.js";
-import { u as useReferenceData } from "./useReferenceData-BKZd7PJE.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-BjCCYY1w.js";
+import { A as ApiErrorToast, t as toClientApiError } from "./apiError-BIumqWTE.js";
+import { B as Badge } from "./badge-DD_UW3Ce.js";
+import { H as HoverCard, a as HoverCardTrigger, b as HoverCardContent } from "./hover-card-DlGKpmwk.js";
+import { S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls, L as LoadingOverlay } from "./table-Bbyg1L_T.js";
+import { T as Tabs, a as TabsList, b as TabsTrigger, c as TabsContent } from "./tabs-BPlvLlqP.js";
+import { u as useReferenceData } from "./useReferenceData-_Tc82ZjP.js";
 import { f as formatDateTime } from "./date-DI8K_e3d.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import "./index-BgoR5D48.js";
+import "./index-BOUQyZ9R.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *

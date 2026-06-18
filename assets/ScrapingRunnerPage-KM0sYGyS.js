@@ -1,13 +1,14 @@
-import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link, w as ue } from "./index-C4_zL1aQ.js";
-import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-C1j7PhsD.js";
+import { c as createLucideIcon, r as reactExports, j as jsxRuntimeExports, e as cn, L as Link, w as ue } from "./index-Cps238iD.js";
+import { g as getFiguresForAliasGenerator, b as getFigureAliasScrapingQueries, R as RefreshCw } from "./figureAliasGeneratorApi-2ErlrwKa.js";
 import { g as getFranchises } from "./franchiseApi-C5E79V3y.js";
-import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-B-1rQiDR.js";
-import { N as Navbar, I as Input, B as Button } from "./Navbar-BbcLdRqB.js";
-import { B as Badge } from "./badge-BAEO5d11.js";
-import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-D8QkOZAx.js";
-import { u as useReferenceData } from "./useReferenceData-BKZd7PJE.js";
+import { r as readApiErrorResponse, A as ApiErrorToast, t as toClientApiError } from "./apiError-BIumqWTE.js";
+import { N as Navbar, I as Input, B as Button } from "./Navbar-BjCCYY1w.js";
+import { B as Badge } from "./badge-DD_UW3Ce.js";
+import { L as LoadingOverlay, S as Search, T as Table, a as TableHeader, b as TableRow, c as TableHead, d as TableBody, e as TableCell, P as PageControls } from "./table-Bbyg1L_T.js";
+import { u as useReferenceData } from "./useReferenceData-_Tc82ZjP.js";
+import { f as formatDateTime } from "./date-DI8K_e3d.js";
 import { d as defaultPageMeta, g as getPageContent, a as getPageMeta } from "./page-DKdY7PVC.js";
-import { E as ExternalLink } from "./external-link-DyeqO_Ty.js";
+import { E as ExternalLink } from "./external-link-CM9Qj9vg.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -29,12 +30,23 @@ const Play = createLucideIcon("Play", [
 ]);
 const BASE_URL = "https://figure-market-core.onrender.com/api";
 const NINNIN_GAME_SCRAPING_ENDPOINT = `${BASE_URL}/v1/scraping/nin-nin-game/figures`;
+const SCRAPING_FIGURE_STATE_ENDPOINT = `${BASE_URL}/v1/scraping/figures`;
 async function runNinNinGameScraping(figureId) {
   const response = await fetch(`${NINNIN_GAME_SCRAPING_ENDPOINT}/${figureId}/search`, {
     method: "POST"
   });
   if (!response.ok) {
     throw await readApiErrorResponse(response, "Error running Nin-Nin Game scraping.");
+  }
+  return response.json();
+}
+async function getScrapingFigureState(figureId, limit = 20) {
+  const params = new URLSearchParams({ limit: String(limit) });
+  const response = await fetch(
+    `${SCRAPING_FIGURE_STATE_ENDPOINT}/${figureId}/state?${params.toString()}`
+  );
+  if (!response.ok) {
+    throw await readApiErrorResponse(response, "Error loading scraping figure state.");
   }
   return response.json();
 }
@@ -62,6 +74,7 @@ const CardFooter = reactExports.forwardRef(
 CardFooter.displayName = "CardFooter";
 const FALLBACK_IMAGE_URL = `${"/anime-figure-market/"}placeholder.svg`;
 const SCRAPING_QUERY_LIMIT = 20;
+const SCRAPING_STATE_LIMIT = 20;
 const getFigureId = (figure) => (figure == null ? void 0 : figure.figureId) || (figure == null ? void 0 : figure.id);
 const getFigureName = (figure) => (figure == null ? void 0 : figure.figureName) || (figure == null ? void 0 : figure.name) || "";
 const getFigureSlug = (figure) => (figure == null ? void 0 : figure.figureSlug) || (figure == null ? void 0 : figure.slug) || "";
@@ -173,6 +186,26 @@ const confidenceVariant = (confidence) => {
   if (normalized === "MEDIUM") return "secondary";
   return "outline";
 };
+const candidateStatusVariant = (status) => {
+  const normalized = String(status || "").toUpperCase();
+  if (normalized === "APPROVED") return "default";
+  if (normalized === "PENDING_REVIEW") return "secondary";
+  if (normalized === "REJECTED") return "destructive";
+  return "outline";
+};
+const loadMethodVariant = (loadMethod) => {
+  const normalized = String(loadMethod || "").toUpperCase();
+  if (normalized === "SCRAPED" || normalized === "GENERATED") return "default";
+  if (normalized === "MANUAL") return "secondary";
+  return "outline";
+};
+const getStateCount = (value) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+const hasPersistedScrapingState = (state) => Boolean(
+  state && (getStateCount(state.candidateCount) > 0 || getStateCount(state.pendingReviewCandidateCount) > 0 || getStateCount(state.sourceListingCount) > 0)
+);
 const StatusBadge = ({ value }) => /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: formatValue(value) === "Yes" ? "default" : "outline", children: formatValue(value) });
 const FigureImage = ({ figure }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 w-16 shrink-0 overflow-hidden rounded-md border bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
   "img",
@@ -265,6 +298,147 @@ const ScrapingCompletionNotice = ({
     ]
   }
 );
+const ScrapingStateSummary = ({
+  state,
+  loading,
+  selectedFigureId
+}) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx(CardHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3 md:flex-row md:items-start md:justify-between", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Persisted Scraping State" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Saved candidates and listings restored from the backend for this figure." })
+    ] }),
+    selectedFigureId && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { asChild: true, variant: "outline", size: "sm", className: "gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/figure-admin/candidate-review?figureId=${selectedFigureId}`, children: [
+      "Candidate Review",
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "h-3.5 w-3.5" })
+    ] }) })
+  ] }) }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingOverlay, { active: loading, label: "Loading scraping state...", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-2 lg:grid-cols-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: "Pending review candidates" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-2xl font-bold text-foreground", children: getStateCount(state == null ? void 0 : state.pendingReviewCandidateCount) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: "Approved candidates" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-2xl font-bold text-foreground", children: getStateCount(state == null ? void 0 : state.approvedCandidateCount) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: "Rejected candidates" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-2xl font-bold text-foreground", children: getStateCount(state == null ? void 0 : state.rejectedCandidateCount) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-md border bg-background p-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium uppercase text-muted-foreground", children: "Saved source listings" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-2xl font-bold text-foreground", children: getStateCount(state == null ? void 0 : state.sourceListingCount) })
+      ] })
+    ] }),
+    !loading && !hasPersistedScrapingState(state) && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground", children: "No saved scraping state yet for this figure." })
+  ] }) }) })
+] });
+const PendingReviewSection = ({
+  candidates,
+  selectedFigureId,
+  title = "Pending Review",
+  description = "Candidates persisted by scraping and waiting for manual review.",
+  showReviewLink = true,
+  reviewLinkLabel = "Review candidates"
+}) => {
+  if (candidates.length === 0) return null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CardHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3 md:flex-row md:items-start md:justify-between", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: title }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: description })
+      ] }),
+      showReviewLink && selectedFigureId && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { asChild: true, variant: "outline", size: "sm", className: "gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/figure-admin/candidate-review?figureId=${selectedFigureId}`, children: [
+        reviewLinkLabel,
+        /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "h-3.5 w-3.5" })
+      ] }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Source" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Title" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Price" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Score" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Captured" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "URL" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: candidates.map((candidate) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: candidate.id || "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(TableCell, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: candidate.sourceName || candidate.sourceId || "-" }),
+          candidate.sourceCode && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-muted-foreground", children: candidate.sourceCode })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-sm whitespace-normal", children: candidate.sourceTitle || "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.price !== void 0 && candidate.price !== null ? `${candidate.price} ${candidate.currencyCode || ""}`.trim() : "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.matchScore ?? "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: candidateStatusVariant(candidate.status), children: candidate.status || "-" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(candidate.capturedAt) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: candidate.sourceUrl ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "a",
+          {
+            href: candidate.sourceUrl,
+            target: "_blank",
+            rel: "noreferrer",
+            className: "inline-flex items-center gap-1 text-primary hover:underline",
+            children: [
+              "Open",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "h-3.5 w-3.5" })
+            ]
+          }
+        ) : "-" })
+      ] }, candidate.id || `${candidate.sourceTitle}-${candidate.capturedAt}`)) })
+    ] }) }) }) })
+  ] });
+};
+const SavedListingsSection = ({ listings }) => {
+  if (listings.length === 0) return null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(CardHeader, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { className: "text-lg", children: "Saved Listings" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Source listings already persisted for this figure." })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden rounded-lg border bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Table, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { className: "w-20", children: "ID" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Source" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Title" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Price" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Status" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Available" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Load Method" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "Captured" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableHead, { children: "URL" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TableBody, { children: listings.map((listing) => /* @__PURE__ */ jsxRuntimeExports.jsxs(TableRow, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "font-medium", children: listing.id || "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.sourceName || listing.sourceId || "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { className: "max-w-sm whitespace-normal", children: listing.sourceTitle || "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.price !== void 0 && listing.price !== null ? `${listing.price} ${listing.currencyCode || ""}`.trim() : "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.listingStatus || "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.isAvailable === void 0 || listing.isAvailable === null ? "Unknown" : listing.isAvailable ? "Yes" : "No" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.loadMethod ? /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: loadMethodVariant(listing.loadMethod), children: listing.loadMethod }) : "-" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: formatDateTime(listing.capturedAt) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(TableCell, { children: listing.sourceUrl ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "a",
+          {
+            href: listing.sourceUrl,
+            target: "_blank",
+            rel: "noreferrer",
+            className: "inline-flex items-center gap-1 text-primary hover:underline",
+            children: [
+              "Open",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "h-3.5 w-3.5" })
+            ]
+          }
+        ) : "-" })
+      ] }, listing.id || `${listing.sourceTitle}-${listing.capturedAt}`)) })
+    ] }) }) }) })
+  ] });
+};
 const ScrapingRunnerPage = () => {
   const [figures, setFigures] = reactExports.useState([]);
   const [franchises, setFranchises] = reactExports.useState([]);
@@ -282,6 +456,8 @@ const ScrapingRunnerPage = () => {
   const [queriesLoading, setQueriesLoading] = reactExports.useState(false);
   const [running, setRunning] = reactExports.useState(false);
   const [scrapingResult, setScrapingResult] = reactExports.useState(null);
+  const [scrapingState, setScrapingState] = reactExports.useState(null);
+  const [scrapingStateLoading, setScrapingStateLoading] = reactExports.useState(false);
   const [apiError, setApiError] = reactExports.useState(null);
   const { referenceData } = useReferenceData();
   const selectedFigureId = getFigureId(selectedFigure);
@@ -308,6 +484,9 @@ const ScrapingRunnerPage = () => {
     () => getResponseArray(scrapingResult, ["results", "rawResults", "scrapedResults"]),
     [scrapingResult]
   );
+  const pendingReviewCandidates = (scrapingState == null ? void 0 : scrapingState.pendingReviewCandidates) || [];
+  const recentCandidates = (scrapingState == null ? void 0 : scrapingState.recentCandidates) || [];
+  const sourceListings = (scrapingState == null ? void 0 : scrapingState.sourceListings) || [];
   const candidateCount = getCandidateCountFromResult(scrapingResult, candidateMatches);
   const minimumScoreText = (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== void 0 && (scrapingResult == null ? void 0 : scrapingResult.minimumCandidateScore) !== null ? ` de ${scrapingResult.minimumCandidateScore}` : "";
   const rawScrapingJson = reactExports.useMemo(
@@ -355,6 +534,20 @@ const ScrapingRunnerPage = () => {
     },
     [selectedFigureId]
   );
+  const fetchScrapingState = reactExports.useCallback(
+    async () => {
+      if (!selectedFigureId) return;
+      setScrapingStateLoading(true);
+      try {
+        setScrapingState(await getScrapingFigureState(selectedFigureId, SCRAPING_STATE_LIMIT));
+      } catch (error) {
+        setApiError(toApiError(error, "Error loading persisted scraping state."));
+      } finally {
+        setScrapingStateLoading(false);
+      }
+    },
+    [selectedFigureId]
+  );
   reactExports.useEffect(() => {
     fetchFigures();
   }, [fetchFigures]);
@@ -364,10 +557,12 @@ const ScrapingRunnerPage = () => {
   reactExports.useEffect(() => {
     setScrapingQueries([]);
     setScrapingResult(null);
+    setScrapingState(null);
     if (selectedFigureId) {
       fetchScrapingQueries();
+      fetchScrapingState();
     }
-  }, [selectedFigureId]);
+  }, [fetchScrapingQueries, fetchScrapingState, selectedFigureId]);
   const handleSelectFigure = (figure) => {
     setSelectedFigure(figure);
   };
@@ -380,6 +575,7 @@ const ScrapingRunnerPage = () => {
       const resultCandidateCount = getCandidateCountFromResult(result);
       const resultMinimumScoreText = result.minimumCandidateScore !== void 0 && result.minimumCandidateScore !== null ? ` de ${result.minimumCandidateScore}` : "";
       setScrapingResult(result);
+      await fetchScrapingState();
       ue.success("Scraping finalizado", {
         description: buildCompletionDescription(resultCandidateCount, resultMinimumScoreText)
       });
@@ -613,6 +809,32 @@ const ScrapingRunnerPage = () => {
             ] }) }),
             (!figureHasAliases(selectedFigure) || selectedFigure.mayNeedRegeneration) && /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-md border border-secondary/40 bg-secondary/10 p-3 text-sm text-foreground", children: "This figure has no aliases or may need regeneration. You can still run scraping, but generating aliases first may improve matching." }) })
           ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ScrapingStateSummary,
+            {
+              state: scrapingState,
+              loading: scrapingStateLoading,
+              selectedFigureId
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            PendingReviewSection,
+            {
+              candidates: pendingReviewCandidates,
+              selectedFigureId
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            PendingReviewSection,
+            {
+              title: "Recent Candidates",
+              description: "Latest persisted candidates for this figure, including reviewed items.",
+              candidates: recentCandidates,
+              selectedFigureId,
+              showReviewLink: false
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(SavedListingsSection, { listings: sourceListings }),
           scrapingResult && /* @__PURE__ */ jsxRuntimeExports.jsx(
             ScrapingCompletionNotice,
             {
