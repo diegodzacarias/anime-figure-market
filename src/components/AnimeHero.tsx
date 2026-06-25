@@ -17,12 +17,6 @@ const fallbackImages: Record<string, string> = {
   "One Piece": onepieceImg,
 };
 
-const subtitles: Record<string, string> = {
-  Berserk: "La Espada del Guerrero Negro",
-  Naruto: "El Camino del Ninja",
-  "One Piece": "La Gran Era Pirata",
-};
-
 const AnimeHero = () => {
   const navigate = useNavigate();
   const [animeList, setAnimeList] = useState<Franchise[]>([]);
@@ -84,11 +78,8 @@ const AnimeHero = () => {
                       height={896}
                   />
                   <div className="anime-card-overlay absolute inset-0 flex flex-col items-center justify-end p-6">
-                    <h3 className="text-2xl font-bold text-foreground">{anime.name}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {subtitles[anime.name] || "Explora su colección"}
-                    </p>
-                    <span className="mt-3 rounded-full bg-primary/20 px-4 py-1 text-xs font-medium text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                    <h3 className="text-center text-2xl font-extrabold text-primary-foreground drop-shadow-lg">{anime.name}</h3>
+                    <span className="mt-3 rounded-full bg-background/90 px-4 py-1 text-xs font-semibold text-foreground shadow-card transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   Ver colección →
                 </span>
                   </div>

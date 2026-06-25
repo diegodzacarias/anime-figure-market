@@ -29,7 +29,7 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
-const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/figure-source-listings`;
+const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/v1/figure-source-listings`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
 
 const fallbackCurrencyCodes = [
@@ -42,6 +42,13 @@ const fallbackListingStatuses = [
   { value: "SOLD_OUT", label: "Sold Out" },
   { value: "ARCHIVED", label: "Archived" },
   { value: "UNKNOWN", label: "Unknown" },
+];
+
+const fallbackLoadMethods = [
+  { value: "MANUAL", label: "Manual" },
+  { value: "SCRAPED", label: "Scraped" },
+  { value: "GENERATED", label: "Generated" },
+  { value: "IMPORTED", label: "Imported" },
 ];
 
 const FigureSourceListingPage = () => {
@@ -131,6 +138,7 @@ const FigureSourceListingPage = () => {
         listing.sourceUrl,
         listing.currencyCode,
         listing.listingStatus,
+        listing.loadMethod,
       ]
         .filter(Boolean)
         .some((value) => value?.toLowerCase().includes(query))
@@ -278,6 +286,7 @@ const FigureSourceListingPage = () => {
             ? referenceData.figureSourceListingStatuses
             : fallbackListingStatuses
         }
+        loadMethods={referenceData.loadMethods.length > 0 ? referenceData.loadMethods : fallbackLoadMethods}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
       />

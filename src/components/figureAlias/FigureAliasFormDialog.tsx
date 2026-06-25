@@ -12,17 +12,9 @@ import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import FigureCombobox from "@/components/figure/FigureCombobox";
 import { ReferenceDataOption } from "@/types/referenceData";
+import type { FigureAlias } from "@/types/figureAlias";
 
-export type FigureAlias = {
-  id?: number;
-  figureId?: number;
-  sourceId?: number;
-  alias?: string;
-  aliasNormalized?: string;
-  loadMethod?: string;
-  createdAt?: string;
-  updatedAt?: string;
-};
+export type { FigureAlias } from "@/types/figureAlias";
 
 export type FigureOption = {
   id: number;

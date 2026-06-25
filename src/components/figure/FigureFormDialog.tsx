@@ -69,6 +69,8 @@ export type Figure = {
   material?: string | null;
   janCode?: string | null;
   officialProductCode?: string | null;
+  sourceReferenceUrl?: string | null;
+  primaryImageUrl?: string | null;
   isLicensed?: boolean;
   editionSize?: number | null;
   baseCurrencyCode?: string;
@@ -132,6 +134,7 @@ type FigureFormDialogProps = {
   open: boolean;
   saving: boolean;
   loadingOptions: boolean;
+  slugError?: string;
   onOpenChange: (open: boolean) => void;
   onGenerateSlug: (name: string) => Promise<string>;
   onValidateSlug: (slug: string, figureId?: number) => Promise<boolean>;
@@ -945,7 +948,7 @@ const FigureImagesSection = ({
                     <img
                       src={row.imageUrl}
                       alt={row.altText || row.figureName || "Figure image"}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain"
                       loading="lazy"
                     />
                   </div>
@@ -1030,6 +1033,7 @@ const FigureFormDialog = ({
   open,
   saving,
   loadingOptions,
+  slugError,
   onOpenChange,
   onGenerateSlug,
   onValidateSlug,
@@ -1050,6 +1054,7 @@ const FigureFormDialog = ({
     material: "",
     janCode: "",
     officialProductCode: "",
+    sourceReferenceUrl: "",
     isLicensed: "true",
     editionSize: "",
     baseCurrencyCode: "USD",
@@ -1070,6 +1075,7 @@ const FigureFormDialog = ({
       material: figure?.material || "",
       janCode: figure?.janCode || "",
       officialProductCode: figure?.officialProductCode || "",
+      sourceReferenceUrl: figure?.sourceReferenceUrl || "",
       isLicensed: (figure?.isLicensed ?? true).toString(),
       editionSize: figure?.editionSize?.toString() || "",
       baseCurrencyCode: figure?.baseCurrencyCode || "USD",
@@ -1079,6 +1085,10 @@ const FigureFormDialog = ({
     setSlugEditable(false);
     setSlugMessage("");
   }, [figure, open]);
+
+  useEffect(() => {
+    if (slugError) setSlugMessage(slugError);
+  }, [slugError]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -1131,6 +1141,7 @@ const FigureFormDialog = ({
     if (form.material.trim()) payload.material = form.material.trim();
     if (form.janCode.trim()) payload.janCode = form.janCode.trim();
     if (form.officialProductCode.trim()) payload.officialProductCode = form.officialProductCode.trim();
+    if (form.sourceReferenceUrl.trim()) payload.sourceReferenceUrl = form.sourceReferenceUrl.trim();
     if (form.editionSize) payload.editionSize = Number(form.editionSize);
     if (form.notes.trim()) payload.notes = form.notes.trim();
 
@@ -1291,6 +1302,21 @@ const FigureFormDialog = ({
                 onChange={handleChange}
               />
               <p className={helperClass}>Codigo oficial publicado por el fabricante o marca.</p>
+            </div>
+
+            <div className="md:col-span-2">
+              <label className={labelClass}>Source Reference URL</label>
+              <Input
+                name="sourceReferenceUrl"
+                type="url"
+                maxLength={1000}
+                value={form.sourceReferenceUrl}
+                onChange={handleChange}
+                placeholder="https://..."
+              />
+              <p className={helperClass}>
+                URL de referencia canonica usada para verificar la informacion principal de la figura.
+              </p>
             </div>
 
             <div>

@@ -43,9 +43,9 @@ const FigureCombobox = ({
           variant="outline"
           role="combobox"
           disabled={disabled}
-          className="min-h-10 w-full justify-between whitespace-normal text-left font-normal"
+          className="h-auto min-h-10 w-full items-start justify-between whitespace-normal py-2 text-left font-normal"
         >
-          <span className="line-clamp-2">
+          <span className="whitespace-normal break-words leading-snug">
             {selectedFigure
               ? selectedFigure.name
               : loading

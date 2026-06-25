@@ -10,6 +10,8 @@ export type ReferenceData = {
   figureStatuses: ReferenceDataOption[];
   figureSourceListingStatuses: ReferenceDataOption[];
   loadMethods: ReferenceDataOption[];
+  figureAliasGenerationPriorities: ReferenceDataOption[];
+  figureAliasGenerationSources: ReferenceDataOption[];
   sourcePriorities: ReferenceDataOption[];
   sourceTypes: ReferenceDataOption[];
   scrapedListingCandidateStatuses: ReferenceDataOption[];

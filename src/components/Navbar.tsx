@@ -3,6 +3,14 @@ import { Link } from "react-router-dom";
 import { ChevronDown, User, ShoppingCart, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { usePreferences, type CurrencyCode } from "@/lib/preferences";
 
 const THEME_STORAGE_KEY = "milo-theme";
 
@@ -12,6 +20,7 @@ const Navbar = () => {
   const [showFigureAdminMenu, setShowFigureAdminMenu] = useState(false);
   const [showCharacterAdminMenu, setShowCharacterAdminMenu] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { currencyCode, setCurrencyCode } = usePreferences();
 
   useEffect(() => {
     const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
@@ -56,12 +65,27 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl font-bold text-primary">⛩️</span>
           <span className="text-xl font-bold text-foreground">
             Anime<span className="text-primary">Figures</span>
           </span>
-        </Link>
+          </Link>
+
+          <Select
+            value={currencyCode}
+            onValueChange={(value) => setCurrencyCode(value as CurrencyCode)}
+          >
+            <SelectTrigger className="h-9 w-[76px]">
+              <SelectValue placeholder="Currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USD">USD</SelectItem>
+              <SelectItem value="JPY">JPY</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <div className="hidden items-center gap-6 md:flex">
           <Link to="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
@@ -141,6 +165,20 @@ const Navbar = () => {
                   onClick={closeMenus}
                 >
                   Candidate Review
+                </Link>
+                <Link
+                  to="/figure-admin/alias-generator"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Alias Generator
+                </Link>
+                <Link
+                  to="/figure-admin/scraping-runner"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Scraping Runner
                 </Link>
               </div>
             )}

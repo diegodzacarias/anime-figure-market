@@ -50,3 +50,16 @@ export function toClientApiError(error: unknown, fallbackMessage: string): ApiEr
     message: error instanceof Error ? error.message : fallbackMessage,
   };
 }
+
+export function normalizeApiError(error: unknown, fallbackMessage: string): ApiErrorResponse {
+  if (
+    error &&
+    typeof error === "object" &&
+    "status" in error &&
+    "message" in error
+  ) {
+    return error as ApiErrorResponse;
+  }
+
+  return toClientApiError(error, fallbackMessage);
+}

@@ -1,5 +1,9 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Plus, Search } from "lucide-react";
+import {
+  physicallyDeleteFigure,
+  type FigurePhysicalDeleteResponse,
+} from "@/api/figureApi";
 import Navbar from "@/components/Navbar";
 import {
   AlertDialog,
@@ -12,6 +16,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
@@ -20,7 +32,7 @@ import FigureTable from "@/components/figure/FigureTable";
 import type { Figure, FranchiseOption } from "@/components/figure/FigureFormDialog";
 import type { SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import { useReferenceData } from "@/hooks/useReferenceData";
-import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
+import { ApiErrorResponse, normalizeApiError, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
 import { defaultPageMeta, getPageContent, getPageMeta, withPageSize } from "@/lib/page";
 
 const API_BASE_URL =
@@ -93,6 +105,7 @@ const FigurePage = () => {
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [physicalDeleting, setPhysicalDeleting] = useState(false);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FigureSearchFilters>({
     franchiseId: "",
@@ -108,7 +121,11 @@ const FigurePage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFigure, setSelectedFigure] = useState<Figure | null>(null);
   const [figureToDelete, setFigureToDelete] = useState<Figure | null>(null);
-  const mutating = saving || deleting;
+  const [figureToPhysicalDelete, setFigureToPhysicalDelete] = useState<Figure | null>(null);
+  const [physicalDeleteConfirmation, setPhysicalDeleteConfirmation] = useState("");
+  const [physicalDeleteResult, setPhysicalDeleteResult] = useState<FigurePhysicalDeleteResponse | null>(null);
+  const [figureSlugError, setFigureSlugError] = useState("");
+  const mutating = saving || deleting || physicalDeleting;
   const { referenceData } = useReferenceData();
 
   const fetchData = async (showLoading = true) => {
@@ -178,11 +195,13 @@ const FigurePage = () => {
 
   const openCreateDialog = () => {
     setSelectedFigure(null);
+    setFigureSlugError("");
     setDialogOpen(true);
   };
 
   const openEditDialog = (figure: Figure) => {
     setSelectedFigure(figure);
+    setFigureSlugError("");
     setDialogOpen(true);
   };
 
@@ -233,6 +252,7 @@ const FigurePage = () => {
 
       if (!response.ok) {
         setApiError(await readApiErrorResponse(response, "Error saving figure."));
+        if (response.status === 409) setFigureSlugError("Este slug ya está en uso");
         return;
       }
 
@@ -278,10 +298,29 @@ const FigurePage = () => {
     }
   };
 
+  const handlePhysicalDelete = async () => {
+    if (!figureToPhysicalDelete?.id) return;
+
+    setPhysicalDeleting(true);
+
+    try {
+      const result = await physicallyDeleteFigure(figureToPhysicalDelete.id);
+      await fetchData(false);
+      setPhysicalDeleteResult(result);
+      setFigureToPhysicalDelete(null);
+      setPhysicalDeleteConfirmation("");
+    } catch (error) {
+      setApiError(normalizeApiError(error, "Error physically deleting figure."));
+    } finally {
+      setPhysicalDeleting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
+      <LoadingOverlay active={physicalDeleting} fullscreen message="Physically deleting figure and related records..." />
 
       <main className="container py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -414,6 +453,10 @@ const FigurePage = () => {
             brandNames={brandNames}
             onEdit={openEditDialog}
             onDelete={setFigureToDelete}
+            onPhysicalDelete={(figure) => {
+              setFigureToPhysicalDelete(figure);
+              setPhysicalDeleteConfirmation("");
+            }}
           />
         </LoadingOverlay>
 
@@ -447,6 +490,7 @@ const FigurePage = () => {
             onOpenChange={setDialogOpen}
             onGenerateSlug={generateSlug}
             onValidateSlug={validateSlug}
+            slugError={figureSlugError}
             onApiError={setApiError}
             onSubmit={handleSubmit}
           />
@@ -479,6 +523,101 @@ const FigurePage = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog
+        open={Boolean(figureToPhysicalDelete)}
+        onOpenChange={(open) => {
+          if (!open && !physicalDeleting) {
+            setFigureToPhysicalDelete(null);
+            setPhysicalDeleteConfirmation("");
+          }
+        }}
+      >
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle className="text-destructive">Borrado fisico permanente</DialogTitle>
+            <DialogDescription>
+              You are about to physically delete "{figureToPhysicalDelete?.name || "this figure"}"
+              (ID {figureToPhysicalDelete?.id}). This removes its character relations, aliases, images,
+              source listings, scraped candidates, market sales, metrics, and scraping history references.
+              This operation cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="rounded-md border border-destructive/40 bg-destructive/10 p-4">
+            <label className="text-sm font-medium text-foreground" htmlFor="physical-delete-confirmation">
+              Type <span className="font-mono text-destructive">DELETE {figureToPhysicalDelete?.id}</span> to confirm
+            </label>
+            <Input
+              id="physical-delete-confirmation"
+              className="mt-2 font-mono"
+              value={physicalDeleteConfirmation}
+              disabled={physicalDeleting}
+              autoComplete="off"
+              onChange={(event) => setPhysicalDeleteConfirmation(event.target.value)}
+            />
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={physicalDeleting}
+              onClick={() => {
+                setFigureToPhysicalDelete(null);
+                setPhysicalDeleteConfirmation("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={
+                physicalDeleting ||
+                physicalDeleteConfirmation !== `DELETE ${figureToPhysicalDelete?.id}`
+              }
+              onClick={handlePhysicalDelete}
+            >
+              {physicalDeleting ? "Deleting permanently..." : "Physically delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={Boolean(physicalDeleteResult)} onOpenChange={(open) => !open && setPhysicalDeleteResult(null)}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Physical deletion completed</DialogTitle>
+            <DialogDescription>
+              Figure ID {physicalDeleteResult?.figureId} was physically deleted. The backend reported the following cleanup.
+            </DialogDescription>
+          </DialogHeader>
+
+          {physicalDeleteResult && (
+            <dl className="grid gap-2 rounded-lg border bg-muted/30 p-4 sm:grid-cols-2">
+              {[
+                ["Scraped candidates", physicalDeleteResult.scrapedListingCandidatesDeleted],
+                ["Market sales", physicalDeleteResult.marketSalesDeleted],
+                ["Metric snapshots", physicalDeleteResult.metricSnapshotsDeleted],
+                ["Source listings", physicalDeleteResult.sourceListingsDeleted],
+                ["Aliases", physicalDeleteResult.aliasesDeleted],
+                ["Images", physicalDeleteResult.imagesDeleted],
+                ["Character relations", physicalDeleteResult.characterRelationsDeleted],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-center justify-between gap-4 rounded-md bg-background px-3 py-2">
+                  <dt className="text-sm text-muted-foreground">{label}</dt>
+                  <dd className="font-semibold text-foreground">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          <DialogFooter>
+            <Button type="button" onClick={() => setPhysicalDeleteResult(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

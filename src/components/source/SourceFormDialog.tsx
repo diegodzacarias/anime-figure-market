@@ -27,6 +27,7 @@ type SourceFormDialogProps = {
   sourcePriorities: ReferenceDataOption[];
   open: boolean;
   saving: boolean;
+  nameError?: string;
   onOpenChange: (open: boolean) => void;
   onSubmit: (payload: Record<string, string | number | boolean>) => Promise<void>;
 };
@@ -37,6 +38,7 @@ const SourceFormDialog = ({
   sourcePriorities,
   open,
   saving,
+  nameError,
   onOpenChange,
   onSubmit,
 }: SourceFormDialogProps) => {
@@ -110,7 +112,11 @@ const SourceFormDialog = ({
             <div>
               <label className={labelClass}>Name {requiredMark}</label>
               <Input name="name" maxLength={100} value={form.name} onChange={handleChange} required />
-              <p className={helperClass}>Nombre visible de la fuente.</p>
+              {nameError ? (
+                <p className="mt-1 text-xs text-destructive">{nameError}</p>
+              ) : (
+                <p className={helperClass}>Nombre visible de la fuente.</p>
+              )}
             </div>
 
             <div>

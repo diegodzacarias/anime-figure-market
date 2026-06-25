@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDateTime } from "@/lib/date";
 import type { ScrapedListingCandidate } from "./CandidateReviewFormDialog";
 
 type CandidateReviewTableProps = {
@@ -41,24 +42,26 @@ const CandidateReviewTable = ({
             <TableRow>
               <TableHead className="w-20">ID</TableHead>
               <TableHead>Figure</TableHead>
+              <TableHead>Match Score</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Price</TableHead>
-              <TableHead>Score</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Captured</TableHead>
+              <TableHead>Reviewed</TableHead>
               <TableHead className="w-24 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={8} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={10} className="h-28 text-center text-muted-foreground">
                   Loading candidates...
                 </TableCell>
               </TableRow>
             ) : candidates.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={10} className="h-28 text-center text-muted-foreground">
                   No candidates found.
                 </TableCell>
               </TableRow>
@@ -72,6 +75,7 @@ const CandidateReviewTable = ({
                       <div className="text-xs text-muted-foreground">{candidate.figureSlug}</div>
                     )}
                   </TableCell>
+                  <TableCell>{candidate.matchScore ?? "-"}</TableCell>
                   <TableCell>
                     <div>{candidate.sourceName || candidate.sourceId || "-"}</div>
                     {candidate.sourceCode && (
@@ -94,8 +98,9 @@ const CandidateReviewTable = ({
                   <TableCell>
                     {candidate.price ? `${candidate.price} ${candidate.currencyCode || ""}` : "-"}
                   </TableCell>
-                  <TableCell>{candidate.matchScore ?? "-"}</TableCell>
                   <TableCell>{candidate.status || "-"}</TableCell>
+                  <TableCell>{formatDateTime(candidate.capturedAt)}</TableCell>
+                  <TableCell>{formatDateTime(candidate.reviewedAt)}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

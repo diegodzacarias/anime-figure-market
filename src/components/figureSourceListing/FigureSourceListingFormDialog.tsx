@@ -30,6 +30,7 @@ export type FigureSourceListing = {
   estimatedReleaseDate?: string | null;
   listingStatus?: string | null;
   isAvailable?: boolean | null;
+  loadMethod?: string | null;
   editionText?: string | null;
   releaseText?: string | null;
   capturedAt?: string;
@@ -43,6 +44,7 @@ type FigureSourceListingFormDialogProps = {
   sources: SourceOption[];
   currencyCodes: ReferenceDataOption[];
   listingStatuses: ReferenceDataOption[];
+  loadMethods: ReferenceDataOption[];
   open: boolean;
   saving: boolean;
   loadingOptions: boolean;
@@ -64,6 +66,7 @@ const FigureSourceListingFormDialog = ({
   sources,
   currencyCodes,
   listingStatuses,
+  loadMethods,
   open,
   saving,
   loadingOptions,
@@ -76,6 +79,7 @@ const FigureSourceListingFormDialog = ({
     sourceItemId: "",
     sourceTitle: "",
     sourceUrl: "",
+    loadMethod: "",
     price: "",
     currencyCode: "USD",
     preorderDate: "",
@@ -96,6 +100,7 @@ const FigureSourceListingFormDialog = ({
       sourceItemId: listing?.sourceItemId || "",
       sourceTitle: listing?.sourceTitle || "",
       sourceUrl: listing?.sourceUrl || "",
+      loadMethod: listing?.loadMethod || "",
       price: listing?.price?.toString() || "",
       currencyCode: listing?.currencyCode || "USD",
       preorderDate: listing?.preorderDate || "",
@@ -130,6 +135,7 @@ const FigureSourceListingFormDialog = ({
       capturedAt: form.capturedAt,
     };
 
+    if (form.loadMethod) payload.loadMethod = form.loadMethod;
     if (form.sourceItemId.trim()) payload.sourceItemId = form.sourceItemId.trim();
     if (form.sourceUrl.trim()) payload.sourceUrl = form.sourceUrl.trim();
     if (form.price) payload.price = Number(form.price);
@@ -238,6 +244,25 @@ const FigureSourceListingFormDialog = ({
               <label className={labelClass}>Source URL</label>
               <Input name="sourceUrl" type="url" maxLength={1000} value={form.sourceUrl} onChange={handleChange} />
               <p className={helperClass}>URL directa del listing en la fuente.</p>
+            </div>
+
+            <div>
+              <label className={labelClass}>Load Method</label>
+              <select
+                name="loadMethod"
+                value={form.loadMethod}
+                onChange={handleChange}
+                className={selectClass}
+                disabled
+              >
+                <option className={optionClass} value="">-</option>
+                {loadMethods.map((method) => (
+                  <option className={optionClass} key={method.value} value={method.value}>
+                    {method.label}
+                  </option>
+                ))}
+              </select>
+              <p className={helperClass}>Metodo de carga informado por el backend.</p>
             </div>
 
             <div>

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Plus, Search } from "lucide-react";
+import { getFranchises } from "@/api/franchiseApi";
 import Navbar from "@/components/Navbar";
 import {
   AlertDialog,
@@ -13,6 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import ApiErrorToast from "@/components/ui/api-error-toast";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import PageControls from "@/components/ui/page-controls";
@@ -24,6 +27,7 @@ import type { FigureOption, SourceOption } from "@/components/figureAlias/Figure
 import { useReferenceData } from "@/hooks/useReferenceData";
 import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
 import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
+import type { Franchise } from "@/types/franchise";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -31,6 +35,13 @@ const API_BASE_URL =
 const CANDIDATES_ENDPOINT = `${API_BASE_URL}/v1/scraping/candidates`;
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+
+const buildCandidatesEndpoint = (figureIdFilter: string) => {
+  if (!figureIdFilter) return CANDIDATES_ENDPOINT;
+
+  const separator = CANDIDATES_ENDPOINT.includes("?") ? "&" : "?";
+  return `${CANDIDATES_ENDPOINT}${separator}figureId=${encodeURIComponent(figureIdFilter)}`;
+};
 
 const fallbackCurrencyCodes = [
   { value: "USD", label: "Usd", symbol: "$" },
@@ -56,9 +67,29 @@ const fallbackMatchDecisions = [
   { value: "DISCARD", label: "Discard" },
 ];
 
+type CandidateFigureOption = FigureOption & {
+  franchiseId?: number;
+  franchiseName?: string | null;
+  franchise?: { id?: number; name?: string };
+};
+
+const getFigureFranchiseId = (figure?: CandidateFigureOption) =>
+  figure?.franchiseId || figure?.franchise?.id;
+
+const getFigureFranchiseName = (
+  figure: CandidateFigureOption | undefined,
+  franchisesById: Record<number, string>
+) => {
+  const franchiseId = getFigureFranchiseId(figure);
+  return figure?.franchiseName || figure?.franchise?.name || (franchiseId ? franchisesById[franchiseId] : "");
+};
+
 const CandidateReviewPage = () => {
+  const [searchParams] = useSearchParams();
+  const figureIdFilter = searchParams.get("figureId") || "";
   const [candidates, setCandidates] = useState<ScrapedListingCandidate[]>([]);
-  const [figures, setFigures] = useState<FigureOption[]>([]);
+  const [figures, setFigures] = useState<CandidateFigureOption[]>([]);
+  const [franchises, setFranchises] = useState<Franchise[]>([]);
   const [sources, setSources] = useState<SourceOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState(true);
@@ -66,6 +97,7 @@ const CandidateReviewPage = () => {
   const [deleting, setDeleting] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
   const [search, setSearch] = useState("");
+  const [franchiseFilter, setFranchiseFilter] = useState("");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
@@ -85,10 +117,14 @@ const CandidateReviewPage = () => {
     }
 
     try {
-      const [candidatesResponse, figuresResponse, sourcesResponse] = await Promise.all([
-        fetch(withPagination(CANDIDATES_ENDPOINT, page, pageSize)),
+      const [candidatesResponse, figuresResponse, sourcesResponse, franchisesData] = await Promise.all([
+        fetch(withPagination(buildCandidatesEndpoint(figureIdFilter), page, pageSize)),
         fetch(withPageSize(FIGURES_ENDPOINT)),
         fetch(withPageSize(SOURCES_ENDPOINT)),
+        getFranchises().catch((error) => {
+          console.error("Error fetching franchises:", error);
+          return [];
+        }),
       ]);
 
       if (candidatesResponse.ok) {
@@ -101,10 +137,12 @@ const CandidateReviewPage = () => {
 
       if (figuresResponse.ok) {
         const data = await figuresResponse.json();
-        setFigures(getPageContent<FigureOption>(data));
+        setFigures(getPageContent<CandidateFigureOption>(data));
       } else {
         console.error("Error fetching figures");
       }
+
+      setFranchises(franchisesData);
 
       if (sourcesResponse.ok) {
         const data = await sourcesResponse.json();
@@ -124,21 +162,45 @@ const CandidateReviewPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, pageSize]);
+  }, [figureIdFilter, page, pageSize]);
 
   useEffect(() => {
     setPage(0);
-  }, [search]);
+  }, [figureIdFilter, franchiseFilter, search]);
+
+  const figuresById = useMemo<Record<number, CandidateFigureOption>>(
+    () => Object.fromEntries(figures.map((figure) => [figure.id, figure])) as Record<number, CandidateFigureOption>,
+    [figures]
+  );
+
+  const franchisesById = useMemo<Record<number, string>>(
+    () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])) as Record<number, string>,
+    [franchises]
+  );
 
   const filteredCandidates = useMemo(() => {
+    const figureFilteredCandidates = figureIdFilter
+      ? candidates.filter((candidate) => String(candidate.figureId || "") === figureIdFilter)
+      : candidates;
+    const franchiseFilteredCandidates = franchiseFilter
+      ? figureFilteredCandidates.filter((candidate) => {
+          const figure = candidate.figureId ? figuresById[candidate.figureId] : undefined;
+          return String(getFigureFranchiseId(figure) || "") === franchiseFilter;
+        })
+      : figureFilteredCandidates;
     const query = search.trim().toLowerCase();
-    if (!query) return candidates;
+    if (!query) return franchiseFilteredCandidates;
 
-    return candidates.filter((candidate) =>
-      [
+    return franchiseFilteredCandidates.filter((candidate) => {
+      const figure = candidate.figureId ? figuresById[candidate.figureId] : undefined;
+      const franchiseName = getFigureFranchiseName(figure, franchisesById);
+
+      return [
         candidate.id?.toString(),
+        candidate.figureId?.toString(),
         candidate.figureName,
         candidate.figureSlug,
+        franchiseName,
         candidate.sourceName,
         candidate.sourceCode,
         candidate.sourceItemId,
@@ -151,9 +213,9 @@ const CandidateReviewPage = () => {
         candidate.janCode,
       ]
         .filter(Boolean)
-        .some((value) => value?.toLowerCase().includes(query))
-    );
-  }, [candidates, search]);
+        .some((value) => value?.toLowerCase().includes(query));
+    });
+  }, [candidates, figureIdFilter, figuresById, franchiseFilter, franchisesById, search]);
 
   const openCreateDialog = () => {
     setSelectedCandidate(null);
@@ -270,7 +332,7 @@ const CandidateReviewPage = () => {
           </Button>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between">
+        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="relative w-full md:max-w-sm">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -281,9 +343,35 @@ const CandidateReviewPage = () => {
             />
           </div>
 
+          <select
+            value={franchiseFilter}
+            onChange={(event) => setFranchiseFilter(event.target.value)}
+            className="w-full rounded border border-input bg-background p-2 text-sm text-foreground md:max-w-xs"
+          >
+            <option value="">All franchises</option>
+            {franchises.map((franchise) => (
+              <option key={franchise.id} value={franchise.id}>
+                {franchise.name}
+              </option>
+            ))}
+          </select>
+
           <p className="text-sm text-muted-foreground">
             {filteredCandidates.length} shown - {pageMeta.totalElements} total records
           </p>
+
+          <div className="flex flex-wrap gap-2">
+            {figureIdFilter && (
+              <Badge variant="secondary" className="w-fit">
+                Figure ID {figureIdFilter}
+              </Badge>
+            )}
+            {franchiseFilter && (
+              <Badge variant="secondary" className="w-fit">
+                {franchisesById[Number(franchiseFilter)] || `Franchise ID ${franchiseFilter}`}
+              </Badge>
+            )}
+          </div>
         </div>
 
         <LoadingOverlay active={mutating} message="Updating candidates..." className="mt-4">

@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
+import { apiRequest } from "@/lib/apiClient";
 import { ReferenceData } from "@/types/referenceData";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
-
-const REFERENCE_DATA_ENDPOINT = `${API_BASE_URL}/v1/reference-data`;
 
 const emptyReferenceData: ReferenceData = {
   currencyCodes: [],
   figureStatuses: [],
   figureSourceListingStatuses: [],
   loadMethods: [],
+  figureAliasGenerationPriorities: [],
+  figureAliasGenerationSources: [],
   sourcePriorities: [],
   sourceTypes: [],
   scrapedListingCandidateStatuses: [],
@@ -26,14 +24,9 @@ export function useReferenceData() {
       setLoadingReferenceData(true);
 
       try {
-        const response = await fetch(REFERENCE_DATA_ENDPOINT);
-
-        if (!response.ok) {
-          console.error("Error fetching reference data");
-          return;
-        }
-
-        const data = await response.json();
+        const data = await apiRequest<ReferenceData>("/v1/reference-data", {
+          fallbackMessage: "Error fetching reference data.",
+        });
         setReferenceData({
           ...emptyReferenceData,
           ...data,

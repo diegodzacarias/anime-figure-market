@@ -54,6 +54,7 @@ const SourcePage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
   const [sourceToDelete, setSourceToDelete] = useState<Source | null>(null);
+  const [sourceNameError, setSourceNameError] = useState("");
   const mutating = saving || deleting;
   const { referenceData } = useReferenceData();
 
@@ -100,11 +101,13 @@ const SourcePage = () => {
 
   const openCreateDialog = () => {
     setSelectedSource(null);
+    setSourceNameError("");
     setDialogOpen(true);
   };
 
   const openEditDialog = (source: Source) => {
     setSelectedSource(source);
+    setSourceNameError("");
     setDialogOpen(true);
   };
 
@@ -123,6 +126,7 @@ const SourcePage = () => {
 
       if (!response.ok) {
         setApiError(await readApiErrorResponse(response, "Error saving source."));
+        if (response.status === 409) setSourceNameError("Este nombre ya está en uso");
         return;
       }
 
@@ -234,6 +238,7 @@ const SourcePage = () => {
         }
         open={dialogOpen}
         saving={saving}
+        nameError={sourceNameError}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
       />

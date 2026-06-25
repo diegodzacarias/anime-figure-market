@@ -1,5 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Plus, Search } from "lucide-react";
+import {
+  createFigureAlias,
+  deleteFigureAlias,
+  getFigureAliases,
+  updateFigureAlias,
+  type FigureAliasPayload,
+} from "@/api/figureAliasApi";
 import Navbar from "@/components/Navbar";
 import {
   AlertDialog,
@@ -22,16 +29,13 @@ import FigureAliasFormDialog, {
   SourceOption,
 } from "@/components/figureAlias/FigureAliasFormDialog";
 import FigureAliasTable from "@/components/figureAlias/FigureAliasTable";
+import FigureAliasHistoryDialog from "@/components/figureAlias/FigureAliasHistoryDialog";
+import FigureAliasUsageFilters from "@/components/figureAlias/FigureAliasUsageFilters";
 import { useReferenceData } from "@/hooks/useReferenceData";
-import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
-import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
-
-const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
-const FIGURE_ALIASES_ENDPOINT = `${API_BASE_URL}/figure-aliases`;
-const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+import { ApiErrorResponse, normalizeApiError } from "@/lib/apiError";
+import { apiRequest } from "@/lib/apiClient";
+import { defaultPageMeta, getPageContent, getPageMeta, type PageResponse } from "@/lib/page";
+import type { FigureAliasUsageFilter } from "@/types/figureAlias";
 
 const fallbackLoadMethods = [
   { value: "MANUAL", label: "Manual" },
@@ -49,6 +53,9 @@ const FigureAliasPage = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [usageFilter, setUsageFilter] = useState<FigureAliasUsageFilter>("");
+  const [sourceCodeFilter, setSourceCodeFilter] = useState("");
+  const [lastUsedBeforeFilter, setLastUsedBeforeFilter] = useState("");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
@@ -56,60 +63,58 @@ const FigureAliasPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAlias, setSelectedAlias] = useState<FigureAlias | null>(null);
   const [aliasToDelete, setAliasToDelete] = useState<FigureAlias | null>(null);
+  const [historyAlias, setHistoryAlias] = useState<FigureAlias | null>(null);
   const { referenceData, loadingReferenceData } = useReferenceData();
   const mutating = saving || deleting;
 
-  const fetchData = async (showLoading = true) => {
+  const fetchData = useCallback(async (showLoading = true) => {
     if (showLoading) {
       setLoading(true);
       setLoadingOptions(true);
     }
 
     try {
-      const [aliasesResponse, figuresResponse, sourcesResponse] = await Promise.all([
-        fetch(withPagination(FIGURE_ALIASES_ENDPOINT, page, pageSize)),
-        fetch(withPageSize(FIGURES_ENDPOINT)),
-        fetch(withPageSize(SOURCES_ENDPOINT)),
+      const usedForScraping = usageFilter
+        ? usageFilter === "used"
+        : undefined;
+      const [aliasesData, figuresData, sourcesData] = await Promise.all([
+        getFigureAliases({
+          usedForScraping,
+          sourceCode: sourceCodeFilter || undefined,
+          lastUsedBefore: lastUsedBeforeFilter || undefined,
+          page,
+          size: pageSize,
+        }),
+        apiRequest<PageResponse<FigureOption>>("/v1/figures", {
+          query: { page: 0, size: 1000, sort: "name,asc" },
+          fallbackMessage: "Error loading figure options.",
+        }),
+        apiRequest<PageResponse<SourceOption>>("/v1/sources", {
+          query: { page: 0, size: 1000, sort: "priority,asc" },
+          fallbackMessage: "Error loading source options.",
+        }),
       ]);
-
-      if (aliasesResponse.ok) {
-        const data = await aliasesResponse.json();
-        setAliases(getPageContent<FigureAlias>(data));
-        setPageMeta(getPageMeta<FigureAlias>(data, pageSize));
-      } else {
-        console.error("Error fetching figure aliases");
-      }
-
-      if (figuresResponse.ok) {
-        const data = await figuresResponse.json();
-        setFigures(getPageContent<FigureOption>(data));
-      } else {
-        console.error("Error fetching figures");
-      }
-
-      if (sourcesResponse.ok) {
-        const data = await sourcesResponse.json();
-        setSources(getPageContent<SourceOption>(data));
-      } else {
-        console.error("Error fetching sources");
-      }
+      setAliases(getPageContent<FigureAlias>(aliasesData));
+      setPageMeta(getPageMeta<FigureAlias>(aliasesData, pageSize));
+      setFigures(getPageContent<FigureOption>(figuresData));
+      setSources(getPageContent<SourceOption>(sourcesData));
     } catch (error) {
-      console.error("Request error fetching figure aliases:", error);
+      setApiError(normalizeApiError(error, "Error connecting to backend."));
     } finally {
       if (showLoading) {
         setLoading(false);
         setLoadingOptions(false);
       }
     }
-  };
+  }, [lastUsedBeforeFilter, page, pageSize, sourceCodeFilter, usageFilter]);
 
   useEffect(() => {
     fetchData();
-  }, [page, pageSize]);
+  }, [fetchData]);
 
   useEffect(() => {
     setPage(0);
-  }, [search]);
+  }, [lastUsedBeforeFilter, search, sourceCodeFilter, usageFilter]);
 
   const figureNames = useMemo(
     () => Object.fromEntries(figures.map((figure) => [figure.id, figure.name])),
@@ -154,20 +159,11 @@ const FigureAliasPage = () => {
     setSaving(true);
 
     const isEditing = Boolean(selectedAlias?.id);
-    const endpoint = isEditing
-      ? `${FIGURE_ALIASES_ENDPOINT}/${selectedAlias?.id}`
-      : FIGURE_ALIASES_ENDPOINT;
-
     try {
-      const response = await fetch(endpoint, {
-        method: isEditing ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        setApiError(await readApiErrorResponse(response, "Error saving figure alias."));
-        return;
+      if (isEditing && selectedAlias?.id) {
+        await updateFigureAlias(selectedAlias.id, payload as FigureAliasPayload);
+      } else {
+        await createFigureAlias(payload as FigureAliasPayload);
       }
 
       await fetchData(false);
@@ -176,7 +172,7 @@ const FigureAliasPage = () => {
       setSelectedAlias(null);
     } catch (error) {
       console.error("Request error:", error);
-      setApiError(toClientApiError(error, "Error connecting to backend."));
+      setApiError(normalizeApiError(error, "Error connecting to backend."));
     } finally {
       setSaving(false);
     }
@@ -188,20 +184,13 @@ const FigureAliasPage = () => {
     setDeleting(true);
 
     try {
-      const response = await fetch(`${FIGURE_ALIASES_ENDPOINT}/${aliasToDelete.id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        setApiError(await readApiErrorResponse(response, "Error deleting figure alias."));
-        return;
-      }
+      await deleteFigureAlias(aliasToDelete.id);
 
       await fetchData(false);
       setAliasToDelete(null);
     } catch (error) {
       console.error("Request error:", error);
-      setApiError(toClientApiError(error, "Error connecting to backend."));
+      setApiError(normalizeApiError(error, "Error connecting to backend."));
     } finally {
       setDeleting(false);
     }
@@ -227,7 +216,7 @@ const FigureAliasPage = () => {
           </Button>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between">
+        <div className="mt-6 grid gap-4 rounded-lg border bg-card p-4 xl:grid-cols-[minmax(16rem,0.7fr)_minmax(32rem,1.3fr)_auto] xl:items-end">
           <div className="relative w-full md:max-w-sm">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -238,7 +227,17 @@ const FigureAliasPage = () => {
             />
           </div>
 
-          <p className="text-sm text-muted-foreground">
+          <FigureAliasUsageFilters
+            usage={usageFilter}
+            sourceCode={sourceCodeFilter}
+            lastUsedBefore={lastUsedBeforeFilter}
+            disabled={loading || mutating}
+            onUsageChange={setUsageFilter}
+            onSourceCodeChange={setSourceCodeFilter}
+            onLastUsedBeforeChange={setLastUsedBeforeFilter}
+          />
+
+          <p className="whitespace-nowrap text-sm text-muted-foreground">
             {filteredAliases.length} shown - {pageMeta.totalElements} total records
           </p>
         </div>
@@ -251,6 +250,7 @@ const FigureAliasPage = () => {
             sourceNames={sourceNames}
             onEdit={openEditDialog}
             onDelete={setAliasToDelete}
+            onHistory={setHistoryAlias}
           />
         </LoadingOverlay>
 
@@ -280,6 +280,15 @@ const FigureAliasPage = () => {
         loadMethods={referenceData.loadMethods.length > 0 ? referenceData.loadMethods : fallbackLoadMethods}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
+      />
+
+      <FigureAliasHistoryDialog
+        alias={historyAlias}
+        open={Boolean(historyAlias)}
+        onOpenChange={(open) => {
+          if (!open) setHistoryAlias(null);
+        }}
+        onApiError={setApiError}
       />
 
       <AlertDialog

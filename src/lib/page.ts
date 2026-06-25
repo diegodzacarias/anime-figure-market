@@ -2,7 +2,7 @@ export type PageResponse<T> = {
   content?: T[];
   totalElements?: number;
   totalPages?: number;
-  number?: number;
+  page?: number;
   size?: number;
 };
 
@@ -39,7 +39,7 @@ export function getPageMeta<T>(data: T[] | PageResponse<T> | null | undefined, f
   return {
     totalElements: data?.totalElements ?? 0,
     totalPages: data?.totalPages ?? 0,
-    page: data?.number ?? 0,
+    page: data?.page ?? 0,
     size: data?.size ?? fallbackSize,
   };
 }

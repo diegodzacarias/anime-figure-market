@@ -1,16 +1,11 @@
-import { Franchise } from "@/types/franchise";
-import { getPageContent, withPageSize } from "@/lib/page";
-
-const BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
+import type { Franchise } from "@/types/franchise";
+import { apiRequest } from "@/lib/apiClient";
+import { getPageContent, type PageResponse } from "@/lib/page";
 
 export async function getFranchises(): Promise<Franchise[]> {
-    const res = await fetch(withPageSize(`${BASE_URL}/v1/franchises`));
-
-    if (!res.ok) {
-        throw new Error("Error fetching franchises");
-    }
-
-    const data = await res.json();
+    const data = await apiRequest<PageResponse<Franchise> | Franchise[]>("/v1/franchises", {
+        query: { page: 0, size: 1000, sort: "name,asc" },
+        fallbackMessage: "Error fetching franchises.",
+    });
     return getPageContent<Franchise>(data);
 }
