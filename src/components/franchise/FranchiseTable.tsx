@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -54,7 +54,19 @@ const FranchiseTable = ({
                 <TableCell className="font-medium">{franchise.id}</TableCell>
                 <TableCell>{franchise.name || "-"}</TableCell>
                 <TableCell>{franchise.slug || "-"}</TableCell>
-                <TableCell className="max-w-xs truncate">{franchise.imageUrl || "-"}</TableCell>
+                <TableCell className="max-w-xs">
+                  {franchise.imageUrl ? (
+                    <a
+                      href={franchise.imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 truncate text-primary hover:underline"
+                    >
+                      <span className="truncate">{franchise.imageUrl}</span>
+                      <ExternalLink className="h-3 w-3 shrink-0" />
+                    </a>
+                  ) : "-"}
+                </TableCell>
                 <TableCell>
                   <div className="flex justify-end gap-2">
                     <Button

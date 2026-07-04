@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDateTime } from "@/lib/date";
@@ -79,7 +79,21 @@ const FigureSourceListingTable = ({
                       "-"
                     )}
                   </TableCell>
-                  <TableCell className="max-w-xs truncate">{listing.sourceTitle || "-"}</TableCell>
+                  <TableCell className="max-w-xs">
+                    {listing.sourceUrl ? (
+                      <a
+                        href={listing.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-primary hover:underline"
+                      >
+                        <span className="truncate">{listing.sourceTitle || listing.sourceUrl}</span>
+                        <ExternalLink className="h-3 w-3 shrink-0" />
+                      </a>
+                    ) : (
+                      <span className="truncate">{listing.sourceTitle || "-"}</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     {listing.price ? `${listing.price} ${listing.currencyCode || ""}` : "-"}
                   </TableCell>

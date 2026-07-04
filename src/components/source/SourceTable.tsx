@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -50,7 +50,19 @@ const SourceTable = ({ sources, loading, onEdit, onDelete }: SourceTableProps) =
               <TableRow key={source.id}>
                 <TableCell className="font-medium">{source.id}</TableCell>
                 <TableCell>{source.name || "-"}</TableCell>
-                <TableCell className="max-w-xs truncate">{source.baseUrl || "-"}</TableCell>
+                <TableCell className="max-w-xs">
+                  {source.baseUrl ? (
+                    <a
+                      href={source.baseUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 truncate text-primary hover:underline"
+                    >
+                      <span className="truncate">{source.baseUrl}</span>
+                      <ExternalLink className="h-3 w-3 shrink-0" />
+                    </a>
+                  ) : "-"}
+                </TableCell>
                 <TableCell>{source.type || "-"}</TableCell>
                 <TableCell>{source.priority ?? "-"}</TableCell>
                 <TableCell>{source.active ? "Yes" : "No"}</TableCell>

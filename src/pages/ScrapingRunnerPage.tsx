@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Copy, ExternalLink, Play, RefreshCw, Search } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { ChevronDown, Copy, ExternalLink, Play, RefreshCw, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   getFigureAliasScrapingQueryDetails,
@@ -11,8 +11,8 @@ import {
 import { getFranchises } from "@/api/franchiseApi";
 import {
   getScrapingFigureState,
+  getScrapingJobResult,
   getScrapingJobStatus,
-  runNinNinGameScraping,
   startScrapingJob,
   type ScrapingFigureState,
   type ScrapingJobData,
@@ -20,6 +20,7 @@ import {
   type ScrapingMatch,
   type ScrapingQueryResult,
 } from "@/api/scrapingRunnerApi";
+import { SCRAPING_SOURCE_OPTIONS } from "@/lib/scrapingSources";
 import Navbar from "@/components/Navbar";
 import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Badge } from "@/components/ui/badge";
@@ -262,9 +263,66 @@ const hasPersistedScrapingState = (state: ScrapingFigureState | null) =>
         getStateCount(state.sourceListingCount) > 0)
   );
 
+const SCRAPER_LABELS: Record<string, string> = Object.fromEntries(
+  SCRAPING_SOURCE_OPTIONS.map((option) => [option.value, option.label])
+);
+
+const getScraperLabel = (candidate: {
+  sourceCode?: string | null;
+  sourceName?: string | null;
+}) => {
+  const code = candidate.sourceCode || "";
+  return SCRAPER_LABELS[code] || candidate.sourceName || code || "-";
+};
+
 const StatusBadge = ({ value }: { value: unknown }) => (
   <Badge variant={formatValue(value) === "Yes" ? "default" : "outline"}>{formatValue(value)}</Badge>
 );
+
+type CollapsibleCardProps = {
+  title: string;
+  description?: string;
+  defaultOpen?: boolean;
+  headerExtra?: ReactNode;
+  children: ReactNode;
+};
+
+const CollapsibleCard = ({
+  title,
+  description,
+  defaultOpen = true,
+  headerExtra,
+  children,
+}: CollapsibleCardProps) => {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            className="flex flex-1 items-start gap-2 text-left"
+          >
+            <ChevronDown
+              className={`mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
+                open ? "" : "-rotate-90"
+              }`}
+            />
+            <div>
+              <CardTitle className="text-lg">{title}</CardTitle>
+              {description && <CardDescription className="mt-1">{description}</CardDescription>}
+            </div>
+          </button>
+          {headerExtra && <div className="flex items-center gap-2">{headerExtra}</div>}
+        </div>
+      </CardHeader>
+      {open && <CardContent>{children}</CardContent>}
+    </Card>
+  );
+};
 
 const FigureImage = ({ figure }: { figure: FigureAliasGeneratorFigure }) => (
   <div className="h-20 w-16 shrink-0 overflow-hidden rounded-md border bg-muted">
@@ -463,26 +521,20 @@ const ScrapingStateSummary = ({
   loading,
   selectedFigureId,
 }: ScrapingStateSummaryProps) => (
-  <Card>
-    <CardHeader>
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div>
-          <CardTitle className="text-lg">Persisted Scraping State</CardTitle>
-          <CardDescription>
-            Saved candidates and listings restored from the backend for this figure.
-          </CardDescription>
-        </div>
-        {selectedFigureId && (
-          <Button asChild variant="outline" size="sm" className="gap-2">
-            <Link to={`/figure-admin/candidate-review?figureId=${selectedFigureId}`}>
-              Candidate Review
-              <ExternalLink className="h-3.5 w-3.5" />
-            </Link>
-          </Button>
-        )}
-      </div>
-    </CardHeader>
-    <CardContent>
+  <CollapsibleCard
+    title="Persisted Scraping State"
+    description="Saved candidates and listings restored from the backend for this figure."
+    headerExtra={
+      selectedFigureId ? (
+        <Button asChild variant="outline" size="sm" className="gap-2">
+          <Link to={`/figure-admin/candidate-review?figureId=${selectedFigureId}`}>
+            Candidate Review
+            <ExternalLink className="h-3.5 w-3.5" />
+          </Link>
+        </Button>
+      ) : undefined
+    }
+  >
       <LoadingOverlay active={loading} label="Loading scraping state...">
         <div className="space-y-4">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -527,8 +579,7 @@ const ScrapingStateSummary = ({
           )}
         </div>
       </LoadingOverlay>
-    </CardContent>
-  </Card>
+  </CollapsibleCard>
 );
 
 type PendingReviewSectionProps = {
@@ -551,36 +602,33 @@ const PendingReviewSection = ({
   if (candidates.length === 0) return null;
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-          <div>
-            <CardTitle className="text-lg">{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
-          </div>
-          {showReviewLink && selectedFigureId && (
-            <Button asChild variant="outline" size="sm" className="gap-2">
-              <Link to={`/figure-admin/candidate-review?figureId=${selectedFigureId}`}>
-                {reviewLinkLabel}
-                <ExternalLink className="h-3.5 w-3.5" />
-              </Link>
-            </Button>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent>
+    <CollapsibleCard
+      title={title}
+      description={description}
+      headerExtra={
+        showReviewLink && selectedFigureId ? (
+          <Button asChild variant="outline" size="sm" className="gap-2">
+            <Link to={`/figure-admin/candidate-review?figureId=${selectedFigureId}`}>
+              {reviewLinkLabel}
+              <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        ) : undefined
+      }
+    >
         <div className="overflow-hidden rounded-lg border bg-background">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-20">ID</TableHead>
-                  <TableHead>Source</TableHead>
+                  <TableHead>Method</TableHead>
+                  <TableHead>Scraper</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Price</TableHead>
                   <TableHead>Score</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Captured</TableHead>
+                  <TableHead>Scraped at</TableHead>
                   <TableHead>URL</TableHead>
                 </TableRow>
               </TableHeader>
@@ -589,7 +637,10 @@ const PendingReviewSection = ({
                   <TableRow key={candidate.id || `${candidate.sourceTitle}-${candidate.capturedAt}`}>
                     <TableCell className="font-medium">{candidate.id || "-"}</TableCell>
                     <TableCell>
-                      <div>{candidate.sourceName || candidate.sourceId || "-"}</div>
+                      <Badge variant="default">Scraping</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium">{getScraperLabel(candidate)}</div>
                       {candidate.sourceCode && (
                         <div className="text-xs text-muted-foreground">{candidate.sourceCode}</div>
                       )}
@@ -630,8 +681,7 @@ const PendingReviewSection = ({
             </Table>
           </div>
         </div>
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 };
 
@@ -643,14 +693,10 @@ const SavedListingsSection = ({ listings }: SavedListingsSectionProps) => {
   if (listings.length === 0) return null;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Saved Listings</CardTitle>
-        <CardDescription>
-          Source listings already persisted for this figure.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <CollapsibleCard
+      title="Saved Listings"
+      description="Source listings already persisted for this figure."
+    >
         <div className="overflow-hidden rounded-lg border bg-background">
           <div className="overflow-x-auto">
             <Table>
@@ -671,7 +717,7 @@ const SavedListingsSection = ({ listings }: SavedListingsSectionProps) => {
                 {listings.map((listing) => (
                   <TableRow key={listing.id || `${listing.sourceTitle}-${listing.capturedAt}`}>
                     <TableCell className="font-medium">{listing.id || "-"}</TableCell>
-                    <TableCell>{listing.sourceName || listing.sourceId || "-"}</TableCell>
+                    <TableCell>{getScraperLabel(listing)}</TableCell>
                     <TableCell className="max-w-sm whitespace-normal">
                       {listing.sourceTitle || "-"}
                     </TableCell>
@@ -719,8 +765,7 @@ const SavedListingsSection = ({ listings }: SavedListingsSectionProps) => {
             </Table>
           </div>
         </div>
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 };
 
@@ -737,6 +782,7 @@ const ScrapingRunnerPage = () => {
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
   const [selectedFigure, setSelectedFigure] = useState<FigureAliasGeneratorFigure | null>(null);
+  const [selectedSource, setSelectedSource] = useState("NIN_NIN_GAME");
   const [scrapingQueries, setScrapingQueries] = useState<FigureScrapingQuery[]>([]);
   const [queriesLoading, setQueriesLoading] = useState(false);
   const [running, setRunning] = useState(false);
@@ -890,14 +936,26 @@ const ScrapingRunnerPage = () => {
 
         setAsyncJob(job);
 
-        if (job.status === "RUNNING") {
+        if (job.status === "QUEUED" || job.status === "RUNNING") {
           pollTimerRef.current = setTimeout(() => pollJobStatus(runId), 3000);
         } else {
           setRunning(false);
           await fetchScrapingState();
+
+          try {
+            const result = await getScrapingJobResult(runId);
+            setScrapingResult(result);
+          } catch {
+            // 404 en prod o job sin resultado — ignorar silenciosamente
+          }
+
           if (job.status === "COMPLETED") {
             toast.success("Scraping finalizado", {
-              description: `${job.totalSaved} resultado${job.totalSaved === 1 ? "" : "s"} guardado${job.totalSaved === 1 ? "" : "s"}.`,
+              description: `${job.totalFound} encontrado${job.totalFound === 1 ? "" : "s"}, ${job.totalSaved} guardado${job.totalSaved === 1 ? "" : "s"}.`,
+            });
+          } else if (job.status === "PARTIAL") {
+            toast.warning("Scraping parcialmente completado", {
+              description: `${job.totalFound} encontrado${job.totalFound === 1 ? "" : "s"}, ${job.totalSaved} guardado${job.totalSaved === 1 ? "" : "s"} de ${job.queryCount} quer${job.queryCount === 1 ? "y" : "ies"}.`,
             });
           } else {
             toast.error("Scraping fallido", { description: job.errorMessage || "Error desconocido." });
@@ -923,41 +981,19 @@ const ScrapingRunnerPage = () => {
 
     setRunning(true);
     setAsyncJob(null);
+    setScrapingResult(null);
     setApiError(null);
 
     try {
-      const result = await runNinNinGameScraping(selectedFigureId);
-      const resultCandidateCount = getCandidateCountFromResult(result);
-      const resultMinimumScoreText =
-        result.minimumCandidateScore !== undefined && result.minimumCandidateScore !== null
-          ? ` de ${result.minimumCandidateScore}`
-          : "";
-
-      setScrapingResult(result);
-      await fetchScrapingState();
-      toast.success("Scraping finalizado", {
-        description: buildCompletionDescription(resultCandidateCount, resultMinimumScoreText),
+      const jobResponse = await startScrapingJob(selectedSource, selectedFigureId);
+      setAsyncJob(jobResponse.data);
+      toast.info("Scraping en proceso", {
+        description: "El scraping corre en background. Actualizando estado...",
       });
+      pollTimerRef.current = setTimeout(() => pollJobStatus(jobResponse.data.runId), 3000);
+    } catch (error) {
       setRunning(false);
-    } catch (syncError) {
-      const apiErr = toApiError(syncError, "Error running Nin-Nin Game scraping.");
-
-      if (apiErr.status === 503) {
-        try {
-          const jobResponse = await startScrapingJob("NIN_NIN_GAME", selectedFigureId);
-          setAsyncJob(jobResponse.data);
-          toast.info("Scraping en proceso", {
-            description: "El scraping corre en background. Actualizando estado...",
-          });
-          pollTimerRef.current = setTimeout(() => pollJobStatus(jobResponse.data.runId), 3000);
-        } catch (asyncError) {
-          setRunning(false);
-          setApiError(toApiError(asyncError, "Error iniciando job de scraping."));
-        }
-      } else {
-        setRunning(false);
-        setApiError(apiErr);
-      }
+      setApiError(toApiError(error, "Error iniciando job de scraping."));
     }
   };
 
@@ -979,14 +1015,14 @@ const ScrapingRunnerPage = () => {
       <LoadingOverlay
         active={running && !asyncJob}
         fullscreen
-        message="Running Nin-Nin Game scraping..."
+        message="Iniciando scraping..."
       />
 
       <main className="container py-10">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Figure Scraping Runner</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Select a figure, inspect its scraping queries, and run Nin-Nin Game scraping manually.
+            Select a figure, choose a scraper source, and launch scraping manually.
           </p>
         </div>
 
@@ -1200,15 +1236,27 @@ const ScrapingRunnerPage = () => {
                           </div>
                         </div>
 
-                        <Button
-                          type="button"
-                          className="gap-2"
-                          disabled={running || !selectedFigureId}
-                          onClick={handleRunScraping}
-                        >
-                          <Play className="h-4 w-4" />
-                          Run Nin-Nin Game Scraping
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <select
+                            value={selectedSource}
+                            onChange={(e) => setSelectedSource(e.target.value)}
+                            disabled={running}
+                            className="rounded border border-input bg-background p-2 text-sm text-foreground"
+                          >
+                            {SCRAPING_SOURCE_OPTIONS.map((opt) => (
+                              <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            ))}
+                          </select>
+                          <Button
+                            type="button"
+                            className="gap-2"
+                            disabled={running || !selectedFigureId}
+                            onClick={handleRunScraping}
+                          >
+                            <Play className="h-4 w-4" />
+                            Run Scraping
+                          </Button>
+                        </div>
                       </div>
                     </CardHeader>
                     {(!figureHasAliases(selectedFigure) || selectedFigure.mayNeedRegeneration) && (
@@ -1249,7 +1297,9 @@ const ScrapingRunnerPage = () => {
                           ? "border-destructive/40 bg-destructive/10 text-foreground"
                           : asyncJob.status === "COMPLETED"
                             ? "border-primary/30 bg-primary/10 text-foreground"
-                            : "border-secondary/40 bg-secondary/10 text-foreground"
+                            : asyncJob.status === "PARTIAL"
+                              ? "border-yellow-500/40 bg-yellow-500/10 text-foreground"
+                              : "border-secondary/40 bg-secondary/10 text-foreground"
                       }`}
                     >
                       <p className="font-semibold">
@@ -1270,32 +1320,24 @@ const ScrapingRunnerPage = () => {
                     />
                   )}
 
-                  <Card>
-                    <CardHeader>
-                      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                        <div>
-                          <CardTitle className="text-lg">Queries that will be used for scraping</CardTitle>
-                          <CardDescription>
-                            The backend builds these from figure name, product codes, JAN code, saved aliases,
-                            and generated aliases. Requesting up to {SCRAPING_QUERY_LIMIT} total queries.
-                          </CardDescription>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            className="gap-2"
-                            disabled={queriesLoading || running}
-                            onClick={() => fetchScrapingQueries()}
-                          >
-                            <RefreshCw className="h-3.5 w-3.5" />
-                            Refresh
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
+                  <CollapsibleCard
+                    title="Queries that will be used for scraping"
+                    description={`The backend builds these from figure name, product codes, JAN code, saved aliases, and generated aliases. Requesting up to ${SCRAPING_QUERY_LIMIT} total queries.`}
+                    defaultOpen={false}
+                    headerExtra={
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        className="gap-2"
+                        disabled={queriesLoading || running}
+                        onClick={() => fetchScrapingQueries()}
+                      >
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Refresh
+                      </Button>
+                    }
+                  >
                       {queriesLoading ? (
                         <p className="rounded-md border border-dashed bg-background p-4 text-sm text-muted-foreground">
                           Loading scraping queries...
@@ -1323,8 +1365,7 @@ const ScrapingRunnerPage = () => {
                           ))}
                         </ol>
                       )}
-                    </CardContent>
-                  </Card>
+                  </CollapsibleCard>
 
                   {scrapingResult && (
                     <>

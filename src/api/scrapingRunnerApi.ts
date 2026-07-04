@@ -87,7 +87,7 @@ export type ScrapingJobData = {
   runId: string;
   figureId: number;
   source: string;
-  status: "RUNNING" | "COMPLETED" | "FAILED";
+  status: "QUEUED" | "RUNNING" | "COMPLETED" | "PARTIAL" | "FAILED";
   startedAt: string;
   finishedAt: string | null;
   queryCount: number;
@@ -117,6 +117,12 @@ export async function startScrapingJob(
 export async function getScrapingJobStatus(runId: string): Promise<ScrapingJobResponse> {
   return apiRequest<ScrapingJobResponse>(`/v1/scraping/jobs/${runId}`, {
     fallbackMessage: "Error fetching scraping job status.",
+  });
+}
+
+export async function getScrapingJobResult(runId: string): Promise<NinNinGameScrapingResponse> {
+  return apiRequest<NinNinGameScrapingResponse>(`/v1/scraping/jobs/${runId}/result`, {
+    fallbackMessage: "Error fetching scraping job result.",
   });
 }
 
