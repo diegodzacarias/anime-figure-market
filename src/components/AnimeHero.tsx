@@ -73,26 +73,23 @@ const AnimeHero = () => {
                 key={anime.id}
                 type="button"
                 onClick={() => navigate(`/anime/${anime.id}`)}
-                className="group text-left focus:outline-none"
+                className="group flex flex-col overflow-hidden rounded-[16px] border border-border bg-card text-left shadow-airbnb transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_14px_30px_rgba(0,0,0,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
-                <div className="relative overflow-hidden rounded-[14px] bg-muted">
-                  <div className="aspect-[4/5] overflow-hidden">
-                    <img
-                      src={anime.imageUrl || fallbackImages[anime.name]}
-                      alt={anime.name}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                      width={640}
-                      height={800}
-                    />
-                  </div>
+                <div className="aspect-[4/5] overflow-hidden bg-muted">
+                  <img
+                    src={anime.imageUrl || fallbackImages[anime.name]}
+                    alt={anime.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+                    width={640}
+                    height={800}
+                  />
                 </div>
-                <div className="mt-3 flex items-start justify-between gap-3">
-                  <h3 className="text-base font-semibold text-foreground">{anime.name}</h3>
-                  <span className="shrink-0 text-sm font-medium text-primary transition-colors group-hover:text-rausch-active">
+                <div className="flex flex-col items-center gap-1 px-5 py-5 text-center">
+                  <h3 className="text-xl font-bold text-foreground md:text-2xl">{anime.name}</h3>
+                  <span className="text-sm font-semibold text-primary transition-transform group-hover:translate-x-0.5">
                     Ver coleccion →
                   </span>
                 </div>
-                <p className="mt-0.5 text-sm text-muted-foreground">Explora las figuras de este universo</p>
               </button>
             ))}
           </div>
