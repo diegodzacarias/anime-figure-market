@@ -24,6 +24,10 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        rausch: {
+          DEFAULT: "hsl(var(--primary))",
+          active: "hsl(var(--primary-active))",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

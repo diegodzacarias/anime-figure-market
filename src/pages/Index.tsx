@@ -3,11 +3,19 @@ import AnimeHero from "@/components/AnimeHero";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <AnimeHero />
-      <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        © 2026 AnimeFigures. Todos los derechos reservados.
+
+      <footer className="mt-8 border-t border-border">
+        <div className="mx-auto flex max-w-[1120px] flex-col gap-3 px-6 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
+          <p>© 2026 AnimeFigures. Todos los derechos reservados.</p>
+          <div className="flex items-center gap-4">
+            <span className="cursor-pointer transition-colors hover:text-foreground">Privacidad</span>
+            <span className="text-border">·</span>
+            <span className="cursor-pointer transition-colors hover:text-foreground">Terminos</span>
+          </div>
+        </div>
       </footer>
     </div>
   );

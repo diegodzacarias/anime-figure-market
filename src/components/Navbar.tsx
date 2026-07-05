@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, User, ShoppingCart, Moon, Sun } from "lucide-react";
+import { ChevronDown, User, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,31 +12,12 @@ import {
 } from "@/components/ui/select";
 import { usePreferences, type CurrencyCode } from "@/lib/preferences";
 
-const THEME_STORAGE_KEY = "milo-theme";
-
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showWorkMenu, setShowWorkMenu] = useState(false);
   const [showFigureAdminMenu, setShowFigureAdminMenu] = useState(false);
   const [showCharacterAdminMenu, setShowCharacterAdminMenu] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const { currencyCode, setCurrencyCode } = usePreferences();
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    const shouldUseDark = storedTheme === "dark";
-
-    document.documentElement.classList.toggle("dark", shouldUseDark);
-    setIsDarkMode(shouldUseDark);
-  }, []);
-
-  const toggleTheme = () => {
-    const nextIsDark = !isDarkMode;
-
-    document.documentElement.classList.toggle("dark", nextIsDark);
-    localStorage.setItem(THEME_STORAGE_KEY, nextIsDark ? "dark" : "light");
-    setIsDarkMode(nextIsDark);
-  };
 
   const closeMenus = () => {
     setShowWorkMenu(false);
@@ -63,8 +44,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
-      <div className="container flex h-16 items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background">
+      <div className="container flex h-20 items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl font-bold text-primary">⛩️</span>
@@ -237,23 +218,17 @@ const Navbar = () => {
 
         <div className="flex items-center gap-3">
           <Button
-            type="button"
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
-            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-            title={isDarkMode ? "Light mode" : "Dark mode"}
-            onClick={toggleTheme}
+            className="rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-label="Carrito"
           >
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
             <ShoppingCart className="h-5 w-5" />
           </Button>
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 border-primary/30 text-foreground hover:bg-primary hover:text-primary-foreground"
+            className="gap-2 rounded-full border-border text-foreground hover:bg-muted"
             onClick={() => setShowLogin(!showLogin)}
           >
             <User className="h-4 w-4" />
@@ -264,7 +239,7 @@ const Navbar = () => {
 
       {/* Login dropdown */}
       {showLogin && (
-        <div className="absolute right-4 top-16 z-50 w-72 rounded-lg border border-border bg-card p-5 shadow-card">
+        <div className="absolute right-4 top-20 z-50 w-72 rounded-2xl border border-border bg-card p-5 shadow-airbnb">
           <h3 className="mb-4 text-lg font-semibold text-foreground">Iniciar Sesión</h3>
           <div className="space-y-3">
             <Input placeholder="Email" type="email" className="bg-muted border-border" />

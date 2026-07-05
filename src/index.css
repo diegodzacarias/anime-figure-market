@@ -4,97 +4,55 @@
 
 @layer base {
   :root {
-    /* Milo theme - light is the default */
-    --background: 40 30% 96.1%;
-    --foreground: 33 17% 10.4%;
+    /* Airbnb design system — light-only canvas (#ffffff) + ink (#222222) + Rausch (#ff385c) */
+    --background: 0 0% 100%;            /* canvas #ffffff */
+    --foreground: 0 0% 13.3%;           /* ink #222222 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 33 17% 10.4%;
+    --card: 0 0% 100%;                  /* surface-card #ffffff */
+    --card-foreground: 0 0% 13.3%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 33 17% 10.4%;
+    --popover-foreground: 0 0% 13.3%;
 
-    --primary: 26 37.5% 43.9%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 349 100% 61%;            /* Rausch #ff385c */
+    --primary-foreground: 0 0% 100%;    /* on-primary #ffffff */
 
-    --secondary: 40 78.1% 60.6%;
-    --secondary-foreground: 33 17% 10.4%;
+    --secondary: 0 0% 94.9%;            /* surface-strong #f2f2f2 */
+    --secondary-foreground: 0 0% 13.3%;
 
-    --muted: 33 36% 90.2%;
-    --muted-foreground: 26 13% 42.4%;
+    --muted: 0 0% 96.9%;                /* surface-soft #f7f7f7 */
+    --muted-foreground: 0 0% 41.6%;     /* muted #6a6a6a */
 
-    --accent: 30 91% 56.3%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 96.9%;               /* surface-soft #f7f7f7 */
+    --accent-foreground: 0 0% 13.3%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 11 80% 42%;          /* error #c13515 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 28.3% 82%;
-    --input: 32 28.3% 82%;
-    --ring: 26 37.5% 43.9%;
+    --border: 0 0% 86.7%;               /* hairline #dddddd */
+    --input: 0 0% 86.7%;
+    --ring: 0 0% 13.3%;                 /* focus stroke = ink #222222 (no glow) */
 
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 33 17% 10.4%;
-    --sidebar-primary: 26 37.5% 43.9%;
+    --sidebar-foreground: 0 0% 13.3%;
+    --sidebar-primary: 349 100% 61%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 33 36% 90.2%;
-    --sidebar-accent-foreground: 33 17% 10.4%;
-    --sidebar-border: 32 28.3% 82%;
-    --sidebar-ring: 26 37.5% 43.9%;
+    --sidebar-accent: 0 0% 96.9%;
+    --sidebar-accent-foreground: 0 0% 13.3%;
+    --sidebar-border: 0 0% 86.7%;
+    --sidebar-ring: 0 0% 13.3%;
 
-    /* Milo global effects */
-    --hero-gradient: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
-    --gradient-hero: var(--hero-gradient);
-    --gradient-card-hover: linear-gradient(180deg, hsl(0 0% 0% / 0.08) 0%, hsl(0 0% 0% / 0.35) 48%, hsl(0 0% 0% / 0.92) 100%);
-    --shadow-glow: 0 0 30px hsl(var(--primary) / 0.3);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
-  }
+    /* Rausch press / disabled tints (design tokens) */
+    --primary-active: 345 90% 46%;      /* #e00b41 */
 
-  .dark {
-    --background: 30 12.5% 6.3%;
-    --foreground: 36 33.3% 94.1%;
-
-    --card: 30 16.7% 9.4%;
-    --card-foreground: 36 33.3% 94.1%;
-
-    --popover: 30 16.7% 9.4%;
-    --popover-foreground: 36 33.3% 94.1%;
-
-    --primary: 27 38.2% 54.3%;
-    --primary-foreground: 30 12.5% 6.3%;
-
-    --secondary: 41 85.1% 65.7%;
-    --secondary-foreground: 30 12.5% 6.3%;
-
-    --muted: 28 18.3% 13.9%;
-    --muted-foreground: 30 17.4% 66.3%;
-
-    --accent: 30 91% 56.3%;
-    --accent-foreground: 30 12.5% 6.3%;
-
-    --destructive: 0 90.6% 70.8%;
-    --destructive-foreground: 30 12.5% 6.3%;
-
-    --border: 27 18.4% 19.2%;
-    --input: 27 18.4% 19.2%;
-    --ring: 27 38.2% 54.3%;
-
-    --sidebar-background: 30 16.7% 9.4%;
-    --sidebar-foreground: 36 33.3% 94.1%;
-    --sidebar-primary: 27 38.2% 54.3%;
-    --sidebar-primary-foreground: 30 12.5% 6.3%;
-    --sidebar-accent: 28 18.3% 13.9%;
-    --sidebar-accent-foreground: 36 33.3% 94.1%;
-    --sidebar-border: 27 18.4% 19.2%;
-    --sidebar-ring: 27 38.2% 54.3%;
-
-    --hero-gradient: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-hero: var(--hero-gradient);
-    --gradient-card-hover: linear-gradient(180deg, hsl(0 0% 0% / 0.1) 0%, hsl(0 0% 0% / 0.38) 48%, hsl(0 0% 0% / 0.94) 100%);
-    --shadow-glow: 0 0 30px hsl(var(--primary) / 0.32);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.45);
+    /* Airbnb caps elevation at a single shadow tier — used on floated cards / dropdowns / reservation rail */
+    --shadow-airbnb:
+      rgba(0, 0, 0, 0.02) 0 0 0 1px,
+      rgba(0, 0, 0, 0.04) 0 2px 6px 0,
+      rgba(0, 0, 0, 0.1) 0 4px 8px 0;
+    --shadow-card: var(--shadow-airbnb);
   }
 }
 
@@ -105,35 +63,19 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
   }
 }
 
 @layer utilities {
-  .gradient-hero {
-    background: var(--hero-gradient);
-  }
-
-  .shadow-glow {
-    box-shadow: var(--shadow-glow);
+  /* Airbnb single shadow tier (floated cards, search bar, dropdowns, reservation rail) */
+  .shadow-airbnb {
+    box-shadow: var(--shadow-airbnb);
   }
 
   .shadow-card {
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-airbnb);
   }
-
-  .anime-card-overlay {
-    background: var(--gradient-card-hover);
-  }
-
-  /* Airbnb design test: the system's single shadow tier (floated cards / reservation rail) */
-  .shadow-airbnb {
-    box-shadow:
-      rgba(0, 0, 0, 0.02) 0 0 0 1px,
-      rgba(0, 0, 0, 0.04) 0 2px 6px 0,
-      rgba(0, 0, 0, 0.1) 0 4px 8px 0;
-  }
-
 }
 
 /* Animations */
@@ -152,7 +94,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.1), transparent);
+  background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.06), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }

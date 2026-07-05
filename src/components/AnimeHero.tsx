@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import berserkImg from "@/assets/berserk.jpg";
 import narutoImg from "@/assets/naruto.jpg";
 import onepieceImg from "@/assets/onepiece.jpg";
 import { getFranchises } from "@/api/franchiseApi";
+
+/**
+ * Sistema Airbnb (ver design-references/airbnb-DESIGN.md). Hero modesto (h1 28px como el
+ * homepage de Airbnb) sobre canvas blanco, y las franquicias renderizadas como
+ * `property-card`: foto rounded-[14px], badge flotante, y meta debajo. Usa tokens globales.
+ */
 
 type Franchise = {
   id: number | string;
@@ -37,57 +44,65 @@ const AnimeHero = () => {
     loadFranchises();
   }, []);
 
-  if (loading) {
-    return (
-        <section className="py-12">
-          <div className="container">
-            <h2 className="mb-2 text-center text-sm font-semibold uppercase tracking-widest text-primary">
-              Explora por universo
-            </h2>
-            <h1 className="mb-10 text-center text-4xl font-bold text-foreground md:text-5xl">
-              Elige tu <span className="text-primary">Anime</span>
-            </h1>
-            <p className="text-center text-muted-foreground">Cargando franquicias...</p>
-          </div>
-        </section>
-    );
-  }
-
   return (
-      <section className="py-12">
-        <div className="container">
-          <h2 className="mb-2 text-center text-sm font-semibold uppercase tracking-widest text-primary">
-            Explora por universo
-          </h2>
-          <h1 className="mb-10 text-center text-4xl font-bold text-foreground md:text-5xl">
-            Elige tu <span className="text-primary">Anime</span>
-          </h1>
+    <section className="py-14 md:py-16">
+      <div className="mx-auto max-w-[1120px] px-6">
+        <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
+          Explora por universo
+        </p>
+        <h1 className="mt-1 text-2xl font-bold leading-tight text-foreground md:text-[28px]">
+          Elige tu <span className="text-primary">Anime</span>
+        </h1>
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          Compara precios de figuras entre tiendas, por franquicia.
+        </p>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {loading ? (
+          <div className="mt-10 flex min-h-52 items-center justify-center rounded-[14px] bg-muted text-sm text-muted-foreground">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Cargando franquicias...
+          </div>
+        ) : animeList.length === 0 ? (
+          <div className="mt-10 rounded-[14px] border border-border p-10 text-center text-sm text-muted-foreground">
+            No hay franquicias registradas todavia.
+          </div>
+        ) : (
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {animeList.map((anime) => (
-                <button
-                    key={anime.id}
-                    onClick={() => navigate(`/anime/${anime.id}`)}
-                    className="group relative overflow-hidden rounded-lg shadow-card transition-all duration-300 hover:scale-[1.03] hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <img
+              <button
+                key={anime.id}
+                type="button"
+                onClick={() => navigate(`/anime/${anime.id}`)}
+                className="group text-left focus:outline-none"
+              >
+                <div className="relative overflow-hidden rounded-[14px] bg-muted">
+                  <span className="absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1 text-[11px] font-semibold text-foreground shadow-airbnb">
+                    <span className="text-primary">♥</span>
+                    Franquicia
+                  </span>
+                  <div className="aspect-[4/5] overflow-hidden">
+                    <img
                       src={anime.imageUrl || fallbackImages[anime.name]}
                       alt={anime.name}
-                      className="h-[420px] w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                       width={640}
-                      height={896}
-                  />
-                  <div className="anime-card-overlay absolute inset-0 flex flex-col items-center justify-end p-6">
-                    <h3 className="text-center text-2xl font-extrabold text-primary-foreground drop-shadow-lg">{anime.name}</h3>
-                    <span className="mt-3 rounded-full bg-background/90 px-4 py-1 text-xs font-semibold text-foreground shadow-card transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                  Ver colección →
-                </span>
+                      height={800}
+                    />
                   </div>
-                </button>
+                </div>
+                <div className="mt-3 flex items-start justify-between gap-3">
+                  <h3 className="text-base font-semibold text-foreground">{anime.name}</h3>
+                  <span className="shrink-0 text-sm font-medium text-primary transition-colors group-hover:text-rausch-active">
+                    Ver coleccion →
+                  </span>
+                </div>
+                <p className="mt-0.5 text-sm text-muted-foreground">Explora las figuras de este universo</p>
+              </button>
             ))}
           </div>
-        </div>
-      </section>
+        )}
+      </div>
+    </section>
   );
 };
 
