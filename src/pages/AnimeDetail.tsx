@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ApiErrorToast from "@/components/ui/api-error-toast";
 import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
 import { getPageContent, getPageMeta } from "@/lib/page";
@@ -187,6 +188,13 @@ const AnimeDetail = () => {
       <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="mx-auto max-w-[1120px] px-6 py-8 md:py-10">
+        <Breadcrumbs
+          items={[
+            { label: "Inicio", to: "/" },
+            { label: title },
+          ]}
+        />
+
         <button
           type="button"
           className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
@@ -225,6 +233,7 @@ const AnimeDetail = () => {
               <Link
                 key={figure.id}
                 to={figure.id ? `/figure/${figure.id}` : "#"}
+                state={{ franchise: { id: franchise?.id ?? animeId, name: title } }}
                 className="group"
               >
                 <div className="overflow-hidden rounded-[14px] bg-muted">

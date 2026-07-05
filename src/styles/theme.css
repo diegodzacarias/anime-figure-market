@@ -1,0 +1,54 @@
+/**
+ * PALETA DE ACENTO GLOBAL — edita SOLO este archivo para cambiar el color de marca.
+ *
+ * Acento actual: "Cian Nocturno" (cian electrico -> casi-negro, con glow cyberpunk).
+ *
+ * Como cambiar de color:
+ *   1. Ajusta los 3 hex de la seccion PALETA (accent / hover / gradient-end).
+ *   2. Actualiza sus equivalentes HSL en los tokens --primary y --primary-active
+ *      (Tailwind consume los solidos via hsl(var(--token)); el degradado y el glow usan hex).
+ *   3. Actualiza el rgba del glow para que combine con el acento.
+ *
+ * Para volver a un acento PLANO (sin degradado/glow) pon --primary-gradient en
+ * "none" y --primary-glow en "none".
+ */
+
+@layer base {
+  :root {
+    /* ===== PALETA (referencia en hex) =====
+       accent: #0891B2   ·   hover: #0E7490   ·   fin-degradado: #0F172A   */
+
+    /* Tokens solidos que consume Tailwind (text-primary, border-primary, tints) */
+    --primary: 192 91% 36%; /* #0891B2 cian electrico */
+    --primary-foreground: 0 0% 100%; /* texto sobre el acento */
+    --primary-active: 193 82% 31%; /* #0E7490 hover / press */
+
+    --sidebar-primary: 192 91% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+
+    /* Relleno de marca: degradado nocturno + halo neon (botones y pills) */
+    --primary-gradient: linear-gradient(135deg, #0891b2, #0f172a);
+    --primary-glow: 0 6px 20px rgba(8, 145, 178, 0.5);
+    --primary-glow-hover: 0 8px 28px rgba(8, 145, 178, 0.62);
+  }
+}
+
+@layer utilities {
+  /* El degradado nocturno cubre todo relleno .bg-primary (botones, pills, badges). */
+  .bg-primary {
+    background-image: var(--primary-gradient);
+  }
+
+  /* Glow neon solo en CTAs interactivos (boton / enlace), no en badges de solo texto. */
+  button.bg-primary,
+  a.bg-primary {
+    box-shadow: var(--primary-glow);
+    transition: box-shadow 0.2s ease, filter 0.2s ease;
+  }
+
+  button.bg-primary:hover,
+  a.bg-primary:hover {
+    box-shadow: var(--primary-glow-hover);
+    filter: brightness(1.06);
+  }
+}

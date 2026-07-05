@@ -1,10 +1,14 @@
+@import "./styles/theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Airbnb design system — light-only canvas (#ffffff) + ink (#222222) + Rausch (#ff385c) */
+    /* Airbnb design system — light-only canvas (#ffffff) + ink (#222222).
+       El acento de marca (--primary / --primary-active / degradado / glow) vive
+       en src/styles/theme.css para poder cambiarlo desde un solo archivo. */
     --background: 0 0% 100%;            /* canvas #ffffff */
     --foreground: 0 0% 13.3%;           /* ink #222222 */
 
@@ -13,9 +17,6 @@
 
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 13.3%;
-
-    --primary: 349 100% 61%;            /* Rausch #ff385c */
-    --primary-foreground: 0 0% 100%;    /* on-primary #ffffff */
 
     --secondary: 0 0% 94.9%;            /* surface-strong #f2f2f2 */
     --secondary-foreground: 0 0% 13.3%;
@@ -37,15 +38,10 @@
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 13.3%;
-    --sidebar-primary: 349 100% 61%;
-    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 96.9%;
     --sidebar-accent-foreground: 0 0% 13.3%;
     --sidebar-border: 0 0% 86.7%;
     --sidebar-ring: 0 0% 13.3%;
-
-    /* Rausch press / disabled tints (design tokens) */
-    --primary-active: 345 90% 46%;      /* #e00b41 */
 
     /* Airbnb caps elevation at a single shadow tier — used on floated cards / dropdowns / reservation rail */
     --shadow-airbnb:

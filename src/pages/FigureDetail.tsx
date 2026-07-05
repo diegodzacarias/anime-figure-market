@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Breadcrumbs, { type Crumb } from "@/components/Breadcrumbs";
 import ApiErrorToast from "@/components/ui/api-error-toast";
 import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
 import { formatDateTime } from "@/lib/date";
@@ -22,12 +23,14 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
 
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
+const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/v1/figure-source-listings`;
 const FALLBACK_IMAGE_URL = `${import.meta.env.BASE_URL}placeholder.svg`;
 const TOP_LISTINGS_LIMIT = 4;
 
 type Figure = {
   id?: number;
+  franchiseId?: number;
   name?: string;
   slug?: string;
   scene?: string | null;
@@ -201,6 +204,13 @@ const StoreRow = ({ listing, best = false, detailed = false }: StoreRowProps) =>
 const FigureDetail = () => {
   const { figureId } = useParams<{ figureId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const franchiseHint =
+    (location.state as { franchise?: { id?: number | string; name?: string } } | null)?.franchise ??
+    null;
+  const [franchise, setFranchise] = useState<{ id?: number | string; name?: string } | null>(
+    franchiseHint
+  );
   const allSourcesRef = useRef<HTMLElement | null>(null);
   const { currencyCode } = usePreferences();
   const [figure, setFigure] = useState<Figure | null>(null);
@@ -301,9 +311,59 @@ const FigureDetail = () => {
     loadPriceRanking();
   }, [figureId, otherRankingUrl, topRankingUrl]);
 
+  // Resuelve la franquicia para el breadcrumb: usa el hint del router-state si
+  // existe (navegacion desde la coleccion), o la busca por franchiseId de la
+  // figura para que el rastro sobreviva a recargas / URLs directas.
+  useEffect(() => {
+    if (franchiseHint?.name) {
+      setFranchise(franchiseHint);
+      return;
+    }
+
+    const franchiseId = figure?.franchiseId;
+    if (franchiseId == null) {
+      setFranchise(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadFranchise = async () => {
+      try {
+        const response = await fetch(`${FRANCHISES_ENDPOINT}/${franchiseId}`);
+
+        if (response.ok && !cancelled) {
+          const data = (await response.json()) as { id?: number; name?: string };
+          setFranchise({ id: data.id, name: data.name });
+        }
+      } catch {
+        // Sin franquicia en el breadcrumb si la peticion falla.
+      }
+    };
+
+    loadFranchise();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [franchiseHint, figure?.franchiseId]);
+
   const scrollToAllSources = () => {
     allSourcesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const breadcrumbItems: Crumb[] = [
+    { label: "Inicio", to: "/" },
+    ...(franchise?.name
+      ? [
+          {
+            label: franchise.name,
+            to: franchise.id != null ? `/anime/${franchise.id}` : undefined,
+          },
+        ]
+      : []),
+    { label: figure?.name || "Figura" },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -311,6 +371,8 @@ const FigureDetail = () => {
       <ApiErrorToast error={apiError} onClose={() => setApiError(null)} />
 
       <main className="mx-auto max-w-[1120px] px-6 py-8 md:py-10">
+        <Breadcrumbs items={breadcrumbItems} />
+
         <button
           type="button"
           className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"

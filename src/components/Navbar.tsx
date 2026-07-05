@@ -73,11 +73,11 @@ const Navbar = () => {
             Inicio
           </Link>
           <span className="text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer">
-            Catálogo
-          </span>
-          <span className="text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer">
             Novedades
           </span>
+          <Link to="/color-test" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            ColorTest
+          </Link>
           <div className="relative">
             <button
               type="button"

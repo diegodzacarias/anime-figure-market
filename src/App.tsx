@@ -9,6 +9,7 @@ import { PreferencesProvider } from "@/lib/preferences";
 const Index = lazy(() => import("./pages/Index.tsx"));
 const AnimeDetail = lazy(() => import("./pages/AnimeDetail.tsx"));
 const FigureDetail = lazy(() => import("./pages/FigureDetail.tsx"));
+const ColorTest = lazy(() => import("./pages/ColorTest.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const FigurePage = lazy(() => import("./pages/FigurePage.tsx"));
 const FigureAliasPage = lazy(() => import("./pages/FigureAliasPage.tsx"));
@@ -55,6 +56,7 @@ const App = () => (
                             <Route path="/" element={<Index />} />
                             <Route path="/anime/:animeId" element={<AnimeDetail />} />
                             <Route path="/figure/:figureId" element={<FigureDetail />} />
+                            <Route path="/color-test" element={<ColorTest />} />
                             <Route path="/work/figure" element={<FigurePage />} />
                             <Route path="/work/figure-alias" element={<FigureAliasPage />} />
                             <Route path="/work/figure-source-listing" element={<FigureSourceListingPage />} />
