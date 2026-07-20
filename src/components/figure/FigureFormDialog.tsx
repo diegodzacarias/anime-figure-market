@@ -75,6 +75,7 @@ export type Figure = {
   editionSize?: number | null;
   baseCurrencyCode?: string;
   status?: string;
+  loadMethod?: string;
   notes?: string | null;
 };
 

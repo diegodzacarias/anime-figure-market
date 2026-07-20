@@ -100,19 +100,20 @@ const FigureTable = ({
               <TableHead>Product Code</TableHead>
               <TableHead>Reference</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Load Method</TableHead>
               <TableHead className="w-80 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={11} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={12} className="h-28 text-center text-muted-foreground">
                   Loading figures...
                 </TableCell>
               </TableRow>
             ) : figures.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={11} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={12} className="h-28 text-center text-muted-foreground">
                   No figures found.
                 </TableCell>
               </TableRow>
@@ -145,6 +146,7 @@ const FigureTable = ({
                     )}
                   </TableCell>
                   <TableCell>{figure.status || "-"}</TableCell>
+                  <TableCell>{figure.loadMethod || "-"}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap justify-end gap-2">
                       <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => onEdit(figure)}>

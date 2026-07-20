@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -70,7 +70,19 @@ const CandidateReviewTable = ({
                 <TableRow key={candidate.id}>
                   <TableCell className="font-medium">{candidate.id}</TableCell>
                   <TableCell className="min-w-56">
-                    <div className="font-medium">{candidate.figureName || candidate.figureId || "-"}</div>
+                    {candidate.figureId ? (
+                      <a
+                        href={`/anime-figure-market/figure/${candidate.figureId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+                      >
+                        {candidate.figureName || candidate.figureId}
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    ) : (
+                      <div className="font-medium">{candidate.figureName || "-"}</div>
+                    )}
                     {candidate.figureSlug && (
                       <div className="text-xs text-muted-foreground">{candidate.figureSlug}</div>
                     )}
