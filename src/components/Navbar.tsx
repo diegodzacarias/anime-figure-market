@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, User, ShoppingCart } from "lucide-react";
+import { ChevronDown, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -53,6 +54,10 @@ const Navbar = () => {
             Anime<span className="text-primary">Figures</span>
           </span>
           </Link>
+
+          <Badge variant="secondary" className="uppercase tracking-wide">
+            Beta
+          </Badge>
 
           <Select
             value={currencyCode}
@@ -221,14 +226,6 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
-            aria-label="Carrito"
-          >
-            <ShoppingCart className="h-5 w-5" />
-          </Button>
           <Button
             variant="outline"
             size="sm"
