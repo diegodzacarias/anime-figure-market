@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Plus, Search } from "lucide-react";
+import { getFranchises } from "@/api/franchiseApi";
 import Navbar from "@/components/Navbar";
 import {
   AlertDialog,
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import ApiErrorToast from "@/components/ui/api-error-toast";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import PageControls from "@/components/ui/page-controls";
@@ -24,6 +26,7 @@ import FigureSourceListingTable from "@/components/figureSourceListing/FigureSou
 import { useReferenceData } from "@/hooks/useReferenceData";
 import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
 import { defaultPageMeta, getPageContent, getPageMeta, withPageSize, withPagination } from "@/lib/page";
+import type { Franchise } from "@/types/franchise";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://figure-market-core.onrender.com/api";
@@ -31,6 +34,16 @@ const API_BASE_URL =
 const FIGURES_ENDPOINT = `${API_BASE_URL}/v1/figures`;
 const FIGURE_SOURCE_LISTINGS_ENDPOINT = `${API_BASE_URL}/v1/figure-source-listings`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+
+type ListingFigureOption = FigureOption & {
+  franchiseId?: number;
+  franchiseName?: string | null;
+  franchise?: { id?: number; name?: string };
+  primaryImageUrl?: string | null;
+};
+
+const getFigureFranchiseId = (figure?: ListingFigureOption) =>
+  figure?.franchiseId || figure?.franchise?.id;
 
 const fallbackCurrencyCodes = [
   { value: "USD", label: "Usd", symbol: "$" },
@@ -53,13 +66,15 @@ const fallbackLoadMethods = [
 
 const FigureSourceListingPage = () => {
   const [listings, setListings] = useState<FigureSourceListing[]>([]);
-  const [figures, setFigures] = useState<FigureOption[]>([]);
+  const [figures, setFigures] = useState<ListingFigureOption[]>([]);
+  const [franchises, setFranchises] = useState<Franchise[]>([]);
   const [sources, setSources] = useState<SourceOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [franchiseFilter, setFranchiseFilter] = useState("");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
@@ -77,10 +92,14 @@ const FigureSourceListingPage = () => {
     }
 
     try {
-      const [listingsResponse, figuresResponse, sourcesResponse] = await Promise.all([
+      const [listingsResponse, figuresResponse, sourcesResponse, franchisesData] = await Promise.all([
         fetch(withPagination(FIGURE_SOURCE_LISTINGS_ENDPOINT, page, pageSize)),
         fetch(withPageSize(FIGURES_ENDPOINT)),
         fetch(withPageSize(SOURCES_ENDPOINT)),
+        getFranchises().catch((error) => {
+          console.error("Error fetching franchises:", error);
+          return [];
+        }),
       ]);
 
       if (listingsResponse.ok) {
@@ -93,10 +112,12 @@ const FigureSourceListingPage = () => {
 
       if (figuresResponse.ok) {
         const data = await figuresResponse.json();
-        setFigures(getPageContent<FigureOption>(data));
+        setFigures(getPageContent<ListingFigureOption>(data));
       } else {
         console.error("Error fetching figures");
       }
+
+      setFranchises(franchisesData);
 
       if (sourcesResponse.ok) {
         const data = await sourcesResponse.json();
@@ -120,14 +141,36 @@ const FigureSourceListingPage = () => {
 
   useEffect(() => {
     setPage(0);
-  }, [search]);
+  }, [franchiseFilter, search]);
+
+  const figuresById = useMemo<Record<number, ListingFigureOption>>(
+    () => Object.fromEntries(figures.map((figure) => [figure.id, figure])) as Record<number, ListingFigureOption>,
+    [figures]
+  );
+
+  const franchisesById = useMemo<Record<number, string>>(
+    () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])) as Record<number, string>,
+    [franchises]
+  );
+
+  const figureImagesById = useMemo<Record<number, string | null | undefined>>(
+    () => Object.fromEntries(figures.map((figure) => [figure.id, figure.primaryImageUrl])),
+    [figures]
+  );
 
   const filteredListings = useMemo(() => {
+    const franchiseFilteredListings = franchiseFilter
+      ? listings.filter((listing) => {
+          const figure = listing.figureId ? figuresById[listing.figureId] : undefined;
+          return String(getFigureFranchiseId(figure) || "") === franchiseFilter;
+        })
+      : listings;
+
     const query = search.trim().toLowerCase();
 
-    if (!query) return listings;
+    if (!query) return franchiseFilteredListings;
 
-    return listings.filter((listing) =>
+    return franchiseFilteredListings.filter((listing) =>
       [
         listing.id?.toString(),
         listing.figureName,
@@ -143,7 +186,13 @@ const FigureSourceListingPage = () => {
         .filter(Boolean)
         .some((value) => value?.toLowerCase().includes(query))
     );
-  }, [listings, search]);
+  }, [figuresById, franchiseFilter, listings, search]);
+
+  const hasActiveFilters = Boolean(franchiseFilter);
+
+  const clearFilters = () => {
+    setFranchiseFilter("");
+  };
 
   const openCreateDialog = () => {
     setSelectedListing(null);
@@ -232,8 +281,8 @@ const FigureSourceListingPage = () => {
           </Button>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between">
-          <div className="relative w-full md:max-w-sm">
+        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4">
+          <div className="relative w-full">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}
@@ -243,15 +292,46 @@ const FigureSourceListingPage = () => {
             />
           </div>
 
-          <p className="text-sm text-muted-foreground">
-            {filteredListings.length} shown - {pageMeta.totalElements} total records
-          </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <select
+              value={franchiseFilter}
+              onChange={(event) => setFranchiseFilter(event.target.value)}
+              className="w-full rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All franchises</option>
+              {franchises.map((franchise) => (
+                <option key={franchise.id} value={franchise.id}>
+                  {franchise.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm text-muted-foreground">
+              {filteredListings.length} shown - {pageMeta.totalElements} total records
+            </p>
+
+            <div className="flex flex-wrap items-center gap-2">
+              {franchiseFilter && (
+                <Badge variant="secondary" className="w-fit">
+                  {franchisesById[Number(franchiseFilter)] || `Franchise ID ${franchiseFilter}`}
+                </Badge>
+              )}
+              {hasActiveFilters && (
+                <Button type="button" variant="ghost" size="sm" onClick={clearFilters}>
+                  Clear filters
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
 
         <LoadingOverlay active={mutating} message="Updating source listings..." className="mt-4">
           <FigureSourceListingTable
             listings={filteredListings}
             loading={loading}
+            figureImagesById={figureImagesById}
             onEdit={openEditDialog}
             onDelete={setListingToDelete}
           />

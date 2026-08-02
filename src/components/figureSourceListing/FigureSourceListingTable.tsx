@@ -1,6 +1,11 @@
 import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { formatDateTime } from "@/lib/date";
 import {
   Table,
@@ -12,11 +17,55 @@ import {
 } from "@/components/ui/table";
 import type { FigureSourceListing } from "./FigureSourceListingFormDialog";
 
+const FALLBACK_IMAGE_URL = `${import.meta.env.BASE_URL}placeholder.svg`;
+
 type FigureSourceListingTableProps = {
   listings: FigureSourceListing[];
   loading: boolean;
+  figureImagesById: Record<number, string | null | undefined>;
   onEdit: (listing: FigureSourceListing) => void;
   onDelete: (listing: FigureSourceListing) => void;
+};
+
+const ListingFigureThumbnail = ({
+  imageUrl,
+  altText,
+}: {
+  imageUrl?: string | null;
+  altText: string;
+}) => {
+  const resolvedImageUrl = imageUrl || FALLBACK_IMAGE_URL;
+
+  return (
+    <HoverCard openDelay={150} closeDelay={80}>
+      <HoverCardTrigger asChild>
+        <div className="h-16 w-14 cursor-zoom-in overflow-hidden rounded-md border bg-muted">
+          <img
+            src={resolvedImageUrl}
+            alt={altText}
+            className="h-full w-full object-contain"
+            loading="lazy"
+            onError={(event) => {
+              event.currentTarget.src = FALLBACK_IMAGE_URL;
+            }}
+          />
+        </div>
+      </HoverCardTrigger>
+      <HoverCardContent side="right" align="center" className="w-72 p-2">
+        <div className="aspect-[4/5] overflow-hidden rounded-md bg-muted">
+          <img
+            src={resolvedImageUrl}
+            alt={altText}
+            className="h-full w-full object-contain"
+            onError={(event) => {
+              event.currentTarget.src = FALLBACK_IMAGE_URL;
+            }}
+          />
+        </div>
+        <p className="mt-2 line-clamp-2 text-xs font-medium text-popover-foreground">{altText}</p>
+      </HoverCardContent>
+    </HoverCard>
+  );
 };
 
 const loadMethodVariant = (loadMethod?: string | null): "default" | "secondary" | "outline" => {
@@ -30,6 +79,7 @@ const loadMethodVariant = (loadMethod?: string | null): "default" | "secondary" 
 const FigureSourceListingTable = ({
   listings,
   loading,
+  figureImagesById,
   onEdit,
   onDelete,
 }: FigureSourceListingTableProps) => {
@@ -40,6 +90,7 @@ const FigureSourceListingTable = ({
           <TableHeader>
             <TableRow>
               <TableHead className="w-20">ID</TableHead>
+              <TableHead className="w-24">Image</TableHead>
               <TableHead>Figure</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Load Method</TableHead>
@@ -50,19 +101,21 @@ const FigureSourceListingTable = ({
               <TableHead>Release Est.</TableHead>
               <TableHead>Captured</TableHead>
               <TableHead>Available</TableHead>
-              <TableHead className="w-48 text-right">Actions</TableHead>
+              <TableHead className="sticky right-0 z-10 w-20 border-l bg-card text-center">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={12} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={13} className="h-28 text-center text-muted-foreground">
                   Loading source listings...
                 </TableCell>
               </TableRow>
             ) : listings.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={12} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={13} className="h-28 text-center text-muted-foreground">
                   No source listings found.
                 </TableCell>
               </TableRow>
@@ -70,6 +123,12 @@ const FigureSourceListingTable = ({
               listings.map((listing) => (
                 <TableRow key={listing.id}>
                   <TableCell className="font-medium">{listing.id}</TableCell>
+                  <TableCell>
+                    <ListingFigureThumbnail
+                      imageUrl={listing.figureId ? figureImagesById[listing.figureId] : undefined}
+                      altText={listing.figureName || `Figure ${listing.figureId || ""}`.trim()}
+                    />
+                  </TableCell>
                   <TableCell>{listing.figureName || listing.figureId || "-"}</TableCell>
                   <TableCell>{listing.sourceName || listing.sourceId || "-"}</TableCell>
                   <TableCell>
@@ -108,15 +167,29 @@ const FigureSourceListingTable = ({
                         ? "Yes"
                         : "No"}
                   </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => onEdit(listing)}>
+                  <TableCell className="sticky right-0 z-10 border-l bg-card">
+                    <div className="flex justify-center gap-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        title="Actualizar"
+                        aria-label="Actualizar"
+                        onClick={() => onEdit(listing)}
+                      >
                         <Pencil className="h-3.5 w-3.5" />
-                        Actualizar
                       </Button>
-                      <Button type="button" variant="destructive" size="sm" className="gap-2" onClick={() => onDelete(listing)}>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        className="h-8 w-8"
+                        title="Eliminar"
+                        aria-label="Eliminar"
+                        onClick={() => onDelete(listing)}
+                      >
                         <Trash2 className="h-3.5 w-3.5" />
-                        Eliminar
                       </Button>
                     </div>
                   </TableCell>

@@ -1,4 +1,4 @@
-import { ExternalLink, Pencil, ShieldAlert, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink, Pencil, ShieldAlert, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   HoverCard,
@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Figure } from "./FigureFormDialog";
+import type { Figure, FigureSort, FigureSortField } from "./FigureFormDialog";
 
 const FALLBACK_IMAGE_URL = `${import.meta.env.BASE_URL}placeholder.svg`;
 
@@ -22,9 +22,41 @@ type FigureTableProps = {
   loading: boolean;
   franchiseNames: Record<number, string>;
   brandNames: Record<number, string>;
+  sort: FigureSort;
+  onSort: (field: FigureSortField) => void;
   onEdit: (figure: Figure) => void;
   onDelete: (figure: Figure) => void;
   onPhysicalDelete: (figure: Figure) => void;
+};
+
+const SortableHead = ({
+  field,
+  label,
+  sort,
+  onSort,
+  className,
+}: {
+  field: FigureSortField;
+  label: string;
+  sort: FigureSort;
+  onSort: (field: FigureSortField) => void;
+  className?: string;
+}) => {
+  const active = sort.field === field;
+  const Icon = active ? (sort.direction === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
+
+  return (
+    <TableHead className={className}>
+      <button
+        type="button"
+        onClick={() => onSort(field)}
+        className="inline-flex items-center gap-1 text-left hover:text-foreground"
+      >
+        {label}
+        <Icon className={`h-3.5 w-3.5 ${active ? "text-foreground" : "text-muted-foreground"}`} />
+      </button>
+    </TableHead>
+  );
 };
 
 const getFranchiseName = (figure: Figure, franchiseNames: Record<number, string>) => {
@@ -80,6 +112,8 @@ const FigureTable = ({
   loading,
   franchiseNames,
   brandNames,
+  sort,
+  onSort,
   onEdit,
   onDelete,
   onPhysicalDelete,
@@ -90,17 +124,17 @@ const FigureTable = ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-20">ID</TableHead>
+              <SortableHead field="id" label="ID" sort={sort} onSort={onSort} className="w-20" />
               <TableHead className="w-24">Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Slug</TableHead>
-              <TableHead>Franchise</TableHead>
-              <TableHead>Brand</TableHead>
-              <TableHead>JAN/EAN</TableHead>
-              <TableHead>Product Code</TableHead>
+              <SortableHead field="name" label="Name" sort={sort} onSort={onSort} />
+              <SortableHead field="slug" label="Slug" sort={sort} onSort={onSort} />
+              <SortableHead field="franchiseId" label="Franchise" sort={sort} onSort={onSort} />
+              <SortableHead field="brandId" label="Brand" sort={sort} onSort={onSort} />
+              <SortableHead field="janCode" label="JAN/EAN" sort={sort} onSort={onSort} />
+              <SortableHead field="officialProductCode" label="Product Code" sort={sort} onSort={onSort} />
               <TableHead>Reference</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Load Method</TableHead>
+              <SortableHead field="status" label="Status" sort={sort} onSort={onSort} />
+              <SortableHead field="loadMethod" label="Load Method" sort={sort} onSort={onSort} />
               <TableHead className="w-80 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>

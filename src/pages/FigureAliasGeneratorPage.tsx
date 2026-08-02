@@ -836,104 +836,106 @@ const FigureAliasGeneratorPage = () => {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="flex flex-col gap-4 rounded-lg border bg-background p-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="flex min-w-0 gap-4">
-                      <div className="h-28 w-24 shrink-0 overflow-hidden rounded-md border bg-muted">
-                        <img
-                          src={getFigureImageUrl(selectedFigure)}
-                          alt={getFigureName(selectedFigure) || "Selected figure image"}
-                          className="h-full w-full object-contain"
-                          loading="lazy"
-                          onError={(event) => {
-                            event.currentTarget.src = FALLBACK_IMAGE_URL;
-                          }}
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-                          Selected Figure
-                        </p>
-                        <h2 className="mt-2 whitespace-normal break-words text-2xl font-bold text-foreground">
-                          {getFigureName(selectedFigure) || `Figure ${selectedFigureId}`}
-                        </h2>
-                        <div className="mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground">
-                          <Badge variant="outline">ID {selectedFigureId}</Badge>
-                          {selectedFigure.status && <Badge variant="outline">{selectedFigure.status}</Badge>}
-                          {selectedFigure.lineName && <Badge variant="outline">{selectedFigure.lineName}</Badge>}
-                          <Badge variant="secondary">{getAliasCount(selectedFigure)} aliases</Badge>
-                          <Badge variant={figureHasGeneratedAliases(selectedFigure) ? "default" : "outline"}>
-                            {getGeneratedAliasCount(selectedFigure)} generated
-                          </Badge>
-                          {selectedFigure.mayNeedRegeneration && (
-                            <Badge variant="secondary">Needs regeneration</Badge>
-                          )}
+                  <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+                    <div className="sticky top-0 z-20 -mx-4 -mt-4 space-y-4 rounded-t-lg border-b bg-card px-4 pb-4 pt-4">
+                      <div className="flex flex-col gap-4 rounded-lg border bg-background p-4 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="flex min-w-0 gap-4">
+                          <div className="h-28 w-24 shrink-0 overflow-hidden rounded-md border bg-muted">
+                            <img
+                              src={getFigureImageUrl(selectedFigure)}
+                              alt={getFigureName(selectedFigure) || "Selected figure image"}
+                              className="h-full w-full object-contain"
+                              loading="lazy"
+                              onError={(event) => {
+                                event.currentTarget.src = FALLBACK_IMAGE_URL;
+                              }}
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+                              Selected Figure
+                            </p>
+                            <h2 className="mt-2 whitespace-normal break-words text-2xl font-bold text-foreground">
+                              {getFigureName(selectedFigure) || `Figure ${selectedFigureId}`}
+                            </h2>
+                            <div className="mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground">
+                              <Badge variant="outline">ID {selectedFigureId}</Badge>
+                              {selectedFigure.status && <Badge variant="outline">{selectedFigure.status}</Badge>}
+                              {selectedFigure.lineName && <Badge variant="outline">{selectedFigure.lineName}</Badge>}
+                              <Badge variant="secondary">{getAliasCount(selectedFigure)} aliases</Badge>
+                              <Badge variant={figureHasGeneratedAliases(selectedFigure) ? "default" : "outline"}>
+                                {getGeneratedAliasCount(selectedFigure)} generated
+                              </Badge>
+                              {selectedFigure.mayNeedRegeneration && (
+                                <Badge variant="secondary">Needs regeneration</Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="gap-2"
+                            disabled={previewLoading || generating}
+                            onClick={handlePreviewAliases}
+                          >
+                            <Eye className="h-4 w-4" />
+                            Preview generated aliases
+                          </Button>
+                          <Button
+                            type="button"
+                            className="gap-2"
+                            disabled={generating}
+                            onClick={handleGenerateAliases}
+                          >
+                            <Wand2 className="h-4 w-4" />
+                            Generate and save aliases
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            className="gap-2"
+                            disabled={loadingExistingAliases || generating}
+                            onClick={() => {
+                              setActiveTab("existing");
+                              fetchExistingAliases();
+                            }}
+                          >
+                            <RefreshCw className="h-4 w-4" />
+                            Refresh existing aliases
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            className="gap-2"
+                            disabled={queriesLoading || generating}
+                            onClick={() => {
+                              setActiveTab("queries");
+                              fetchScrapingQueries(queryMax);
+                            }}
+                          >
+                            <RefreshCw className="h-4 w-4" />
+                            Refresh scraping queries
+                          </Button>
                         </div>
                       </div>
+
+                      {successMessage && (
+                        <div className="rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm font-medium text-foreground">
+                          {successMessage}
+                        </div>
+                      )}
+
+                      <GenerationSummary result={generationResult} />
+
+                      <TabsList className="grid h-auto w-full grid-cols-1 md:grid-cols-3">
+                        <TabsTrigger value="generated">Generated Aliases</TabsTrigger>
+                        <TabsTrigger value="existing">Existing Aliases</TabsTrigger>
+                        <TabsTrigger value="queries">Scraping Queries</TabsTrigger>
+                      </TabsList>
                     </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="gap-2"
-                        disabled={previewLoading || generating}
-                        onClick={handlePreviewAliases}
-                      >
-                        <Eye className="h-4 w-4" />
-                        Preview generated aliases
-                      </Button>
-                      <Button
-                        type="button"
-                        className="gap-2"
-                        disabled={generating}
-                        onClick={handleGenerateAliases}
-                      >
-                        <Wand2 className="h-4 w-4" />
-                        Generate and save aliases
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="gap-2"
-                        disabled={loadingExistingAliases || generating}
-                        onClick={() => {
-                          setActiveTab("existing");
-                          fetchExistingAliases();
-                        }}
-                      >
-                        <RefreshCw className="h-4 w-4" />
-                        Refresh existing aliases
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="gap-2"
-                        disabled={queriesLoading || generating}
-                        onClick={() => {
-                          setActiveTab("queries");
-                          fetchScrapingQueries(queryMax);
-                        }}
-                      >
-                        <RefreshCw className="h-4 w-4" />
-                        Refresh scraping queries
-                      </Button>
-                    </div>
-                  </div>
-
-                  {successMessage && (
-                    <div className="rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm font-medium text-foreground">
-                      {successMessage}
-                    </div>
-                  )}
-
-                  <GenerationSummary result={generationResult} />
-
-                  <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-                    <TabsList className="grid h-auto w-full grid-cols-1 md:grid-cols-3">
-                      <TabsTrigger value="generated">Generated Aliases</TabsTrigger>
-                      <TabsTrigger value="existing">Existing Aliases</TabsTrigger>
-                      <TabsTrigger value="queries">Scraping Queries</TabsTrigger>
-                    </TabsList>
 
                     <TabsContent value="generated" className="space-y-3">
                       <div>

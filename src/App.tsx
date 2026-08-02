@@ -17,6 +17,7 @@ const FigureSourceListingPage = lazy(() => import("./pages/FigureSourceListingPa
 const FranchisePage = lazy(() => import("./pages/FranchisePage.tsx"));
 const SourcePage = lazy(() => import("./pages/SourcePage.tsx"));
 const CandidateReviewPage = lazy(() => import("./pages/CandidateReviewPage.tsx"));
+const DiscoveryCandidateReviewPage = lazy(() => import("./pages/DiscoveryCandidateReviewPage.tsx"));
 const FigureAliasGeneratorPage = lazy(() => import("./pages/FigureAliasGeneratorPage.tsx"));
 const ScrapingRunnerPage = lazy(() => import("./pages/ScrapingRunnerPage.tsx"));
 const CharacterPage = lazy(() =>
@@ -64,6 +65,7 @@ const App = () => (
                             <Route path="/work/franchises" element={<FranchisePage />} />
                             <Route path="/work/sources" element={<SourcePage />} />
                             <Route path="/figure-admin/candidate-review" element={<CandidateReviewPage />} />
+                            <Route path="/figure-admin/discovery-candidates" element={<DiscoveryCandidateReviewPage />} />
                             <Route path="/figure-admin/alias-generator" element={<FigureAliasGeneratorPage />} />
                             <Route path="/figure-admin/scraping-runner" element={<ScrapingRunnerPage />} />
                             <Route path="/character-admin/characters" element={<CharacterPage />} />

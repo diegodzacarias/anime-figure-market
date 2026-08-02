@@ -72,9 +72,6 @@ const Navbar = () => {
           <Link to="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             Inicio
           </Link>
-          <span className="text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer">
-            Novedades
-          </span>
           <Link to="/color-test" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             ColorTest
           </Link>
@@ -146,6 +143,13 @@ const Navbar = () => {
                   onClick={closeMenus}
                 >
                   Candidate Review
+                </Link>
+                <Link
+                  to="/figure-admin/discovery-candidates"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Discovery Candidates
                 </Link>
                 <Link
                   to="/figure-admin/alias-generator"

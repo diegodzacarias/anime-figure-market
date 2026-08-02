@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
-import { Plus, Search } from "lucide-react";
+import { ChevronDown, Plus, Search } from "lucide-react";
 import {
   physicallyDeleteFigure,
   type FigurePhysicalDeleteResponse,
@@ -25,11 +25,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ApiErrorToast from "@/components/ui/api-error-toast";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import PageControls from "@/components/ui/page-controls";
 import FigureTable from "@/components/figure/FigureTable";
-import type { Figure, FranchiseOption } from "@/components/figure/FigureFormDialog";
+import type {
+  BrandOption,
+  Figure,
+  FigureSort,
+  FigureSortField,
+  FranchiseOption,
+} from "@/components/figure/FigureFormDialog";
 import type { SourceOption } from "@/components/figureAlias/FigureAliasFormDialog";
 import { useReferenceData } from "@/hooks/useReferenceData";
 import { ApiErrorResponse, normalizeApiError, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
@@ -44,15 +55,20 @@ const FIGURE_SLUG_SUGGESTION_ENDPOINT = `${FIGURES_ENDPOINT}/slug/suggestion`;
 const FIGURE_SLUG_AVAILABILITY_ENDPOINT = `${FIGURES_ENDPOINT}/slug/availability`;
 const FRANCHISES_ENDPOINT = `${API_BASE_URL}/v1/franchises`;
 const SOURCES_ENDPOINT = `${API_BASE_URL}/v1/sources`;
+const BRANDS_ENDPOINT = `${API_BASE_URL}/v1/brands`;
 
 const FigureFormDialog = lazy(() => import("@/components/figure/FigureFormDialog"));
 
-const brands = [
+// Fallback mientras el backend no exponga GET /v1/brands (ver BRANDS_ENDPOINT).
+// TODO: eliminar este hardcodeo una vez el endpoint este disponible.
+const fallbackBrands: BrandOption[] = [
   { id: 1, name: "Good Smile Company" },
   { id: 2, name: "Kotobukiya" },
   { id: 3, name: "MegaHouse" },
-  { id: 4, name: "Prime 1" },
-  { id: 5, name: "FREEing" },
+  { id: 4, name: "Prime 1 Studio" },
+  { id: 5, name: "Tsume Art" },
+  { id: 6, name: "Gecco" },
+  { id: 7, name: "Oniri Créations" },
 ];
 
 const fallbackCurrencyCodes = [
@@ -78,12 +94,13 @@ const buildFigureSearchUrl = (
   page: number,
   size: number,
   query: string,
-  filters: FigureSearchFilters
+  filters: FigureSearchFilters,
+  sort: FigureSort
 ) => {
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
-    sort: "name,asc",
+    sort: `${sort.field},${sort.direction}`,
   });
 
   if (query.trim()) {
@@ -101,6 +118,7 @@ const FigurePage = () => {
   const [figures, setFigures] = useState<Figure[]>([]);
   const [franchises, setFranchises] = useState<FranchiseOption[]>([]);
   const [sources, setSources] = useState<SourceOption[]>([]);
+  const [brands, setBrands] = useState<BrandOption[]>(fallbackBrands);
   const [loading, setLoading] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -116,6 +134,7 @@ const FigurePage = () => {
   });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
+  const [sort, setSort] = useState<FigureSort>({ field: "name", direction: "asc" });
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
   const [apiError, setApiError] = useState<ApiErrorResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -125,6 +144,7 @@ const FigurePage = () => {
   const [physicalDeleteConfirmation, setPhysicalDeleteConfirmation] = useState("");
   const [physicalDeleteResult, setPhysicalDeleteResult] = useState<FigurePhysicalDeleteResponse | null>(null);
   const [figureSlugError, setFigureSlugError] = useState("");
+  const [sourceLinksOpen, setSourceLinksOpen] = useState(false);
   const mutating = saving || deleting || physicalDeleting;
   const { referenceData } = useReferenceData();
 
@@ -135,10 +155,11 @@ const FigurePage = () => {
     }
 
     try {
-      const [figuresResponse, franchisesResponse, sourcesResponse] = await Promise.all([
-        fetch(buildFigureSearchUrl(page, pageSize, search, filters)),
+      const [figuresResponse, franchisesResponse, sourcesResponse, brandsResponse] = await Promise.all([
+        fetch(buildFigureSearchUrl(page, pageSize, search, filters, sort)),
         fetch(withPageSize(FRANCHISES_ENDPOINT)),
         fetch(withPageSize(SOURCES_ENDPOINT)),
+        fetch(withPageSize(BRANDS_ENDPOINT)),
       ]);
 
       if (figuresResponse.ok) {
@@ -162,6 +183,15 @@ const FigurePage = () => {
       } else {
         console.error("Error fetching sources");
       }
+
+      if (brandsResponse.ok) {
+        const data = await brandsResponse.json();
+        const content = getPageContent<BrandOption>(data);
+        if (content.length > 0) setBrands(content);
+      } else {
+        // Backend aun no expone /v1/brands: seguimos con fallbackBrands.
+        console.error("Error fetching brands");
+      }
     } catch (error) {
       console.error("Request error fetching figures:", error);
     } finally {
@@ -174,7 +204,16 @@ const FigurePage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, pageSize, search, filters]);
+  }, [page, pageSize, search, filters, sort]);
+
+  const handleSort = (field: FigureSortField) => {
+    setSort((current) =>
+      current.field === field
+        ? { field, direction: current.direction === "asc" ? "desc" : "asc" }
+        : { field, direction: "asc" }
+    );
+    setPage(0);
+  };
 
   const franchiseNames = useMemo(
     () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])),
@@ -183,7 +222,7 @@ const FigurePage = () => {
 
   const brandNames = useMemo(
     () => Object.fromEntries(brands.map((brand) => [brand.id, brand.name])),
-    []
+    [brands]
   );
 
   const filteredFigures = figures;
@@ -337,30 +376,41 @@ const FigurePage = () => {
           </Button>
         </div>
 
-        <div className="mt-6 rounded-lg border bg-muted/30 p-4">
-          <h2 className="text-sm font-medium text-foreground">Source quick links</h2>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {sources.filter((source) => source.baseUrl).length === 0 ? (
-              <p className="text-sm text-muted-foreground">No source URLs available.</p>
-            ) : (
-              sources
-                .filter((source) => source.baseUrl)
-                .map((source) => (
-                  <a
-                    key={source.id}
-                    href={source.baseUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
-                  >
-                    {source.name}
-                  </a>
-                ))
-            )}
-          </div>
-        </div>
+        <Collapsible
+          open={sourceLinksOpen}
+          onOpenChange={setSourceLinksOpen}
+          className="mt-6 rounded-lg border bg-muted/30 p-4"
+        >
+          <CollapsibleTrigger className="flex w-full items-center justify-between text-left">
+            <h2 className="text-sm font-medium text-foreground">Source quick links</h2>
+            <ChevronDown
+              className={`h-4 w-4 text-muted-foreground transition-transform ${sourceLinksOpen ? "rotate-180" : ""}`}
+            />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {sources.filter((source) => source.baseUrl).length === 0 ? (
+                <p className="text-sm text-muted-foreground">No source URLs available.</p>
+              ) : (
+                sources
+                  .filter((source) => source.baseUrl)
+                  .map((source) => (
+                    <a
+                      key={source.id}
+                      href={source.baseUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+                    >
+                      {source.name}
+                    </a>
+                  ))
+              )}
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
 
-        <div className="mt-6 rounded-lg border bg-card p-4">
+        <div className="sticky top-20 z-40 mt-6 rounded-lg border bg-card p-4 shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="relative w-full md:max-w-sm">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -451,6 +501,8 @@ const FigurePage = () => {
             loading={loading}
             franchiseNames={franchiseNames}
             brandNames={brandNames}
+            sort={sort}
+            onSort={handleSort}
             onEdit={openEditDialog}
             onDelete={setFigureToDelete}
             onPhysicalDelete={(figure) => {

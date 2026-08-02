@@ -13,6 +13,7 @@ const emptyReferenceData: ReferenceData = {
   sourceTypes: [],
   scrapedListingCandidateStatuses: [],
   matchDecisions: [],
+  brandSegments: [],
 };
 
 export function useReferenceData() {

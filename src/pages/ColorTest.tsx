@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, type ComponentType } from "react";
 import { ExternalLink, Heart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -148,6 +148,95 @@ const Swatch = ({ hex, label }: { hex: string; label: string }) => (
     </div>
   </div>
 );
+
+/* ===== Adornos para el precio (alternativas al laurel de Airbnb) ===== */
+
+type OrnamentProps = { flip?: boolean };
+
+const ornCls = (flip: boolean) => `h-14 w-6 text-primary ${flip ? "-scale-x-100" : ""}`;
+
+/** Destello de 4 puntas (estilo "kirakira" anime). */
+const Sparkle = ({ cx, cy, s }: { cx: number; cy: number; s: number }) => {
+  const i = s * 0.28;
+  return (
+    <path
+      d={`M${cx} ${cy - s} C ${cx} ${cy - i} ${cx + i} ${cy} ${cx + s} ${cy} C ${cx + i} ${cy} ${cx} ${cy + i} ${cx} ${cy + s} C ${cx} ${cy + i} ${cx - i} ${cy} ${cx - s} ${cy} C ${cx - i} ${cy} ${cx} ${cy - i} ${cx} ${cy - s} Z`}
+      fill="currentColor"
+    />
+  );
+};
+
+/** Laurel Airbnb actual (referencia). */
+const Laurel = ({ flip = false }: OrnamentProps) => (
+  <svg viewBox="0 0 24 60" className={ornCls(flip)} fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true">
+    <path d="M18 4C7 15 7 45 18 56" />
+    <path d="M17 12c-6 1-8 5-6 9" />
+    <path d="M15.5 22c-6 1-8 5-6 9" />
+    <path d="M14.5 32c-6 1-8 5-6 9" />
+    <path d="M15 42c-5 1-7 5-5 8" />
+  </svg>
+);
+
+/** Rama de cerezo con flores. */
+const Sakura = ({ flip = false }: OrnamentProps) => (
+  <svg viewBox="0 0 24 60" className={ornCls(flip)} fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true">
+    <path d="M20 5C11 16 9 40 16 55" />
+    <path d="M15 20c-4-1-7 1-9 4" />
+    <path d="M13 36c-4 0-7 2-8 5" />
+    <circle cx="5" cy="24" r="2.4" fill="currentColor" stroke="none" />
+    <circle cx="4" cy="41" r="2.4" fill="currentColor" stroke="none" />
+    <circle cx="16" cy="11" r="2.4" fill="currentColor" stroke="none" />
+    <circle cx="17" cy="49" r="2" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+/** Destellos "kirakira" (3 estrellas de brillo). */
+const Kirakira = ({ flip = false }: OrnamentProps) => (
+  <svg viewBox="0 0 24 60" className={ornCls(flip)} aria-hidden="true">
+    <Sparkle cx={13} cy={14} s={7} />
+    <Sparkle cx={7} cy={32} s={5} />
+    <Sparkle cx={14} cy={46} s={4} />
+  </svg>
+);
+
+/** Líneas de acción de manga (speed lines). */
+const SpeedLines = ({ flip = false }: OrnamentProps) => (
+  <svg viewBox="0 0 24 60" className={ornCls(flip)} fill="none" stroke="currentColor" strokeLinecap="round" aria-hidden="true">
+    <path d="M22 12H9" strokeWidth="2.4" />
+    <path d="M22 22H4" strokeWidth="2" />
+    <path d="M22 32H11" strokeWidth="1.6" />
+    <path d="M22 42H5" strokeWidth="2" />
+    <path d="M22 52H12" strokeWidth="1.4" />
+  </svg>
+);
+
+/** Rayo de energía (shonen). */
+const Lightning = ({ flip = false }: OrnamentProps) => (
+  <svg viewBox="0 0 24 60" className={ornCls(flip)} aria-hidden="true">
+    <path d="M14 3 L5 34 L11 34 L8 57 L20 25 L13 25 Z" fill="currentColor" />
+  </svg>
+);
+
+/** Estrella fugaz con estela. */
+const ShootingStar = ({ flip = false }: OrnamentProps) => (
+  <svg viewBox="0 0 24 60" className={ornCls(flip)} aria-hidden="true">
+    <Sparkle cx={16} cy={12} s={6} />
+    <g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.6">
+      <path d="M13 18 L4 44" />
+      <path d="M18 20 L11 40" />
+      <path d="M9 24 L5 36" />
+    </g>
+  </svg>
+);
+
+const ornaments: { name: string; tagline: string; Comp: ComponentType<OrnamentProps> }[] = [
+  { name: "Laurel (actual)", tagline: "El de Airbnb, referencia.", Comp: Laurel },
+  { name: "Sakura", tagline: "Rama de cerezo, muy anime.", Comp: Sakura },
+  { name: "Kirakira", tagline: "Destellos brillantes shoujo.", Comp: Kirakira },
+  { name: "Lineas de accion", tagline: "Speed lines de manga.", Comp: SpeedLines },
+  { name: "Rayo", tagline: "Energia shonen.", Comp: Lightning },
+  { name: "Estrella fugaz", tagline: "Estrella con estela.", Comp: ShootingStar },
+];
 
 const PaletteSection = ({ palette }: { palette: Palette }) => {
   const grad = palette.gradient;
@@ -319,6 +408,41 @@ const ColorTest = () => {
             token global.
           </p>
         </div>
+
+        {/* ===== Adornos para el precio (detalle de figura) ===== */}
+        <section className="mb-10">
+          <div className="mb-4">
+            <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
+              Detalle de figura
+            </p>
+            <h2 className="mt-1 text-xl font-bold text-foreground">Adornos para el precio</h2>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+              Alternativas al laurel de Airbnb, con onda anime. Cada uno flanquea el "Mejor precio"
+              tal como en el detalle de figura. Dime cual adoptamos.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ornaments.map(({ name, tagline, Comp }) => (
+              <div
+                key={name}
+                className="rounded-[16px] border border-border bg-card p-6 shadow-airbnb"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <Comp />
+                  <div className="text-center">
+                    <p className="text-3xl font-bold leading-none text-foreground">$189.00</p>
+                    <p className="mt-1.5 text-sm font-medium text-foreground">Mejor precio</p>
+                  </div>
+                  <Comp flip />
+                </div>
+                <div className="mt-5 border-t border-border pt-3 text-center">
+                  <p className="text-sm font-semibold text-foreground">{name}</p>
+                  <p className="text-[13px] text-muted-foreground">{tagline}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Referencia: el acento actual (Rausch) */}
         <section className="mb-8 rounded-[20px] border border-dashed border-border p-6 md:p-8">

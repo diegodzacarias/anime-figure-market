@@ -84,11 +84,8 @@ const AnimeHero = () => {
                     height={800}
                   />
                 </div>
-                <div className="flex flex-col items-center gap-1 px-5 py-5 text-center">
+                <div className="flex items-center justify-center px-5 py-5 text-center">
                   <h3 className="text-xl font-bold text-foreground md:text-2xl">{anime.name}</h3>
-                  <span className="text-sm font-semibold text-primary transition-transform group-hover:translate-x-0.5">
-                    Ver coleccion →
-                  </span>
                 </div>
               </button>
             ))}

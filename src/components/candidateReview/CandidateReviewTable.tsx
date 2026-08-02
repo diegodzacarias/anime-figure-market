@@ -7,6 +7,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import {
   Table,
   TableBody,
   TableCell,
@@ -14,21 +19,69 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { convertApproxPrice } from "@/lib/currency";
 import { formatDateTime } from "@/lib/date";
 import type { ScrapedListingCandidate } from "./CandidateReviewFormDialog";
+
+const FALLBACK_IMAGE_URL = `${import.meta.env.BASE_URL}placeholder.svg`;
 
 type CandidateReviewTableProps = {
   candidates: ScrapedListingCandidate[];
   loading: boolean;
+  displayCurrency?: string;
+  figureImagesById: Record<number, string | null | undefined>;
   onView: (candidate: ScrapedListingCandidate) => void;
   onApprove: (candidate: ScrapedListingCandidate) => void;
   onReject: (candidate: ScrapedListingCandidate) => void;
   onDelete: (candidate: ScrapedListingCandidate) => void;
 };
 
+const CandidateFigureThumbnail = ({
+  imageUrl,
+  altText,
+}: {
+  imageUrl?: string | null;
+  altText: string;
+}) => {
+  const resolvedImageUrl = imageUrl || FALLBACK_IMAGE_URL;
+
+  return (
+    <HoverCard openDelay={150} closeDelay={80}>
+      <HoverCardTrigger asChild>
+        <div className="h-16 w-14 cursor-zoom-in overflow-hidden rounded-md border bg-muted">
+          <img
+            src={resolvedImageUrl}
+            alt={altText}
+            className="h-full w-full object-contain"
+            loading="lazy"
+            onError={(event) => {
+              event.currentTarget.src = FALLBACK_IMAGE_URL;
+            }}
+          />
+        </div>
+      </HoverCardTrigger>
+      <HoverCardContent side="right" align="center" className="w-72 p-2">
+        <div className="aspect-[4/5] overflow-hidden rounded-md bg-muted">
+          <img
+            src={resolvedImageUrl}
+            alt={altText}
+            className="h-full w-full object-contain"
+            onError={(event) => {
+              event.currentTarget.src = FALLBACK_IMAGE_URL;
+            }}
+          />
+        </div>
+        <p className="mt-2 line-clamp-2 text-xs font-medium text-popover-foreground">{altText}</p>
+      </HoverCardContent>
+    </HoverCard>
+  );
+};
+
 const CandidateReviewTable = ({
   candidates,
   loading,
+  displayCurrency,
+  figureImagesById,
   onView,
   onApprove,
   onReject,
@@ -41,6 +94,7 @@ const CandidateReviewTable = ({
           <TableHeader>
             <TableRow>
               <TableHead className="w-20">ID</TableHead>
+              <TableHead className="w-24">Image</TableHead>
               <TableHead>Figure</TableHead>
               <TableHead>Match Score</TableHead>
               <TableHead>Source</TableHead>
@@ -55,13 +109,13 @@ const CandidateReviewTable = ({
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={10} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={11} className="h-28 text-center text-muted-foreground">
                   Loading candidates...
                 </TableCell>
               </TableRow>
             ) : candidates.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={10} className="h-28 text-center text-muted-foreground">
+                <TableCell colSpan={11} className="h-28 text-center text-muted-foreground">
                   No candidates found.
                 </TableCell>
               </TableRow>
@@ -69,6 +123,12 @@ const CandidateReviewTable = ({
               candidates.map((candidate) => (
                 <TableRow key={candidate.id}>
                   <TableCell className="font-medium">{candidate.id}</TableCell>
+                  <TableCell>
+                    <CandidateFigureThumbnail
+                      imageUrl={candidate.figureId ? figureImagesById[candidate.figureId] : undefined}
+                      altText={candidate.figureName || `Figure ${candidate.figureId || ""}`.trim()}
+                    />
+                  </TableCell>
                   <TableCell className="min-w-56">
                     {candidate.figureId ? (
                       <a
@@ -109,6 +169,22 @@ const CandidateReviewTable = ({
                   </TableCell>
                   <TableCell>
                     {candidate.price ? `${candidate.price} ${candidate.currencyCode || ""}` : "-"}
+                    {displayCurrency &&
+                      candidate.price &&
+                      candidate.currencyCode &&
+                      candidate.currencyCode !== displayCurrency &&
+                      (() => {
+                        const converted = convertApproxPrice(
+                          candidate.price,
+                          candidate.currencyCode,
+                          displayCurrency
+                        );
+                        return converted !== null ? (
+                          <div className="text-xs text-muted-foreground">
+                            ~{converted.toFixed(2)} {displayCurrency}
+                          </div>
+                        ) : null;
+                      })()}
                   </TableCell>
                   <TableCell>{candidate.status || "-"}</TableCell>
                   <TableCell>{formatDateTime(candidate.capturedAt)}</TableCell>

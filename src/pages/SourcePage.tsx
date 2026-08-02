@@ -16,7 +16,7 @@ import ApiErrorToast from "@/components/ui/api-error-toast";
 import { Input } from "@/components/ui/input";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import PageControls from "@/components/ui/page-controls";
-import SourceFormDialog, { Source } from "@/components/source/SourceFormDialog";
+import SourceFormDialog, { Source, SourcePayload } from "@/components/source/SourceFormDialog";
 import SourceTable from "@/components/source/SourceTable";
 import { useReferenceData } from "@/hooks/useReferenceData";
 import { ApiErrorResponse, readApiErrorResponse, toClientApiError } from "@/lib/apiError";
@@ -39,6 +39,13 @@ const fallbackSourcePriorities = [
   { value: "MEDIUM", label: "Medium", level: 50 },
   { value: "LOW", label: "Low", level: 30 },
   { value: "UNRELIABLE", label: "Unreliable", level: 10 },
+];
+
+const fallbackBrandSegments = [
+  { value: "PREMIUM_STATUE", label: "Premium Statue" },
+  { value: "MID_SCALE", label: "Mid Scale" },
+  { value: "MASS_PVC", label: "Mass Pvc" },
+  { value: "PRIZE", label: "Prize" },
 ];
 
 const SourcePage = () => {
@@ -111,7 +118,7 @@ const SourcePage = () => {
     setDialogOpen(true);
   };
 
-  const handleSubmit = async (payload: Record<string, string | number | boolean>) => {
+  const handleSubmit = async (payload: SourcePayload) => {
     setSaving(true);
 
     const isEditing = Boolean(selectedSource?.id);
@@ -235,6 +242,11 @@ const SourcePage = () => {
           referenceData.sourcePriorities.length > 0
             ? referenceData.sourcePriorities
             : fallbackSourcePriorities
+        }
+        brandSegments={
+          referenceData.brandSegments.length > 0
+            ? referenceData.brandSegments
+            : fallbackBrandSegments
         }
         open={dialogOpen}
         saving={saving}

@@ -1,4 +1,5 @@
 import { ExternalLink, Pencil, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -25,9 +26,11 @@ const SourceTable = ({ sources, loading, onEdit, onDelete }: SourceTableProps) =
           <TableRow>
             <TableHead className="w-20">ID</TableHead>
             <TableHead>Name</TableHead>
+            <TableHead>Code</TableHead>
             <TableHead>Base URL</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Priority</TableHead>
+            <TableHead>Segments</TableHead>
             <TableHead>Active</TableHead>
             <TableHead className="w-48 text-right">Actions</TableHead>
           </TableRow>
@@ -35,13 +38,13 @@ const SourceTable = ({ sources, loading, onEdit, onDelete }: SourceTableProps) =
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={7} className="h-28 text-center text-muted-foreground">
+              <TableCell colSpan={9} className="h-28 text-center text-muted-foreground">
                 Loading sources...
               </TableCell>
             </TableRow>
           ) : sources.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="h-28 text-center text-muted-foreground">
+              <TableCell colSpan={9} className="h-28 text-center text-muted-foreground">
                 No sources found.
               </TableCell>
             </TableRow>
@@ -50,6 +53,13 @@ const SourceTable = ({ sources, loading, onEdit, onDelete }: SourceTableProps) =
               <TableRow key={source.id}>
                 <TableCell className="font-medium">{source.id}</TableCell>
                 <TableCell>{source.name || "-"}</TableCell>
+                <TableCell>
+                  {source.code ? (
+                    <Badge variant="secondary">{source.code}</Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
                 <TableCell className="max-w-xs">
                   {source.baseUrl ? (
                     <a
@@ -65,6 +75,19 @@ const SourceTable = ({ sources, loading, onEdit, onDelete }: SourceTableProps) =
                 </TableCell>
                 <TableCell>{source.type || "-"}</TableCell>
                 <TableCell>{source.priority ?? "-"}</TableCell>
+                <TableCell>
+                  {source.coveredSegments && source.coveredSegments.length > 0 ? (
+                    <div className="flex max-w-56 flex-wrap gap-1">
+                      {source.coveredSegments.map((segment) => (
+                        <Badge key={segment} variant="outline">
+                          {segment}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
                 <TableCell>{source.active ? "Yes" : "No"}</TableCell>
                 <TableCell>
                   <div className="flex justify-end gap-2">

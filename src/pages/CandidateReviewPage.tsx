@@ -71,6 +71,7 @@ type CandidateFigureOption = FigureOption & {
   franchiseId?: number;
   franchiseName?: string | null;
   franchise?: { id?: number; name?: string };
+  primaryImageUrl?: string | null;
 };
 
 const getFigureFranchiseId = (figure?: CandidateFigureOption) =>
@@ -82,6 +83,19 @@ const getFigureFranchiseName = (
 ) => {
   const franchiseId = getFigureFranchiseId(figure);
   return figure?.franchiseName || figure?.franchise?.name || (franchiseId ? franchisesById[franchiseId] : "");
+};
+
+const isCapturedWithinRange = (capturedAt: string | null | undefined, dateFrom: string, dateTo: string) => {
+  if (!dateFrom && !dateTo) return true;
+  if (!capturedAt) return false;
+
+  const timestamp = new Date(capturedAt).getTime();
+  if (Number.isNaN(timestamp)) return false;
+
+  if (dateFrom && timestamp < new Date(`${dateFrom}T00:00:00`).getTime()) return false;
+  if (dateTo && timestamp > new Date(`${dateTo}T23:59:59.999`).getTime()) return false;
+
+  return true;
 };
 
 const CandidateReviewPage = () => {
@@ -98,6 +112,10 @@ const CandidateReviewPage = () => {
   const [statusChanging, setStatusChanging] = useState(false);
   const [search, setSearch] = useState("");
   const [franchiseFilter, setFranchiseFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [displayCurrency, setDisplayCurrency] = useState("");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
@@ -166,7 +184,7 @@ const CandidateReviewPage = () => {
 
   useEffect(() => {
     setPage(0);
-  }, [figureIdFilter, franchiseFilter, search]);
+  }, [figureIdFilter, franchiseFilter, statusFilter, dateFrom, dateTo, search]);
 
   const figuresById = useMemo<Record<number, CandidateFigureOption>>(
     () => Object.fromEntries(figures.map((figure) => [figure.id, figure])) as Record<number, CandidateFigureOption>,
@@ -176,6 +194,11 @@ const CandidateReviewPage = () => {
   const franchisesById = useMemo<Record<number, string>>(
     () => Object.fromEntries(franchises.map((franchise) => [franchise.id, franchise.name])) as Record<number, string>,
     [franchises]
+  );
+
+  const figureImagesById = useMemo<Record<number, string | null | undefined>>(
+    () => Object.fromEntries(figures.map((figure) => [figure.id, figure.primaryImageUrl])),
+    [figures]
   );
 
   const filteredCandidates = useMemo(() => {
@@ -188,10 +211,19 @@ const CandidateReviewPage = () => {
           return String(getFigureFranchiseId(figure) || "") === franchiseFilter;
         })
       : figureFilteredCandidates;
+    const statusFilteredCandidates = statusFilter
+      ? franchiseFilteredCandidates.filter((candidate) => candidate.status === statusFilter)
+      : franchiseFilteredCandidates;
+    const dateFilteredCandidates =
+      dateFrom || dateTo
+        ? statusFilteredCandidates.filter((candidate) =>
+            isCapturedWithinRange(candidate.capturedAt, dateFrom, dateTo)
+          )
+        : statusFilteredCandidates;
     const query = search.trim().toLowerCase();
-    if (!query) return franchiseFilteredCandidates;
+    if (!query) return dateFilteredCandidates;
 
-    return franchiseFilteredCandidates.filter((candidate) => {
+    return dateFilteredCandidates.filter((candidate) => {
       const figure = candidate.figureId ? figuresById[candidate.figureId] : undefined;
       const franchiseName = getFigureFranchiseName(figure, franchisesById);
 
@@ -215,7 +247,17 @@ const CandidateReviewPage = () => {
         .filter(Boolean)
         .some((value) => value?.toLowerCase().includes(query));
     });
-  }, [candidates, figureIdFilter, figuresById, franchiseFilter, franchisesById, search]);
+  }, [
+    candidates,
+    figureIdFilter,
+    figuresById,
+    franchiseFilter,
+    franchisesById,
+    statusFilter,
+    dateFrom,
+    dateTo,
+    search,
+  ]);
 
   const openCreateDialog = () => {
     setSelectedCandidate(null);
@@ -312,6 +354,24 @@ const CandidateReviewPage = () => {
     }
   };
 
+  const candidateStatusOptions =
+    referenceData.scrapedListingCandidateStatuses.length > 0
+      ? referenceData.scrapedListingCandidateStatuses
+      : fallbackCandidateStatuses;
+  const currencyOptions =
+    referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes;
+
+  const hasActiveFilters = Boolean(
+    figureIdFilter || franchiseFilter || statusFilter || dateFrom || dateTo
+  );
+
+  const clearFilters = () => {
+    setFranchiseFilter("");
+    setStatusFilter("");
+    setDateFrom("");
+    setDateTo("");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -332,8 +392,8 @@ const CandidateReviewPage = () => {
           </Button>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="relative w-full md:max-w-sm">
+        <div className="sticky top-20 z-40 mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 shadow-sm">
+          <div className="relative w-full">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}
@@ -343,34 +403,98 @@ const CandidateReviewPage = () => {
             />
           </div>
 
-          <select
-            value={franchiseFilter}
-            onChange={(event) => setFranchiseFilter(event.target.value)}
-            className="w-full rounded border border-input bg-background p-2 text-sm text-foreground md:max-w-xs"
-          >
-            <option value="">All franchises</option>
-            {franchises.map((franchise) => (
-              <option key={franchise.id} value={franchise.id}>
-                {franchise.name}
-              </option>
-            ))}
-          </select>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <select
+              value={franchiseFilter}
+              onChange={(event) => setFranchiseFilter(event.target.value)}
+              className="w-full rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All franchises</option>
+              {franchises.map((franchise) => (
+                <option key={franchise.id} value={franchise.id}>
+                  {franchise.name}
+                </option>
+              ))}
+            </select>
 
-          <p className="text-sm text-muted-foreground">
-            {filteredCandidates.length} shown - {pageMeta.totalElements} total records
-          </p>
+            <select
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+              className="w-full rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">All statuses</option>
+              {candidateStatusOptions.map((status) => (
+                <option key={status.value} value={status.value}>
+                  {status.label}
+                </option>
+              ))}
+            </select>
 
-          <div className="flex flex-wrap gap-2">
-            {figureIdFilter && (
-              <Badge variant="secondary" className="w-fit">
-                Figure ID {figureIdFilter}
-              </Badge>
-            )}
-            {franchiseFilter && (
-              <Badge variant="secondary" className="w-fit">
-                {franchisesById[Number(franchiseFilter)] || `Franchise ID ${franchiseFilter}`}
-              </Badge>
-            )}
+            <Input
+              type="date"
+              value={dateFrom}
+              max={dateTo || undefined}
+              onChange={(event) => setDateFrom(event.target.value)}
+              className="text-sm"
+              aria-label="Captured from"
+            />
+
+            <Input
+              type="date"
+              value={dateTo}
+              min={dateFrom || undefined}
+              onChange={(event) => setDateTo(event.target.value)}
+              className="text-sm"
+              aria-label="Captured to"
+            />
+
+            <select
+              value={displayCurrency}
+              onChange={(event) => setDisplayCurrency(event.target.value)}
+              className="w-full rounded border border-input bg-background p-2 text-sm text-foreground"
+            >
+              <option value="">Original currency</option>
+              {currencyOptions.map((currency) => (
+                <option key={currency.value} value={currency.value}>
+                  Show all in {currency.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm text-muted-foreground">
+              {filteredCandidates.length} shown - {pageMeta.totalElements} total records
+            </p>
+
+            <div className="flex flex-wrap items-center gap-2">
+              {figureIdFilter && (
+                <Badge variant="secondary" className="w-fit">
+                  Figure ID {figureIdFilter}
+                </Badge>
+              )}
+              {franchiseFilter && (
+                <Badge variant="secondary" className="w-fit">
+                  {franchisesById[Number(franchiseFilter)] || `Franchise ID ${franchiseFilter}`}
+                </Badge>
+              )}
+              {statusFilter && (
+                <Badge variant="secondary" className="w-fit">
+                  {candidateStatusOptions.find((status) => status.value === statusFilter)?.label ||
+                    statusFilter}
+                </Badge>
+              )}
+              {(dateFrom || dateTo) && (
+                <Badge variant="secondary" className="w-fit">
+                  {dateFrom || "..."} to {dateTo || "..."}
+                </Badge>
+              )}
+              {hasActiveFilters && (
+                <Button type="button" variant="ghost" size="sm" onClick={clearFilters}>
+                  Clear filters
+                </Button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -378,6 +502,8 @@ const CandidateReviewPage = () => {
           <CandidateReviewTable
             candidates={filteredCandidates}
             loading={loading}
+            displayCurrency={displayCurrency}
+            figureImagesById={figureImagesById}
             onView={openViewDialog}
             onApprove={setCandidateToApprove}
             onReject={setCandidateToReject}
@@ -408,12 +534,8 @@ const CandidateReviewPage = () => {
         open={dialogOpen}
         saving={saving}
         loadingOptions={loadingOptions || loadingReferenceData}
-        currencyCodes={referenceData.currencyCodes.length > 0 ? referenceData.currencyCodes : fallbackCurrencyCodes}
-        candidateStatuses={
-          referenceData.scrapedListingCandidateStatuses.length > 0
-            ? referenceData.scrapedListingCandidateStatuses
-            : fallbackCandidateStatuses
-        }
+        currencyCodes={currencyOptions}
+        candidateStatuses={candidateStatusOptions}
         listingStatuses={
           referenceData.figureSourceListingStatuses.length > 0
             ? referenceData.figureSourceListingStatuses

@@ -116,22 +116,14 @@ const buildOtherRankingUrl = (figureId: string, currencyCode: CurrencyCode, excl
   return `${FIGURE_SOURCE_LISTINGS_ENDPOINT}/price-ranking/others?${params.toString()}`;
 };
 
-/** Laurel wreath ornament flanking the rating-display number — Airbnb's signature moment. */
-const Laurel = ({ flip = false }: { flip?: boolean }) => (
+/** Rayo de energia (shonen) que flanquea el "Mejor precio". */
+const Lightning = ({ flip = false }: { flip?: boolean }) => (
   <svg
     viewBox="0 0 24 60"
-    className={`h-14 w-6 text-[#c1c1c1] ${flip ? "-scale-x-100" : ""}`}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.4"
-    strokeLinecap="round"
+    className={`h-14 w-6 text-primary ${flip ? "-scale-x-100" : ""}`}
     aria-hidden="true"
   >
-    <path d="M18 4C7 15 7 45 18 56" />
-    <path d="M17 12c-6 1-8 5-6 9" />
-    <path d="M15.5 22c-6 1-8 5-6 9" />
-    <path d="M14.5 32c-6 1-8 5-6 9" />
-    <path d="M15 42c-5 1-7 5-5 8" />
+    <path d="M14 3 L5 34 L11 34 L8 57 L20 25 L13 25 Z" fill="currentColor" />
   </svg>
 );
 
@@ -421,23 +413,25 @@ const FigureDetail = () => {
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(20rem,1fr)] lg:items-start lg:gap-12">
               {/* Columna izquierda: imagen + listado de tiendas */}
               <div>
-                <div className="relative overflow-hidden rounded-[20px] bg-muted">
-                  <div className="aspect-[4/5]">
+                <div className="relative overflow-hidden rounded-[20px] border border-border bg-muted shadow-airbnb">
+                  <div className="relative aspect-[4/5]">
+                    {/* Fondo desenfocado: rellena el marco cuando la foto no calza (ej. más ancha que alta). */}
+                    <img
+                      src={imageUrl}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl"
+                    />
+                    {/* Foto real, completa: nunca se recorta. */}
                     <img
                       src={imageUrl}
                       alt={figure?.name || "Figure image"}
-                      className="h-full w-full object-contain"
+                      className="relative z-[1] h-full w-full object-contain p-3"
                       onError={(event) => {
                         event.currentTarget.src = FALLBACK_IMAGE_URL;
                       }}
                     />
                   </div>
-                  {bestListing && (
-                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 text-[13px] font-semibold text-foreground shadow-airbnb">
-                      <span className="text-primary">♥</span>
-                      Mejor precio {formatConvertedPrice(bestListing)}
-                    </span>
-                  )}
                 </div>
 
                 <section className="mt-10">
@@ -502,14 +496,14 @@ const FigureDetail = () => {
                   ) : bestListing ? (
                     <>
                       <div className="flex items-center justify-center gap-2 pb-4 text-center">
-                        <Laurel />
+                        <Lightning />
                         <div>
                           <p className="text-4xl font-bold leading-none tracking-tight text-foreground md:text-5xl">
                             {formatConvertedPrice(bestListing)}
                           </p>
                           <p className="mt-2 text-sm font-medium text-foreground">Mejor precio</p>
                         </div>
-                        <Laurel flip />
+                        <Lightning flip />
                       </div>
 
                       <div className="border-t border-border pt-4">
