@@ -228,35 +228,49 @@ const AnimeDetail = () => {
             No hay figuras registradas para esta franquicia.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-            {figures.map((figure) => (
-              <Link
-                key={figure.id}
-                to={figure.id ? `/figure/${figure.id}` : "#"}
-                state={{ franchise: { id: franchise?.id ?? animeId, name: title } }}
-                className="group"
-              >
-                <div className="overflow-hidden rounded-[14px] bg-muted">
-                  <div className="aspect-[4/5] overflow-hidden">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+            {figures.map((figure) => {
+              const imageSrc =
+                figure.primaryImageUrl ||
+                (figure.id ? imageUrls[figure.id] || FALLBACK_IMAGE_URL : FALLBACK_IMAGE_URL);
+
+              return (
+                <Link
+                  key={figure.id}
+                  to={figure.id ? `/figure/${figure.id}` : "#"}
+                  state={{ franchise: { id: franchise?.id ?? animeId, name: title } }}
+                  className="group flex flex-col overflow-hidden rounded-[16px] border border-border bg-card shadow-airbnb transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_14px_30px_rgba(0,0,0,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+                    {/* Fondo desenfocado: rellena el marco cuando la foto no calza (ej. más ancha que alta). */}
                     <img
-                      src={
-                        figure.primaryImageUrl ||
-                        (figure.id ? imageUrls[figure.id] || FALLBACK_IMAGE_URL : FALLBACK_IMAGE_URL)
-                      }
+                      src={imageSrc}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl"
+                    />
+                    {/* Foto real, completa: nunca se recorta. */}
+                    <img
+                      src={imageSrc}
                       alt={figure.name || "Figure image"}
-                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+                      className="relative z-[1] h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.04]"
                       loading="lazy"
                       onError={(event) => {
                         event.currentTarget.src = FALLBACK_IMAGE_URL;
                       }}
                     />
                   </div>
-                </div>
-                <h2 className="mt-3 line-clamp-2 min-h-10 text-sm font-semibold text-foreground">
-                  {figure.name || "Untitled figure"}
-                </h2>
-              </Link>
-            ))}
+                  <div className="px-4 py-4">
+                    <h2
+                      className="text-[15px] font-semibold leading-snug text-foreground"
+                      title={figure.name || undefined}
+                    >
+                      {figure.name || "Untitled figure"}
+                    </h2>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
 

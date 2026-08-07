@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
+*.tsbuildinfo
+
+# AI agent directories
+.claude/
+.codex/
+.agents/
 
 # Editor directories and files
 .vscode/*

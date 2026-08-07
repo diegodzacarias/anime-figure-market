@@ -16,4 +16,5 @@ export type ReferenceData = {
   sourceTypes: ReferenceDataOption[];
   scrapedListingCandidateStatuses: ReferenceDataOption[];
   matchDecisions: ReferenceDataOption[];
+  brandSegments: ReferenceDataOption[];
 };

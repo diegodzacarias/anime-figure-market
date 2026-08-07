@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, ChevronsUpDown, Plus, Search } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Check, ChevronsUpDown, Plus, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ApiErrorToast from "@/components/ui/api-error-toast";
 import {
@@ -84,15 +84,22 @@ type RelatedSectionConfig = {
   columns: Array<{ key: string; label: string }>;
 };
 
+type FilterConfig = {
+  param: string;
+  label: string;
+  kind: "franchise" | "active";
+};
+
 type PageConfig = {
   title: string;
   description: string;
   newLabel: string;
   endpoint: string;
   searchPlaceholder: string;
-  columns: Array<{ key: string; label: string }>;
+  columns: Array<{ key: string; label: string; sortField?: string }>;
   fields: FieldConfig[];
   relatedSections?: RelatedSectionConfig[];
+  filters?: FilterConfig[];
 };
 
 type OptionState = {
@@ -271,6 +278,11 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [sort, setSort] = useState<{ field: string; direction: "asc" | "desc" }>({
+    field: "id",
+    direction: "asc",
+  });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [pageMeta, setPageMeta] = useState(defaultPageMeta);
@@ -280,11 +292,25 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
   const [recordToDelete, setRecordToDelete] = useState<EntityRecord | null>(null);
   const mutating = saving || deleting;
 
+  const buildFilteredEndpoint = () => {
+    const params = new URLSearchParams();
+
+    (config.filters || []).forEach((filterDef) => {
+      const value = filters[filterDef.param];
+      if (value) params.set(filterDef.param, value);
+    });
+
+    const query = params.toString();
+    return query ? `${config.endpoint}?${query}` : config.endpoint;
+  };
+
   const fetchRows = async (showLoading = true) => {
     if (showLoading) setLoading(true);
 
     try {
-      const response = await fetch(withPagination(config.endpoint, page, pageSize));
+      const response = await fetch(
+        withPagination(buildFilteredEndpoint(), page, pageSize, `${sort.field},${sort.direction}`)
+      );
 
       if (!response.ok) {
         setApiError(await readApiErrorResponse(response, `Error fetching ${config.title}.`));
@@ -346,7 +372,7 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
 
   useEffect(() => {
     fetchRows();
-  }, [page, pageSize, config.endpoint]);
+  }, [page, pageSize, config.endpoint, filters, sort]);
 
   useEffect(() => {
     fetchOptions();
@@ -354,7 +380,20 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
 
   useEffect(() => {
     setPage(0);
-  }, [search]);
+  }, [search, filters]);
+
+  const handleSort = (field: string) => {
+    setSort((current) =>
+      current.field === field
+        ? { field, direction: current.direction === "asc" ? "desc" : "asc" }
+        : { field, direction: "asc" }
+    );
+    setPage(0);
+  };
+
+  const updateFilter = (param: string, value: string) => {
+    setFilters((current) => ({ ...current, [param]: value }));
+  };
 
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -605,15 +644,51 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
           </Button>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 rounded-lg border bg-card p-4 md:flex-row md:items-center md:justify-between">
-          <div className="relative w-full md:max-w-sm">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={config.searchPlaceholder} className="pl-9" />
+        <div className="mt-6 rounded-lg border bg-card p-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="relative w-full md:max-w-sm">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={config.searchPlaceholder} className="pl-9" />
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              {filteredRows.length} shown - {pageMeta.totalElements} total records
+            </p>
           </div>
 
-          <p className="text-sm text-muted-foreground">
-            {filteredRows.length} shown - {pageMeta.totalElements} total records
-          </p>
+          {config.filters && config.filters.length > 0 && (
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              {config.filters.map((filterDef) =>
+                filterDef.kind === "franchise" ? (
+                  <select
+                    key={filterDef.param}
+                    value={filters[filterDef.param] || ""}
+                    disabled={loadingOptions}
+                    onChange={(event) => updateFilter(filterDef.param, event.target.value)}
+                    className="rounded border border-input bg-background p-2 text-sm text-foreground"
+                  >
+                    <option value="">All {filterDef.label.toLowerCase()}s</option>
+                    {options.franchises.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <select
+                    key={filterDef.param}
+                    value={filters[filterDef.param] || ""}
+                    onChange={(event) => updateFilter(filterDef.param, event.target.value)}
+                    className="rounded border border-input bg-background p-2 text-sm text-foreground"
+                  >
+                    <option value="">All {filterDef.label.toLowerCase()} states</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                  </select>
+                )
+              )}
+            </div>
+          )}
         </div>
 
         <LoadingOverlay active={mutating} message={`Updating ${config.title}...`} className="mt-4">
@@ -622,9 +697,30 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {config.columns.map((column) => (
-                      <TableHead key={column.key}>{column.label}</TableHead>
-                    ))}
+                    {config.columns.map((column) =>
+                      column.sortField ? (
+                        <TableHead key={column.key}>
+                          <button
+                            type="button"
+                            onClick={() => handleSort(column.sortField as string)}
+                            className="inline-flex items-center gap-1 text-left hover:text-foreground"
+                          >
+                            {column.label}
+                            {sort.field === column.sortField ? (
+                              sort.direction === "asc" ? (
+                                <ArrowUp className="h-3.5 w-3.5 text-foreground" />
+                              ) : (
+                                <ArrowDown className="h-3.5 w-3.5 text-foreground" />
+                              )
+                            ) : (
+                              <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+                            )}
+                          </button>
+                        </TableHead>
+                      ) : (
+                        <TableHead key={column.key}>{column.label}</TableHead>
+                      )
+                    )}
                     <TableHead className="w-48 text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -781,6 +877,14 @@ const CharacterAdminPage = ({ config }: { config: PageConfig }) => {
 const characterFields: FieldConfig[] = [
   { name: "canonicalName", label: "Canonical Name", type: "text", required: true, helper: "Main character name." },
   {
+    name: "japaneseName",
+    label: "Japanese Name",
+    type: "text",
+    nullable: true,
+    maxLength: 255,
+    helper: 'Nombre en japones, formato "Katakana (Romaji)", ej. "ガッツ (Gattsu)".',
+  },
+  {
     name: "normalizedName",
     label: "Normalized Name",
     type: "text",
@@ -860,12 +964,17 @@ export const CharacterPage = () => (
       searchPlaceholder: "Search characters",
       columns: [
         { key: "id", label: "ID" },
-        { key: "canonicalName", label: "Canonical Name" },
+        { key: "canonicalName", label: "Canonical Name", sortField: "canonicalName" },
+        { key: "japaneseName", label: "Japanese Name" },
         { key: "normalizedName", label: "Normalized Name" },
-        { key: "franchiseName", label: "Franchise" },
+        { key: "franchiseName", label: "Franchise", sortField: "franchiseId" },
         { key: "active", label: "Active" },
       ],
       fields: characterFields,
+      filters: [
+        { param: "franchiseId", label: "Franchise", kind: "franchise" },
+        { param: "active", label: "Status", kind: "active" },
+      ],
       relatedSections: [
         {
           title: "Character Aliases",

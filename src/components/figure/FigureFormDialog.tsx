@@ -100,6 +100,7 @@ type FigureCharacter = {
   figureName?: string;
   characterId: number;
   characterName?: string;
+  characterJapaneseName?: string | null;
   characterFormId?: number | null;
   characterFormName?: string | null;
   primaryCharacter?: boolean;
@@ -121,9 +122,25 @@ type FigureImage = {
   updatedAt?: string;
 };
 
-type BrandOption = {
+export type BrandOption = {
   id: number;
   name: string;
+};
+
+export type FigureSortField =
+  | "id"
+  | "name"
+  | "slug"
+  | "franchiseId"
+  | "brandId"
+  | "janCode"
+  | "officialProductCode"
+  | "status"
+  | "loadMethod";
+
+export type FigureSort = {
+  field: FigureSortField;
+  direction: "asc" | "desc";
 };
 
 type FigureFormDialogProps = {
@@ -591,7 +608,12 @@ const FigureCharactersSection = ({
                 ) : (
                   rows.map((row) => (
                     <TableRow key={row.id}>
-                      <TableCell>{row.characterName || row.characterId}</TableCell>
+                      <TableCell>
+                        <div>{row.characterName || row.characterId}</div>
+                        {row.characterJapaneseName && (
+                          <div className="text-xs text-muted-foreground">{row.characterJapaneseName}</div>
+                        )}
+                      </TableCell>
                       <TableCell>{row.characterFormName || "-"}</TableCell>
                       <TableCell>{row.primaryCharacter ? "Yes" : "No"}</TableCell>
                       <TableCell>{row.displayOrder ?? 0}</TableCell>

@@ -15,27 +15,33 @@ import { ReferenceDataOption } from "@/types/referenceData";
 export type Source = {
   id?: number;
   name?: string;
+  code?: string | null;
   baseUrl?: string;
   type?: string;
   priority?: string | null;
   active?: boolean;
+  coveredSegments?: string[] | null;
 };
+
+export type SourcePayload = Record<string, string | number | boolean | string[]>;
 
 type SourceFormDialogProps = {
   source: Source | null;
   sourceTypes: ReferenceDataOption[];
   sourcePriorities: ReferenceDataOption[];
+  brandSegments: ReferenceDataOption[];
   open: boolean;
   saving: boolean;
   nameError?: string;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (payload: Record<string, string | number | boolean>) => Promise<void>;
+  onSubmit: (payload: SourcePayload) => Promise<void>;
 };
 
 const SourceFormDialog = ({
   source,
   sourceTypes,
   sourcePriorities,
+  brandSegments,
   open,
   saving,
   nameError,
@@ -49,6 +55,7 @@ const SourceFormDialog = ({
     priority: "MEDIUM",
     active: "true",
   });
+  const [coveredSegments, setCoveredSegments] = useState<string[]>([]);
 
   useEffect(() => {
     if (!open) return;
@@ -60,6 +67,7 @@ const SourceFormDialog = ({
       priority: source?.priority || "MEDIUM",
       active: (source?.active ?? true).toString(),
     });
+    setCoveredSegments(source?.coveredSegments ?? []);
   }, [open, source]);
 
   const handleChange = (
@@ -73,14 +81,22 @@ const SourceFormDialog = ({
     }));
   };
 
+  const toggleSegment = (segment: string) => {
+    setCoveredSegments((prev) =>
+      prev.includes(segment) ? prev.filter((value) => value !== segment) : [...prev, segment]
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload: Record<string, string | number | boolean> = {
+    const payload: SourcePayload = {
       name: form.name.trim(),
       type: form.type,
       active: form.active === "true",
       priority: form.priority,
+      // Enviar siempre el array: el backend interpreta el campo omitido como "vaciar cobertura"
+      coveredSegments,
     };
 
     if (form.baseUrl.trim()) payload.baseUrl = form.baseUrl.trim();
@@ -180,6 +196,29 @@ const SourceFormDialog = ({
                 <option className={optionClass} value="false">No</option>
               </select>
               <p className={helperClass}>Indica si la fuente esta habilitada.</p>
+            </div>
+
+            <div className="md:col-span-2">
+              <label className={labelClass}>Covered Segments</label>
+              <div className="flex flex-wrap gap-3 rounded border border-input bg-background p-3">
+                {brandSegments.map((segment) => (
+                  <label
+                    key={segment.value}
+                    className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={coveredSegments.includes(segment.value)}
+                      onChange={() => toggleSegment(segment.value)}
+                    />
+                    {segment.label}
+                  </label>
+                ))}
+              </div>
+              <p className={helperClass}>
+                Segmentos de brand que cubre la fuente. Sin segmentos, la fuente no participa del
+                routing de scraping.
+              </p>
             </div>
           </div>
 

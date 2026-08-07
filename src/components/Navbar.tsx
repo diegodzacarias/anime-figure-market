@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, User, ShoppingCart } from "lucide-react";
+import { ChevronDown, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -72,9 +73,6 @@ const Navbar = () => {
           <Link to="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             Inicio
           </Link>
-          <span className="text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer">
-            Novedades
-          </span>
           <Link to="/color-test" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             ColorTest
           </Link>
@@ -148,6 +146,13 @@ const Navbar = () => {
                   Candidate Review
                 </Link>
                 <Link
+                  to="/figure-admin/discovery-candidates"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={closeMenus}
+                >
+                  Discovery Candidates
+                </Link>
+                <Link
                   to="/figure-admin/alias-generator"
                   className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   onClick={closeMenus}
@@ -217,14 +222,10 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
-            aria-label="Carrito"
-          >
-            <ShoppingCart className="h-5 w-5" />
-          </Button>
+          <Badge variant="secondary" className="uppercase tracking-wide">
+            Beta
+          </Badge>
+
           <Button
             variant="outline"
             size="sm"

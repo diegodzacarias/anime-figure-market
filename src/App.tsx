@@ -17,6 +17,7 @@ const FigureSourceListingPage = lazy(() => import("./pages/FigureSourceListingPa
 const FranchisePage = lazy(() => import("./pages/FranchisePage.tsx"));
 const SourcePage = lazy(() => import("./pages/SourcePage.tsx"));
 const CandidateReviewPage = lazy(() => import("./pages/CandidateReviewPage.tsx"));
+const DiscoveryCandidateReviewPage = lazy(() => import("./pages/DiscoveryCandidateReviewPage.tsx"));
 const FigureAliasGeneratorPage = lazy(() => import("./pages/FigureAliasGeneratorPage.tsx"));
 const ScrapingRunnerPage = lazy(() => import("./pages/ScrapingRunnerPage.tsx"));
 const CharacterPage = lazy(() =>
@@ -34,6 +35,8 @@ const CharacterFormAliasPage = lazy(() =>
 const FigureCharacterPage = lazy(() =>
     import("./pages/CharacterAdminPages.tsx").then((module) => ({ default: module.FigureCharacterPage }))
 );
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage.tsx"));
+const TermsPage = lazy(() => import("./pages/TermsPage.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -64,6 +67,7 @@ const App = () => (
                             <Route path="/work/franchises" element={<FranchisePage />} />
                             <Route path="/work/sources" element={<SourcePage />} />
                             <Route path="/figure-admin/candidate-review" element={<CandidateReviewPage />} />
+                            <Route path="/figure-admin/discovery-candidates" element={<DiscoveryCandidateReviewPage />} />
                             <Route path="/figure-admin/alias-generator" element={<FigureAliasGeneratorPage />} />
                             <Route path="/figure-admin/scraping-runner" element={<ScrapingRunnerPage />} />
                             <Route path="/character-admin/characters" element={<CharacterPage />} />
@@ -71,6 +75,8 @@ const App = () => (
                             <Route path="/character-admin/character-forms" element={<CharacterFormPage />} />
                             <Route path="/character-admin/character-form-aliases" element={<CharacterFormAliasPage />} />
                             <Route path="/character-admin/figure-characters" element={<FigureCharacterPage />} />
+                            <Route path="/privacy" element={<PrivacyPage />} />
+                            <Route path="/terms" element={<TermsPage />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </Suspense>

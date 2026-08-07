@@ -1375,7 +1375,7 @@ const ScrapingRunnerPage = () => {
                             <div>
                               <CardTitle className="text-lg">Scraping Result</CardTitle>
                               <CardDescription>
-                                Processed response from Nin-Nin Game scraping.
+                                Processed response from the selected scraping source.
                               </CardDescription>
                             </div>
                             {candidateCount > 0 && selectedFigureId && (
