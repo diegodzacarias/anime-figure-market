@@ -55,10 +55,6 @@ const Navbar = () => {
           </span>
           </Link>
 
-          <Badge variant="secondary" className="uppercase tracking-wide">
-            Beta
-          </Badge>
-
           <Select
             value={currencyCode}
             onValueChange={(value) => setCurrencyCode(value as CurrencyCode)}
@@ -226,6 +222,10 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <Badge variant="secondary" className="uppercase tracking-wide">
+            Beta
+          </Badge>
+
           <Button
             variant="outline"
             size="sm"

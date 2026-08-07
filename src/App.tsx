@@ -35,6 +35,8 @@ const CharacterFormAliasPage = lazy(() =>
 const FigureCharacterPage = lazy(() =>
     import("./pages/CharacterAdminPages.tsx").then((module) => ({ default: module.FigureCharacterPage }))
 );
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage.tsx"));
+const TermsPage = lazy(() => import("./pages/TermsPage.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -73,6 +75,8 @@ const App = () => (
                             <Route path="/character-admin/character-forms" element={<CharacterFormPage />} />
                             <Route path="/character-admin/character-form-aliases" element={<CharacterFormAliasPage />} />
                             <Route path="/character-admin/figure-characters" element={<FigureCharacterPage />} />
+                            <Route path="/privacy" element={<PrivacyPage />} />
+                            <Route path="/terms" element={<TermsPage />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </Suspense>
