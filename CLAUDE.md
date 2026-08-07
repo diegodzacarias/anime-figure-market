@@ -79,3 +79,5 @@ El pipeline de scraping funciona así:
 
 Usar formato conventional commits: `<tipo>: <descripción>`  
 Tipos: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`.
+
+**Importante:** No incluir `Co-Authored-By: Claude` en commits. Claude es una herramienta, no un coautor. El trabajo pertenece al usuario. Usar `Co-Authored-By` solo si hay colaboradores humanos reales en el cambio.
